@@ -14,7 +14,6 @@ import org.mockito.Mock;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LogoutServiceImplTest extends AbstractBaseServiceTest {

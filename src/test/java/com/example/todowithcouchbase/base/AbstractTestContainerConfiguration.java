@@ -1,9 +1,6 @@
 package com.example.todowithcouchbase.base;
 
-import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.BeforeAll;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.couchbase.CouchbaseContainer;
