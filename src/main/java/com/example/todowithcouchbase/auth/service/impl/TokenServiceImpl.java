@@ -8,7 +8,6 @@ import com.example.todowithcouchbase.auth.model.enums.TokenType;
 import com.example.todowithcouchbase.auth.model.enums.UserType;
 import com.example.todowithcouchbase.auth.service.InvalidTokenService;
 import com.example.todowithcouchbase.auth.service.TokenService;
-import com.example.todowithcouchbase.common.util.ListUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwsHeader;

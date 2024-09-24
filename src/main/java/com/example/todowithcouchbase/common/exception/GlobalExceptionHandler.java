@@ -1,5 +1,6 @@
 package com.example.todowithcouchbase.common.exception;
 
+import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.common.model.CustomError;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +66,82 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<?> handleAccessDeniedException(final AccessDeniedException accessDeniedException) {
         return new ResponseEntity<>(accessDeniedException.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Handles PasswordNotValidException thrown when a password does not meet validation criteria.
+     *
+     * @param ex The PasswordNotValidException instance.
+     * @return ResponseEntity with CustomError indicating password validation failure.
+     */
+    @ExceptionHandler(PasswordNotValidException.class)
+    public ResponseEntity<CustomError> handlePasswordNotValidException(final PasswordNotValidException ex) {
+
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<CustomError> handleRoleNotFoundException(final RoleNotFoundException ex) {
+
+        CustomError error = CustomError.builder()
+                .time(LocalDateTime.now())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TokenAlreadyInvalidatedException.class)
+    public ResponseEntity<CustomError> handleTokenAlreadyInvalidatedException(final TokenAlreadyInvalidatedException ex) {
+        CustomError error = CustomError.builder()
+                .time(LocalDateTime.now())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<CustomError> handleUserAlreadyExistException(final UserAlreadyExistException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.CONFLICT)
+                .header(CustomError.Header.ALREADY_EXIST.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<CustomError> handleUserNotFoundException(final UserNotFoundException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserStatusNotValidException.class)
+    public ResponseEntity<CustomError> handleUserStatusNotValidException(final UserStatusNotValidException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
 }
