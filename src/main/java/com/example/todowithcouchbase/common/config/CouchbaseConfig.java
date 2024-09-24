@@ -6,6 +6,7 @@ import com.couchbase.client.java.Scope;
 import com.couchbase.client.java.manager.bucket.BucketManager;
 import com.couchbase.client.java.manager.bucket.BucketSettings;
 import com.couchbase.client.java.manager.bucket.BucketType;
+import com.example.todowithcouchbase.common.exception.BucketConfigException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,18 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
     @Value("${spring.couchbase.scopes.task-scope}")
     private String taskScope;
+
+    @Value("${spring.couchbase.scopes.invalid-token-scope}")
+    private String invalidTokenScope;
+
+    @Value("${spring.couchbase.collections.user-scope}")
+    private String userCollections;
+
+    @Value("${spring.couchbase.collections.task-scope}")
+    private String taskCollections;
+
+    @Value("${spring.couchbase.collections.invalid-token-scope}")
+    private String invalidTokenCollections;
 
     @Override
     public String getConnectionString() {
@@ -72,12 +85,35 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
                     .flushEnabled(true);               // Enable flush if needed
 
             log.info("Creating Couchbase bucket: {}", bucketName);
+
             bucketManager.createBucket(bucketSettings);
+
+            var bucket = cluster.bucket(bucketName);
+            createScopeAndCollection(bucket, userScope, userCollections);
+            createScopeAndCollection(bucket, taskScope, taskCollections);
+            createScopeAndCollection(bucket, invalidTokenScope, invalidTokenCollections);
+
         } else {
             log.info("Couchbase bucket '{}' already exists", bucketName);
         }
 
         return cluster.bucket(bucketName);
+    }
+
+    private void createScopeAndCollection(Bucket bucket, String scopName, String collectionName) {
+        try {
+            // Check if the scope exists
+            Scope userScope = bucket.scope(scopName);
+            if (userScope != null) {
+                log.info("Scope {} does not exist. Creating it now", scopName);
+                bucket.collections().createScope(scopName);
+                bucket.collections().createCollection(scopName, collectionName);
+            }
+
+        } catch (Exception e) {
+            log.error("Error creating scope or collection. Scope: {}, Collection: {}", scopName, collectionName, e);
+            throw new BucketConfigException();
+        }
     }
 
     @Bean
@@ -89,5 +125,11 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     public Scope taskScope() {
         return couchbaseBucket().scope(taskScope);
     }
+
+    @Bean
+    public Scope invalidTokenScope() {
+        return couchbaseBucket().scope(invalidTokenScope);
+    }
+
 }
 

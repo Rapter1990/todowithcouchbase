@@ -9,6 +9,10 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.mapping.Field;
+import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
+import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
+import org.springframework.data.couchbase.repository.Collection;
+import org.springframework.data.couchbase.repository.Scope;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +24,13 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
+@Scope("user")
+@Collection("user")
 public class UserEntity extends BaseEntity {
 
     @Id
     @Field(name = "ID")
+    @GeneratedValue(strategy = GenerationStrategy.UNIQUE)
     private String id;
 
     @Field(name = "EMAIL")

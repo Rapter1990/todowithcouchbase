@@ -11,6 +11,11 @@ spring:
     scopes:
       user-scope: user
       task-scope: task
+      invalid-token-scope : invalid-token
+    collections:
+      user-scope: user
+      task-scope: task
+      invalid-token-scope: invalid-token
 
 
   data:
