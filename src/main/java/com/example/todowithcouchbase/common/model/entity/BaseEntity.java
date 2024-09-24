@@ -11,16 +11,14 @@ import org.springframework.data.couchbase.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
+
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
 public class BaseEntity {
 
-    @Id
-    private String id;
 
     @Field(name = "createdAt")
     private LocalDateTime createdAt;
