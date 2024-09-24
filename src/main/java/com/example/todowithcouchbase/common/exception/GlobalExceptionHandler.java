@@ -68,12 +68,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(accessDeniedException.getMessage(), HttpStatus.FORBIDDEN);
     }
 
-    /**
-     * Handles PasswordNotValidException thrown when a password does not meet validation criteria.
-     *
-     * @param ex The PasswordNotValidException instance.
-     * @return ResponseEntity with CustomError indicating password validation failure.
-     */
+
     @ExceptionHandler(PasswordNotValidException.class)
     public ResponseEntity<CustomError> handlePasswordNotValidException(final PasswordNotValidException ex) {
 
@@ -135,6 +130,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserStatusNotValidException.class)
     public ResponseEntity<CustomError> handleUserStatusNotValidException(final UserStatusNotValidException ex) {
+        CustomError error = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.VALIDATION_ERROR.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BucketConfigException.class)
+    public ResponseEntity<CustomError> handleBucketConfigException(final BucketConfigException ex) {
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(CustomError.Header.VALIDATION_ERROR.getName())
