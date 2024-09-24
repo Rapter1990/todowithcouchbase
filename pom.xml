@@ -32,6 +32,8 @@
 		<jsonwebtoken.version>0.12.3</jsonwebtoken.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<openapi.version>2.1.0</openapi.version>
+		<springdoc-openapi.version>2.1.0</springdoc-openapi.version>
 	</properties>
 	<dependencies>
 
@@ -153,6 +155,18 @@
 			<artifactId>couchbase</artifactId>
 			<version>1.20.1</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${openapi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
 		</dependency>
 
 	</dependencies>
