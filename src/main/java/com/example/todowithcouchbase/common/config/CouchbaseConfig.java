@@ -38,14 +38,20 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     @Value("${spring.couchbase.scopes.invalid-token-scope}")
     private String invalidTokenScope;
 
-    @Value("${spring.couchbase.collections.user-scope}")
+    @Value("${spring.couchbase.scopes.log-scope}")
+    private String logScope;
+
+    @Value("${spring.couchbase.collections.user-collection}")
     private String userCollections;
 
-    @Value("${spring.couchbase.collections.task-scope}")
+    @Value("${spring.couchbase.collections.task-collection}")
     private String taskCollections;
 
-    @Value("${spring.couchbase.collections.invalid-token-scope}")
+    @Value("${spring.couchbase.collections.invalid-token-collection}")
     private String invalidTokenCollections;
+
+    @Value("${spring.couchbase.collections.log-collection}")
+    private String logCollections;
 
     @Override
     public String getConnectionString() {
@@ -92,6 +98,7 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
             createScopeAndCollection(bucket, userScope, userCollections);
             createScopeAndCollection(bucket, taskScope, taskCollections);
             createScopeAndCollection(bucket, invalidTokenScope, invalidTokenCollections);
+            createScopeAndCollection(bucket, logScope, logCollections);
 
         } else {
             log.info("Couchbase bucket '{}' already exists", bucketName);
@@ -129,6 +136,11 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     @Bean
     public Scope invalidTokenScope() {
         return couchbaseBucket().scope(invalidTokenScope);
+    }
+
+    @Bean
+    public Scope logScope() {
+        return couchbaseBucket().scope(logScope);
     }
 
 }

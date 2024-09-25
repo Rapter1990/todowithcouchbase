@@ -12,10 +12,12 @@ spring:
       user-scope: user
       task-scope: task
       invalid-token-scope : invalid-token
+      log-scope: log
     collections:
-      user-scope: user
-      task-scope: task
-      invalid-token-scope: invalid-token
+      user-collection: user
+      task-collection: task
+      invalid-token-collection: invalid-token
+      log-collection : log
 
 
   data:
