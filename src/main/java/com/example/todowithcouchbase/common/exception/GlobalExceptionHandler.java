@@ -19,6 +19,18 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UnAuthorizeAttemptException.class)
+    protected ResponseEntity<Object> handleUnAuthorizeAttempt(final UnAuthorizeAttemptException ex){
+
+        CustomError customError = CustomError.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .header(CustomError.Header.AUTH_ERROR.getName())
+                .message("authorization failed")
+                .build();
+
+        return new ResponseEntity<>(customError, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex) {
 
