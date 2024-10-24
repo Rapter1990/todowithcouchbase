@@ -307,6 +307,27 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         checkCustomError(expectedError, actualError);
     }
 
+    @Test
+    void givenUnAuthorizeAttemptException_whenHandleUnAuthorizeAttempt_thenRespondWithUnauthorized() {
+        // Given
+        UnAuthorizeAttemptException ex = new UnAuthorizeAttemptException();
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .header(CustomError.Header.AUTH_ERROR.getName())
+                .message("You do not have permission to create a to-do item.\n")
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<Object> responseEntity = globalExceptionHandler.handleUnAuthorizeAttempt(ex);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        CustomError actualError = (CustomError) responseEntity.getBody(); // Cast response body
+        checkCustomError(expectedError, actualError);
+    }
+
     private void checkCustomError(CustomError expectedError, CustomError actualError) {
 
         assertThat(actualError).isNotNull();

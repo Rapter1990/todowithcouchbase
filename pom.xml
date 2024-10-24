@@ -85,13 +85,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.14.0</version>
 		</dependency>
-		<!-- APACHE COMMONS DEPENDENCY -->
-
-		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 
 		<!-- SPRING SECURITY DEPENDENCY -->
 		<dependency>
