@@ -1,12 +1,12 @@
-package com.example.todowithcouchbase.Task.service.impl;
+package com.example.todowithcouchbase.task.service.impl;
 
-import com.example.todowithcouchbase.Task.exception.TaskWithThisNameAlreadyExistException;
-import com.example.todowithcouchbase.Task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.Task.model.dto.response.SaveTaskResponse;
-import com.example.todowithcouchbase.Task.model.entity.TaskEntity;
-import com.example.todowithcouchbase.Task.model.mapper.SaveTaskRequestToTaskEntityMapper;
-import com.example.todowithcouchbase.Task.model.mapper.TaskEntityToTaskResponseMapper;
-import com.example.todowithcouchbase.Task.repository.TaskRepository;
+import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
+import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.dto.response.SaveTaskResponse;
+import com.example.todowithcouchbase.task.model.entity.TaskEntity;
+import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
+import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskResponseMapper;
+import com.example.todowithcouchbase.task.repository.TaskRepository;
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.builder.SaveTaskRequestBuilder;
 import com.example.todowithcouchbase.builder.TaskEntityBuilder;
@@ -24,11 +24,10 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
     @Mock
     private TaskRepository taskRepository;
 
-    @Mock
+
     private final SaveTaskRequestToTaskEntityMapper saveTaskRequestToTaskEntityMapper =
             SaveTaskRequestToTaskEntityMapper.initialize();
 
-    @Mock
     private final TaskEntityToTaskResponseMapper taskEntityToTaskResponseMapper=
             TaskEntityToTaskResponseMapper.initialize();
 

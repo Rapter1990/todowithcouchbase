@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.Task.model;
+package com.example.todowithcouchbase.task.model;
 
 
 import com.example.todowithcouchbase.common.model.BaseDomainModel;

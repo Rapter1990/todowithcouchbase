@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.Task.model.entity;
+package com.example.todowithcouchbase.task.model.entity;
 
 
 import com.example.todowithcouchbase.common.model.entity.BaseEntity;

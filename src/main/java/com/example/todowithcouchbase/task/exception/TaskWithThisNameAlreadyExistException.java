@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.Task.exception;
+package com.example.todowithcouchbase.task.exception;
 
 import java.io.Serial;
 

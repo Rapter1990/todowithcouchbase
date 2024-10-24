@@ -1,6 +1,6 @@
-package com.example.todowithcouchbase.Task.repository;
+package com.example.todowithcouchbase.task.repository;
 
-import com.example.todowithcouchbase.Task.model.entity.TaskEntity;
+import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 import org.springframework.data.couchbase.repository.CouchbaseRepository;
 import org.springframework.data.couchbase.repository.Query;
 import org.springframework.stereotype.Repository;

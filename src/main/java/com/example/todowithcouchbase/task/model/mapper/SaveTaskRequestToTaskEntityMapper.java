@@ -1,7 +1,7 @@
-package com.example.todowithcouchbase.Task.model.mapper;
+package com.example.todowithcouchbase.task.model.mapper;
 
-import com.example.todowithcouchbase.Task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.Task.model.entity.TaskEntity;
+import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 import com.example.todowithcouchbase.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
@@ -20,4 +20,5 @@ public interface SaveTaskRequestToTaskEntityMapper extends BaseMapper<SaveTaskRe
     static SaveTaskRequestToTaskEntityMapper initialize(){
         return Mappers.getMapper(SaveTaskRequestToTaskEntityMapper.class);
     }
+
 }

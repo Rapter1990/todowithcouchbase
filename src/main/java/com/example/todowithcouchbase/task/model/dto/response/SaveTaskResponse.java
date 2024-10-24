@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.Task.model.dto.response;
+package com.example.todowithcouchbase.task.model.dto.response;
 
 import lombok.*;
 
@@ -12,4 +12,5 @@ public class SaveTaskResponse {
     private String id;
 
     private String name;
+
 }

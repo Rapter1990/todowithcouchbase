@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.Task.model.dto.request;
+package com.example.todowithcouchbase.task.model.dto.request;
 
 
 import jakarta.validation.constraints.NotBlank;

@@ -1,8 +1,8 @@
-package com.example.todowithcouchbase.Task.controller;
+package com.example.todowithcouchbase.task.controller;
 
-import com.example.todowithcouchbase.Task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.Task.model.dto.response.SaveTaskResponse;
-import com.example.todowithcouchbase.Task.service.TaskService;
+import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.dto.response.SaveTaskResponse;
+import com.example.todowithcouchbase.task.service.TaskService;
 import com.example.todowithcouchbase.base.AbstractRestControllerTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,8 +19,6 @@ public class TaskControllerTest extends AbstractRestControllerTest {
 
     @MockBean
     private TaskService taskService;
-
-
 
     @Test
     void givenValidTaskRequestWithAdminCreate_whenCreateTask_thenSuccess() throws Exception{
