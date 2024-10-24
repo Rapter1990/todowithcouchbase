@@ -5,7 +5,7 @@ spring:
     import: optional:file:.env[.properties]
   couchbase:
     connection-string: couchbase://${COUCHBASE_HOST:127.0.0.1}
-    username: ${COUCHBASE_USERNAME:user}
+    username: ${COUCHBASE_USERNAME:Administrator}
     password: ${COUCHBASE_PASSWORD:123456}
     bucket: ${COUCHBASE_BUCKET:todo_list}
     scopes:
