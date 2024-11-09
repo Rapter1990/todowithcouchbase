@@ -61,10 +61,10 @@ public abstract class AbstractTestContainerConfiguration {
         ensureCollectionExists(bucket, "log-scope", "log-collection");
 
         // Ensure primary indexes are created on all collections (across scopes)
-        createPrimaryIndexIfNotExists(cluster, bucket, "invalid-token-scope", "invalid-token-collection");
-        createPrimaryIndexIfNotExists(cluster, bucket, "user-scope", "user-collection");
-        createPrimaryIndexIfNotExists(cluster, bucket, "task-scope", "task-collection");
-        createPrimaryIndexIfNotExists(cluster, bucket, "log-scope", "log-collection");
+        createPrimaryIndexIfNotExists(bucket, "user-scope", "user-collection", cluster);
+        createPrimaryIndexIfNotExists(bucket, "invalid-token-scope", "invalid-token-collection", cluster);
+        createPrimaryIndexIfNotExists(bucket, "task-scope", "task-collection", cluster);
+        createPrimaryIndexIfNotExists(bucket, "log-scope", "log-collection", cluster);
 
 
         cluster.disconnect();
@@ -117,11 +117,11 @@ public abstract class AbstractTestContainerConfiguration {
         }
     }
 
-    private static void createPrimaryIndexIfNotExists(Cluster cluster, Bucket bucket, String scopeName, String collectionName) {
+    private static void createPrimaryIndexIfNotExists(Bucket bucket, String scopeName, String collectionName, Cluster cluster) {
         try {
             // Query for a primary index (using the collection context)
             String indexQuery = String.format(
-                    "SELECT * FROM %s.%s.%s LIMIT 1",
+                    "SELECT * FROM `%s`.`%s`.`%s` LIMIT 1",
                     bucket.name(),
                     scopeName,
                     collectionName
@@ -138,7 +138,7 @@ public abstract class AbstractTestContainerConfiguration {
                 log.warn("Primary index not found on collection {}.{}. Creating it.", scopeName, collectionName);
                 // Create the primary index if it does not exist
                 String createIndexQuery = String.format(
-                        "CREATE PRIMARY INDEX ON %s.%s.%s USING GSI",
+                        "CREATE PRIMARY INDEX ON `%s`.`%s`.`%s` USING GSI",
                         bucket.name(),
                         scopeName,
                         collectionName
