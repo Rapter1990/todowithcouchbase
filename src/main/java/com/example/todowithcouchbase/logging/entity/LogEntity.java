@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Document
-@Scope("log")
-@Collection("log")
+@Scope("log-scope")
+@Collection("log-collection")
 public class LogEntity {
 
     @Id

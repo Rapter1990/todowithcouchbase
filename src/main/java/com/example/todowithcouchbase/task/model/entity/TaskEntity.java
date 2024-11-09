@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Field;
 import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
+import org.springframework.data.couchbase.repository.Collection;
+import org.springframework.data.couchbase.repository.Scope;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +17,8 @@ import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
+@Scope("task-scope")
+@Collection("task-collection")
 public class TaskEntity extends BaseEntity {
 
     @Id

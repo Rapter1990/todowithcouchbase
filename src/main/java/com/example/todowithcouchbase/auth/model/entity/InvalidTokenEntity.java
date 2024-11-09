@@ -14,12 +14,12 @@ import org.springframework.data.couchbase.repository.Scope;
 @Getter
 @Setter
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Document
-@Scope("invalid_token")
-@Collection("invalid_token")
+@Scope("invalid-token-scope")
+@Collection("invalid-token-collection")
 public class InvalidTokenEntity extends BaseEntity {
 
     @Id
