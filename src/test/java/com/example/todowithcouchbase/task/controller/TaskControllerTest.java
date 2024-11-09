@@ -39,7 +39,7 @@ public class TaskControllerTest extends AbstractRestControllerTest {
         //Then
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .post("api/v1/task")
+                        .post("/api/v1/task")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .header(HttpHeaders.AUTHORIZATION,mockAdminToken)
@@ -53,5 +53,26 @@ public class TaskControllerTest extends AbstractRestControllerTest {
         //Verify
         Mockito.verify(taskService,Mockito.times(1))
                 .saveTaskToDatabase(Mockito.any(SaveTaskRequest.class));
+    }
+
+    @Test
+    void givenValidTaskRequestWhenWithUserCreateThenThrowUnAuthorizeException() throws Exception{
+
+        //Given
+        final SaveTaskRequest request = SaveTaskRequest.builder()
+                .name("deneme")
+                .build();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/task")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.never()).saveTaskToDatabase(Mockito.any(SaveTaskRequest.class));
     }
 }
