@@ -49,22 +49,23 @@ public abstract class AbstractTestContainerConfiguration {
         CollectionManager collectionManager = bucket.collections();
 
         // Create scopes and collections (according to your configuration)
-        createScopeAndCollection(collectionManager, "user-scope", "user-collection");
         createScopeAndCollection(collectionManager, "invalid-token-scope", "invalid-token-collection");
+        createScopeAndCollection(collectionManager, "user-scope", "user-collection");
         createScopeAndCollection(collectionManager, "task-scope", "task-collection");
         createScopeAndCollection(collectionManager, "log-scope", "log-collection");
 
         // Ensure all necessary collections exist
-        ensureCollectionExists(bucket, "user-scope", "user-collection");
         ensureCollectionExists(bucket, "invalid-token-scope", "invalid-token-collection");
+        ensureCollectionExists(bucket, "user-scope", "user-collection");
         ensureCollectionExists(bucket, "task-scope", "task-collection");
         ensureCollectionExists(bucket, "log-scope", "log-collection");
 
-        // Ensure that primary indexes are created on all collections (across scopes)
-        createPrimaryIndexIfNotExists(cluster, bucket, "user-scope", "user-collection");
+        // Ensure primary indexes are created on all collections (across scopes)
         createPrimaryIndexIfNotExists(cluster, bucket, "invalid-token-scope", "invalid-token-collection");
+        createPrimaryIndexIfNotExists(cluster, bucket, "user-scope", "user-collection");
         createPrimaryIndexIfNotExists(cluster, bucket, "task-scope", "task-collection");
         createPrimaryIndexIfNotExists(cluster, bucket, "log-scope", "log-collection");
+
 
         cluster.disconnect();
     }
@@ -118,9 +119,9 @@ public abstract class AbstractTestContainerConfiguration {
 
     private static void createPrimaryIndexIfNotExists(Cluster cluster, Bucket bucket, String scopeName, String collectionName) {
         try {
-            // Check if primary index exists
+            // Query for a primary index (using the collection context)
             String indexQuery = String.format(
-                    "SELECT * FROM `%s`.%s.%s LIMIT 1",
+                    "SELECT * FROM %s.%s.%s LIMIT 1",
                     bucket.name(),
                     scopeName,
                     collectionName
@@ -132,12 +133,12 @@ public abstract class AbstractTestContainerConfiguration {
                         indexQuery,
                         QueryOptions.queryOptions().adhoc(false) // Makes the query non-adhoc (optimizing)
                 );
-                log.info("Primary index exists or query was successful for {}.{}", scopeName, collectionName);
+                log.info("Primary index exists or query was successful.");
             } catch (CouchbaseQueryExecutionException e) {
                 log.warn("Primary index not found on collection {}.{}. Creating it.", scopeName, collectionName);
                 // Create the primary index if it does not exist
                 String createIndexQuery = String.format(
-                        "CREATE PRIMARY INDEX ON `%s`.%s.%s USING GSI",
+                        "CREATE PRIMARY INDEX ON %s.%s.%s USING GSI",
                         bucket.name(),
                         scopeName,
                         collectionName
