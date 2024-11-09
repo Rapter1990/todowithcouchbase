@@ -2,7 +2,10 @@ package com.example.todowithcouchbase.task.model;
 
 
 import com.example.todowithcouchbase.common.model.BaseDomainModel;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor

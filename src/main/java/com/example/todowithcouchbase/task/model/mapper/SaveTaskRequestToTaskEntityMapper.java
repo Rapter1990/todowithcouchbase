@@ -1,8 +1,8 @@
 package com.example.todowithcouchbase.task.model.mapper;
 
+import com.example.todowithcouchbase.common.model.mapper.BaseMapper;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
-import com.example.todowithcouchbase.common.model.mapper.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;

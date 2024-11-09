@@ -1,9 +1,10 @@
 package com.example.todowithcouchbase.task.controller;
 
-import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.task.model.dto.response.SaveTaskResponse;
-import com.example.todowithcouchbase.task.service.TaskService;
 import com.example.todowithcouchbase.common.model.dto.response.CustomResponse;
+import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
+import com.example.todowithcouchbase.task.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +22,13 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    private final TaskToTaskResponseMapper taskToTaskResponseMapper =  TaskToTaskResponseMapper.initialize();
+
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CustomResponse<SaveTaskResponse> saveTask(final @Valid @RequestBody SaveTaskRequest saveTaskRequest){
-        return CustomResponse.successOf(taskService.saveTaskToDatabase(saveTaskRequest));
+    public CustomResponse<String> saveTask(final @Valid @RequestBody SaveTaskRequest saveTaskRequest){
+        final Task createdTask = taskService.saveTaskToDatabase(saveTaskRequest);
+        return CustomResponse.successOf(createdTask.getId());
     }
 
 }

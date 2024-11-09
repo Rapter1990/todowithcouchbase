@@ -1,15 +1,14 @@
 package com.example.todowithcouchbase.task.service.impl;
 
-import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
-import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.task.model.dto.response.SaveTaskResponse;
-import com.example.todowithcouchbase.task.model.entity.TaskEntity;
-import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
-import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskResponseMapper;
-import com.example.todowithcouchbase.task.repository.TaskRepository;
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.builder.SaveTaskRequestBuilder;
-import com.example.todowithcouchbase.builder.TaskEntityBuilder;
+import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
+import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.entity.TaskEntity;
+import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
+import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskMapper;
+import com.example.todowithcouchbase.task.repository.TaskRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,8 +27,8 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
     private final SaveTaskRequestToTaskEntityMapper saveTaskRequestToTaskEntityMapper =
             SaveTaskRequestToTaskEntityMapper.initialize();
 
-    private final TaskEntityToTaskResponseMapper taskEntityToTaskResponseMapper=
-            TaskEntityToTaskResponseMapper.initialize();
+    private final TaskEntityToTaskMapper taskEntityToTaskResponseMapper=
+            TaskEntityToTaskMapper.initialize();
 
     @Test
     void givenValidTaskCreateRequest_whenCreateTask_ThenReturnTaskResponse(){
@@ -38,9 +37,9 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         final SaveTaskRequest request = new SaveTaskRequestBuilder()
                 .withValidFields().build();
 
-        final TaskEntity mockTaskEntity = new TaskEntityBuilder()
-                .withValidFields()
-                .build();
+        final TaskEntity mockTaskEntity = saveTaskRequestToTaskEntityMapper.mapForSaving(request);
+
+        final Task mockTask = taskEntityToTaskResponseMapper.map(mockTaskEntity);
 
         //When
         Mockito.when(taskRepository.existsTaskEntitiesByName(Mockito.anyString()))
@@ -50,10 +49,10 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
                 .thenReturn(mockTaskEntity);
 
         //Then
-        SaveTaskResponse response = taskService
+        Task response = taskService
                 .saveTaskToDatabase(request);
 
-        Assertions.assertEquals(request.getName(),response.getName());
+        Assertions.assertEquals(mockTask.getName(),response.getName());
 
         //Verify
         Mockito.verify(

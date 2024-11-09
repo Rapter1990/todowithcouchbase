@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class SaveTaskResponse {
+public class TaskResponse {
 
     private String id;
 

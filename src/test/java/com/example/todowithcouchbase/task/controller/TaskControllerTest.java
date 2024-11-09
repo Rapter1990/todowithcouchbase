@@ -1,9 +1,10 @@
 package com.example.todowithcouchbase.task.controller;
 
-import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.task.model.dto.response.SaveTaskResponse;
-import com.example.todowithcouchbase.task.service.TaskService;
 import com.example.todowithcouchbase.base.AbstractRestControllerTest;
+import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
+import com.example.todowithcouchbase.task.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,26 +16,29 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
-public class TaskControllerTest extends AbstractRestControllerTest {
+class TaskControllerTest extends AbstractRestControllerTest {
 
     @MockBean
     private TaskService taskService;
+
+    private final TaskToTaskResponseMapper taskToTaskResponseMapper =  TaskToTaskResponseMapper.initialize();
 
     @Test
     void givenValidTaskRequestWithAdminCreate_whenCreateTask_thenSuccess() throws Exception{
 
         //Given
         final SaveTaskRequest request = SaveTaskRequest.builder()
-                .name("deneme")
+                .name("task-name")
                 .build();
 
-        final SaveTaskResponse response = SaveTaskResponse.builder()
+        final Task expectedTask = Task.builder()
                 .id(UUID.randomUUID().toString())
-                .name("deneme")
+                .name(request.getName())
                 .build();
 
         //When
-        Mockito.when(taskService.saveTaskToDatabase(Mockito.any(SaveTaskRequest.class))).thenReturn(response);
+        Mockito.when(taskService.saveTaskToDatabase(Mockito.any(SaveTaskRequest.class)))
+                .thenReturn(expectedTask);
 
         //Then
         mockMvc.perform(
@@ -42,17 +46,19 @@ public class TaskControllerTest extends AbstractRestControllerTest {
                         .post("/api/v1/task")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
-                        .header(HttpHeaders.AUTHORIZATION,mockAdminToken)
+                        .header(HttpHeaders.AUTHORIZATION,"Bearer " + mockAdminToken.getAccessToken())
 
         ).andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.response.name").value(response.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").value(expectedTask.getId()));
 
         //Verify
         Mockito.verify(taskService,Mockito.times(1))
                 .saveTaskToDatabase(Mockito.any(SaveTaskRequest.class));
+
     }
 
     @Test
@@ -60,7 +66,7 @@ public class TaskControllerTest extends AbstractRestControllerTest {
 
         //Given
         final SaveTaskRequest request = SaveTaskRequest.builder()
-                .name("deneme")
+                .name("task-name")
                 .build();
 
         mockMvc.perform(
@@ -74,5 +80,7 @@ public class TaskControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(taskService, Mockito.never()).saveTaskToDatabase(Mockito.any(SaveTaskRequest.class));
+
     }
+
 }
