@@ -24,8 +24,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-@Scope("user")
-@Collection("user")
+@Scope("user-scope")
+@Collection("user-collection")
 public class UserEntity extends BaseEntity {
 
     @Id

@@ -9,15 +9,15 @@ spring:
     password: ${COUCHBASE_PASSWORD:123456}
     bucket: ${COUCHBASE_BUCKET:todo_list}
     scopes:
-      user-scope: user
-      task-scope: task
-      invalid-token-scope : invalid-token
-      log-scope: log
+      user-scope: user-scope
+      task-scope: task-scope
+      invalid-token-scope : invalid-token-scope
+      log-scope: log-scope
     collections:
-      user-collection: user
-      task-collection: task
-      invalid-token-collection: invalid-token
-      log-collection : log
+      user-collection: user-collection
+      task-collection: task-collection
+      invalid-token-collection: invalid-token-collection
+      log-collection : log-collection
 
 
   data:
