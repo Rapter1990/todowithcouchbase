@@ -8,8 +8,6 @@ import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.Collection;
 import com.couchbase.client.java.manager.bucket.BucketSettings;
 import com.couchbase.client.java.manager.collection.CollectionManager;
-import com.couchbase.client.java.query.QueryOptions;
-import com.couchbase.client.java.query.QueryResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.data.couchbase.core.CouchbaseQueryExecutionException;
@@ -46,6 +44,10 @@ public abstract class AbstractTestContainerConfiguration {
         // Access the bucket and ensure it's ready
         Bucket bucket = cluster.bucket(BUCKET_NAME);
         bucket.waitUntilReady(Duration.ofSeconds(10));
+
+        // Ensure that the query service is available
+        waitForQueryService(cluster);
+
         CollectionManager collectionManager = bucket.collections();
 
         // Create scopes and collections (according to your configuration)
@@ -61,11 +63,10 @@ public abstract class AbstractTestContainerConfiguration {
         ensureCollectionExists(bucket, "log-scope", "log-collection");
 
         // Ensure primary indexes are created on all collections (across scopes)
-        createPrimaryIndexIfNotExists(bucket, "user-scope", "user-collection", cluster);
-        createPrimaryIndexIfNotExists(bucket, "invalid-token-scope", "invalid-token-collection", cluster);
-        createPrimaryIndexIfNotExists(bucket, "task-scope", "task-collection", cluster);
-        createPrimaryIndexIfNotExists(bucket, "log-scope", "log-collection", cluster);
-
+        createPrimaryIndexIfNotExists(bucket, cluster, "invalid-token-scope", "invalid-token-collection");
+        createPrimaryIndexIfNotExists(bucket, cluster, "user-scope", "user-collection");
+        createPrimaryIndexIfNotExists(bucket, cluster, "task-scope", "task-collection");
+        createPrimaryIndexIfNotExists(bucket, cluster, "log-scope", "log-collection");
 
         cluster.disconnect();
     }
@@ -117,37 +118,48 @@ public abstract class AbstractTestContainerConfiguration {
         }
     }
 
-    private static void createPrimaryIndexIfNotExists(Bucket bucket, String scopeName, String collectionName, Cluster cluster) {
+    // Create primary index on the collection to cover all items within the collection
+    private static void createPrimaryIndexIfNotExists(Bucket bucket, Cluster cluster, String scopeName, String collectionName) {
         try {
-            // Query for a primary index (using the collection context)
-            String indexQuery = String.format(
-                    "SELECT * FROM `%s`.`%s`.`%s` LIMIT 1",
+            String createIndexQuery = String.format(
+                    "CREATE PRIMARY INDEX ON `%s`.`%s`.`%s` USING GSI",
                     bucket.name(),
                     scopeName,
                     collectionName
             );
 
+            // Run the query to create the primary index
             try {
-                // Execute the query to check if the primary index exists
-                QueryResult result = cluster.query(
-                        indexQuery,
-                        QueryOptions.queryOptions().adhoc(false) // Makes the query non-adhoc (optimizing)
-                );
-                log.info("Primary index exists or query was successful.");
-            } catch (CouchbaseQueryExecutionException e) {
-                log.warn("Primary index not found on collection {}.{}. Creating it.", scopeName, collectionName);
-                // Create the primary index if it does not exist
-                String createIndexQuery = String.format(
-                        "CREATE PRIMARY INDEX ON `%s`.`%s`.`%s` USING GSI",
-                        bucket.name(),
-                        scopeName,
-                        collectionName
-                );
                 cluster.query(createIndexQuery);
-                log.info("Primary index created on collection {}.{}", scopeName, collectionName);
+                log.info("Primary index created on collection {}.{} in scope {}.", collectionName, scopeName, bucket.name());
+            } catch (CouchbaseQueryExecutionException e) {
+                if (e.getCause().getMessage().contains("No index available")) {
+                    log.warn("Primary index creation failed on collection {}.{} in scope {}. Retrying...", collectionName, scopeName, bucket.name());
+                    cluster.query(createIndexQuery); // Retry creating index
+                    log.info("Primary index created on collection {}.{} in scope {} after retry.", collectionName, scopeName, bucket.name());
+                } else {
+                    log.error("Error executing query for primary index on collection {}.{} in scope {}: {}", collectionName, scopeName, bucket.name(), e.getMessage());
+                }
             }
         } catch (Exception e) {
-            log.error("Error creating primary index for collection {}.{}", scopeName, collectionName, e);
+            log.error("Error creating primary index for collection {}.{} in scope {}: {}", collectionName, scopeName, bucket.name(), e);
+        }
+    }
+
+    // Wait for the query service to be ready before creating indexes
+    private static void waitForQueryService(Cluster cluster) {
+        try {
+            cluster.query("SELECT 1");
+            log.info("Query service is available.");
+        } catch (Exception e) {
+            log.error("Query service is not available. Retrying...", e);
+            // Retry mechanism could be implemented if needed
+            try {
+                Thread.sleep(5000); // Wait for 5 seconds before retrying
+            } catch (InterruptedException interruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            waitForQueryService(cluster); // Retry
         }
     }
 
@@ -159,3 +171,5 @@ public abstract class AbstractTestContainerConfiguration {
         dynamicPropertyRegistry.add("spring.couchbase.bucket", () -> BUCKET_NAME);
     }
 }
+
+
