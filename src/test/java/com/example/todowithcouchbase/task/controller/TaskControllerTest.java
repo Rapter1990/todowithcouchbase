@@ -83,4 +83,28 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
     }
 
+    @Test
+    void givenValidTaskRequest_whenForbiddenThroughUser_thenThrowForbidden() throws Exception {
+
+        // Given
+        final SaveTaskRequest request = SaveTaskRequest.builder()
+                .name("task-name")
+                .build();
+
+        // Then
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/task")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockUserToken.getAccessToken())
+                                .content(objectMapper.writeValueAsString(request))
+                ).andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.never())
+                .saveTaskToDatabase(Mockito.any(SaveTaskRequest.class));
+
+    }
+
 }
