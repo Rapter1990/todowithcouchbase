@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "45d7eaf0-d82d-4ca2-9fa3-614da0d7afeb",
+		"_postman_id": "0f2ca65b-8341-4a95-87ab-a333455bcbc2",
 		"name": "To Do List",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20051604"
+		"_exporter_id": "33002673"
 	},
 	"item": [
 		{
@@ -324,7 +324,46 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"deneme8\"\r\n}",
+							"raw": "{\r\n    \"name\":\"task-name-1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:2323/api/v1/task",
+							"host": [
+								"localhost"
+							],
+							"port": "2323",
+							"path": [
+								"api",
+								"v1",
+								"task"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create To-Do List Item Functionality Duplicate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhZDhmMTBlMC00Y2RkLTQzYjEtYjhkYS03MGJmZGZhMDI2YTUiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzEwOTAwMzcsImV4cCI6MTczMTA5MTgzNywidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjQ5NzU4ODE2LWFhZTItNGZlZi1hMDdiLTM0OGY3YjBlMzVhOCJ9.xSzCoK2EgkDp2B3iLe21wLLRZKA3aPHlI5MVMkCcM65H-fiArYOccnoBPFFf-I0HTapdvZH8l-wibGRWMwsocnhecGcQpybNu1PFuVWovO0MFH1HYmHBJKXNBF7vqVBUIgLKXC5wPtjmhPSUZ6rtnG3zvAwEeA6pXwC2hlyQm2oIc0w1jKqAjwoT3l9vejCH8J6LZpAgBU318xDtD7out18QKyEVoPdMrYO8xQssxV5h54ukEGQ0b2xU14-tTCMOp76DhDuxeY3QrqYpUJavzM8c5r7qIw8xoIPBOeHVwRbrL35TGJqH0VD7cgJC_4O1tB2Xb-kFpyTuFIclIDKGYA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"taskname\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
