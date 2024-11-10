@@ -6,7 +6,6 @@ import org.springframework.data.couchbase.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface TaskRepository extends CouchbaseRepository<TaskEntity,String> {
 
     boolean existsByName(String name);
