@@ -42,7 +42,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         final Task mockTask = taskEntityToTaskResponseMapper.map(mockTaskEntity);
 
         //When
-        Mockito.when(taskRepository.existsTaskEntitiesByName(Mockito.anyString()))
+        Mockito.when(taskRepository.existsByName(Mockito.anyString()))
                 .thenReturn(false);
 
         Mockito.when(taskRepository.save(Mockito.any(TaskEntity.class)))
@@ -63,7 +63,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         Mockito.verify(
                 taskRepository,
                 Mockito.times(1)
-        ).existsTaskEntitiesByName(Mockito.anyString());
+        ).existsByName(Mockito.anyString());
     }
 
     @Test
@@ -74,7 +74,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
                 .withValidFields().build();
 
         //When
-        Mockito.when(taskRepository.existsTaskEntitiesByName(request.getName()))
+        Mockito.when(taskRepository.existsByName(request.getName()))
                 .thenReturn(true);
 
         //Then
@@ -87,7 +87,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         Mockito.verify(
                 taskRepository,
                 Mockito.times(1)
-        ).existsTaskEntitiesByName(Mockito.anyString());
+        ).existsByName(Mockito.anyString());
 
         Mockito.verify(
                 taskRepository,

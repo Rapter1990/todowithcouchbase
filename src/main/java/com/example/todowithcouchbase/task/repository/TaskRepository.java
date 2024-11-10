@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskRepository extends CouchbaseRepository<TaskEntity,String> {
 
-    @Query("SELECT COUNT(*) > 0 AS exists FROM `todo_list` WHERE name = $name")
-    boolean existsTaskEntitiesByName(@Param("name") String name);
+    boolean existsByName(String name);
 }

@@ -17,8 +17,8 @@ import java.util.Optional;
 public class CouchbaseEntityListener {
 
     @EventListener
-    public void onBeforeConvert(BeforeConvertEvent<BaseEntity> event) {
-        BaseEntity entity = event.getSource();
+    public <T extends BaseEntity> void onBeforeConvert(BeforeConvertEvent<T> event) {
+        T entity = event.getSource();
         if (entity.getCreatedAt() == null) {
             entity.setCreatedAt(LocalDateTime.now());
             entity.setCreatedBy(getCurrentUser());
@@ -26,8 +26,8 @@ public class CouchbaseEntityListener {
     }
 
     @EventListener
-    public void onBeforeSave(BeforeSaveEvent<BaseEntity> event) {
-        BaseEntity entity = event.getSource();
+    public <T extends BaseEntity> void onBeforeSave(BeforeSaveEvent<T> event) {
+        T entity = event.getSource();
         entity.setUpdatedAt(LocalDateTime.now());
         entity.setUpdatedBy(getCurrentUser());
     }

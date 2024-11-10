@@ -33,6 +33,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private boolean isNameExist(final String name){
-        return !Boolean.TRUE.equals(taskRepository.existsTaskEntitiesByName(name));
+        return !Boolean.TRUE.equals(taskRepository.existsByName(name));
     }
 }

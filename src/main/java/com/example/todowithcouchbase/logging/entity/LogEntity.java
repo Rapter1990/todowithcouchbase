@@ -1,6 +1,8 @@
 package com.example.todowithcouchbase.logging.entity;
 
+import com.example.todowithcouchbase.common.model.entity.BaseEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.mapping.Field;
@@ -16,11 +18,11 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Document
 @Scope("log-scope")
 @Collection("log-collection")
-public class LogEntity {
+public class LogEntity extends BaseEntity {
 
     @Id
     @Field(name = "ID")
