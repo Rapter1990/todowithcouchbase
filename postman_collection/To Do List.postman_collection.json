@@ -308,82 +308,191 @@
 			"name": "Task",
 			"item": [
 				{
-					"name": "Create To-Do List Item Functionality",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+					"name": "user",
+					"item": [
+						{
+							"name": "get all tasks",
+							"item": [
 								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhZDhmMTBlMC00Y2RkLTQzYjEtYjhkYS03MGJmZGZhMDI2YTUiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzEwOTAwMzcsImV4cCI6MTczMTA5MTgzNywidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjQ5NzU4ODE2LWFhZTItNGZlZi1hMDdiLTM0OGY3YjBlMzVhOCJ9.xSzCoK2EgkDp2B3iLe21wLLRZKA3aPHlI5MVMkCcM65H-fiArYOccnoBPFFf-I0HTapdvZH8l-wibGRWMwsocnhecGcQpybNu1PFuVWovO0MFH1HYmHBJKXNBF7vqVBUIgLKXC5wPtjmhPSUZ6rtnG3zvAwEeA6pXwC2hlyQm2oIc0w1jKqAjwoT3l9vejCH8J6LZpAgBU318xDtD7out18QKyEVoPdMrYO8xQssxV5h54ukEGQ0b2xU14-tTCMOp76DhDuxeY3QrqYpUJavzM8c5r7qIw8xoIPBOeHVwRbrL35TGJqH0VD7cgJC_4O1tB2Xb-kFpyTuFIclIDKGYA",
-									"type": "string"
+									"name": "Get All Tasks By User",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIwZmFlYTczNS1mNGY0LTRiYWEtYmM1Yi0wZjJmYmI2NmQ5YmMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTE0OTUsImV4cCI6MTczMjE5MzI5NSwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVVc2VyU3VyTmFtZSIsInVzZXJQaG9uZU51bWJlciI6IjAxMjM0NTY3ODkwIiwidXNlckVtYWlsIjoiZXhhbXBsZVVzZXJAZ21haWwuY29tIiwidXNlclR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVVc2VyRmlyc3ROYW1lIiwidXNlcklkIjoiZjIzMzA4MzEtNThjZC00Y2M5LTgwMGQtNTU2MTMyMjFjMTQxIn0.VqYMi_GWBqG3CgYgyRPzQA9-smu_dSvFdchhmUJ5RnqEdjPeSSyrxR_PK1hLVnkZMEowpTkyjP1OhN4GDtBe9tL81sNOhKCyy8btj_iprGCp0JC1z_s8E5dqWK5mwcABJ49yhNXsG-RYtFm4EK6006nNjdFR79bld2zCDZJcsITNP7xmLxnhTaRXwyc2OCNLYxnpV2VbFQAO9Cr75wIi6V5VXL5079PcZqGHSn9aIcOjnD8e8XI1Y7PFC3HZbb3OtaJn6vRrLMiBEmPYIku4ldc1DQBEkFlejVguo4cB-BoxnRGKad7K3TF6roKF6VvS1ZDA3KJIHUWZYKe1OGRwzw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 5\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
 								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"task-name-1\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:2323/api/v1/task",
-							"host": [
-								"localhost"
-							],
-							"port": "2323",
-							"path": [
-								"api",
-								"v1",
-								"task"
 							]
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Create To-Do List Item Functionality Duplicate",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+					"name": "admin",
+					"item": [
+						{
+							"name": "create task",
+							"item": [
 								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhZDhmMTBlMC00Y2RkLTQzYjEtYjhkYS03MGJmZGZhMDI2YTUiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzEwOTAwMzcsImV4cCI6MTczMTA5MTgzNywidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjQ5NzU4ODE2LWFhZTItNGZlZi1hMDdiLTM0OGY3YjBlMzVhOCJ9.xSzCoK2EgkDp2B3iLe21wLLRZKA3aPHlI5MVMkCcM65H-fiArYOccnoBPFFf-I0HTapdvZH8l-wibGRWMwsocnhecGcQpybNu1PFuVWovO0MFH1HYmHBJKXNBF7vqVBUIgLKXC5wPtjmhPSUZ6rtnG3zvAwEeA6pXwC2hlyQm2oIc0w1jKqAjwoT3l9vejCH8J6LZpAgBU318xDtD7out18QKyEVoPdMrYO8xQssxV5h54ukEGQ0b2xU14-tTCMOp76DhDuxeY3QrqYpUJavzM8c5r7qIw8xoIPBOeHVwRbrL35TGJqH0VD7cgJC_4O1tB2Xb-kFpyTuFIclIDKGYA",
-									"type": "string"
+									"name": "Create To-Do List Item Functionality",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI0YmRhN2RlYS0yMzMxLTQwNmMtOWFiNy02NjdmNGFiOTkyYjYiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzEyNjUzNjQsImV4cCI6MTczMTI2NzE2NCwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.R5TMOJnu62ohQP-kUBI7go7f--mRHAJAqN8ENkZoZZjd0wfDhmIMBFWfrx0oArXU0fFQs9KNJQij2XdfL1Gr29hXrObw406EX-PK9W1C3m_r26j0fA0YZlUvP1eLEOr1tyOirH4YyxHXu-4WbC90z2XIUq80tul3_4x93AvaC7koSm4fOFPA8UxMyBtokqzbtTX62bKiBWSmW5C4GcjRiOMSDTlMliTD83soJVYW9FK0xVi-M1iyW1nKPTXnzRCd6EW5PXyl2w6YP98rRhtHkmqsuZkY3xedHwa--rW20Khouqs3SFvfB-aHcDmFJODd4Qo95Aifha_rkUx2hvGPQg",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\":\"taskname\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create To-Do List Item Functionality Duplicate Throw Exception",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI0YmRhN2RlYS0yMzMxLTQwNmMtOWFiNy02NjdmNGFiOTkyYjYiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzEyNjUzNjQsImV4cCI6MTczMTI2NzE2NCwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.R5TMOJnu62ohQP-kUBI7go7f--mRHAJAqN8ENkZoZZjd0wfDhmIMBFWfrx0oArXU0fFQs9KNJQij2XdfL1Gr29hXrObw406EX-PK9W1C3m_r26j0fA0YZlUvP1eLEOr1tyOirH4YyxHXu-4WbC90z2XIUq80tul3_4x93AvaC7koSm4fOFPA8UxMyBtokqzbtTX62bKiBWSmW5C4GcjRiOMSDTlMliTD83soJVYW9FK0xVi-M1iyW1nKPTXnzRCd6EW5PXyl2w6YP98rRhtHkmqsuZkY3xedHwa--rW20Khouqs3SFvfB-aHcDmFJODd4Qo95Aifha_rkUx2hvGPQg",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\":\"taskname\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"taskname\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "get all tasks",
+							"item": [
+								{
+									"name": "Get All Tasks By Admin",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pagination\": {\r\n    \"pageNumber\": 1,\r\n    \"pageSize\": 5\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks"
+											]
+										}
+									},
+									"response": []
 								}
-							}
-						},
-						"url": {
-							"raw": "localhost:2323/api/v1/task",
-							"host": [
-								"localhost"
-							],
-							"port": "2323",
-							"path": [
-								"api",
-								"v1",
-								"task"
 							]
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
