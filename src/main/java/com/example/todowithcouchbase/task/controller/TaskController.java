@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/task")
+@RequestMapping("api/v1/tasks")
 @Validated
 public class TaskController {
 
