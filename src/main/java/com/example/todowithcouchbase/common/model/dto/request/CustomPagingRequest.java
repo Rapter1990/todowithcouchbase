@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class CustomPagingRequest {
+public abstract class CustomPagingRequest {
 
     private CustomPaging pagination;
 
