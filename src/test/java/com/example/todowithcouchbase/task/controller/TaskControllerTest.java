@@ -3,7 +3,7 @@ package com.example.todowithcouchbase.task.controller;
 import com.example.todowithcouchbase.base.AbstractRestControllerTest;
 import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.task.model.mapper.task.TaskToTaskResponseMapper;
+import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
 import com.example.todowithcouchbase.task.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

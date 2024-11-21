@@ -2,12 +2,14 @@ package com.example.todowithcouchbase.task.service.impl;
 
 import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.dto.request.CustomPagingRequest;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
-import com.example.todowithcouchbase.task.model.mapper.task.SaveTaskRequestToTaskEntityMapper;
-import com.example.todowithcouchbase.task.model.mapper.task.TaskEntityToTaskMapper;
+import com.example.todowithcouchbase.task.model.mapper.ListTaskEntityToListTaskMapper;
+import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
+import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskMapper;
 import com.example.todowithcouchbase.task.repository.TaskRepository;
 import com.example.todowithcouchbase.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,9 @@ public class TaskServiceImpl implements TaskService {
     private final TaskEntityToTaskMapper taskEntityToTaskMapper =
             TaskEntityToTaskMapper.initialize();
 
+    private final ListTaskEntityToListTaskMapper listTaskEntityToListTaskMapper =
+            ListTaskEntityToListTaskMapper.initialize();
+
 
     @Override
     public Task saveTaskToDatabase(final SaveTaskRequest taskRequest) {
@@ -40,28 +45,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task getById(final String id) {
-        TaskEntity task = taskRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("task cant found given id"));
-        Task taskModel = taskEntityToTaskMapper.map(task);
-        String nameToBeChanged = taskModel.getName();
-
-
-        return null;
-    }
-
-    @Override
-    public CustomPage<Task> getAllTask(
-            final CustomPagingRequest customPagingRequest
-            ) {
+    public CustomPage<Task> getAllTask(final CustomPagingRequest customPagingRequest) {
 
         Page<TaskEntity> taskEntitiesListPage = taskRepository.findAll(customPagingRequest.toPageable());
 
-        List<Task> taskDomainModel = taskEntityToTaskMapper.map(taskEntitiesListPage.toList());
-        return CustomPage.of(
-                taskDomainModel,
-                taskEntitiesListPage
-        );
+        if (taskEntitiesListPage.getContent().isEmpty()) {
+            throw new TaskNotFoundException("Couldn't find any Task");
+        }
+
+        final List<Task> productDomainModels = listTaskEntityToListTaskMapper
+                .toTaskList(taskEntitiesListPage.getContent());
+
+        return CustomPage.of(productDomainModels, taskEntitiesListPage);
 
     }
 

@@ -6,8 +6,8 @@ import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExist
 import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
-import com.example.todowithcouchbase.task.model.mapper.task.SaveTaskRequestToTaskEntityMapper;
-import com.example.todowithcouchbase.task.model.mapper.task.TaskEntityToTaskMapper;
+import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
+import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskMapper;
 import com.example.todowithcouchbase.task.repository.TaskRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

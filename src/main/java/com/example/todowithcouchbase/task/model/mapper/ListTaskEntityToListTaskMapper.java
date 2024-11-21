@@ -13,7 +13,7 @@ public interface ListTaskEntityToListTaskMapper {
 
     TaskEntityToTaskMapper taskEntityToTaskMapper = Mappers.getMapper(TaskEntityToTaskMapper.class);
 
-    default List<Task> toProductList(List<TaskEntity> taskEntities) {
+    default List<Task> toTaskList(List<TaskEntity> taskEntities) {
 
         if (taskEntities == null) {
             return null;
