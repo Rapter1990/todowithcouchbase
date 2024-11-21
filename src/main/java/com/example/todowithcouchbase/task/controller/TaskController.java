@@ -30,7 +30,7 @@ public class TaskController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CustomResponse<String> saveTask(final @Valid @RequestBody SaveTaskRequest saveTaskRequest){
+    public CustomResponse<String> saveTask(final @RequestBody @Valid SaveTaskRequest saveTaskRequest){
         final Task createdTask = taskService.saveTaskToDatabase(saveTaskRequest);
         return CustomResponse.successOf(createdTask.getId());
     }
