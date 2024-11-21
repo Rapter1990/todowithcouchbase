@@ -37,7 +37,7 @@ public class TaskController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(final @RequestBody TaskPagingRequest request){
+    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(final @RequestBody @Valid TaskPagingRequest request){
         final CustomPage<Task> taskPage= taskService.getAllTasks(request);
 
         final CustomPagingResponse<TaskResponse> response = customPageTaskToCustomPagingTaskResponseMapper
