@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.task.model.mapper.task;
+package com.example.todowithcouchbase.task.model.mapper;
 
 import com.example.todowithcouchbase.common.model.mapper.BaseMapper;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;

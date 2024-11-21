@@ -1,4 +1,4 @@
-package com.example.todowithcouchbase.task.model.mapper.task;
+package com.example.todowithcouchbase.task.model.mapper;
 
 import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.dto.response.CustomPagingResponse;
