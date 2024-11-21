@@ -11,6 +11,6 @@ public interface TaskService {
 
     Task saveTaskToDatabase(SaveTaskRequest taskRequest);
 
-    CustomPage<Task> getAllTask(final CustomPagingRequest customPagingRequest);
+    CustomPage<Task> getAllTasks(final CustomPagingRequest customPagingRequest);
 
 }

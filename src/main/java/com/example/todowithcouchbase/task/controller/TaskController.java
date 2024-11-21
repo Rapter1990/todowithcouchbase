@@ -7,8 +7,9 @@ import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.dto.response.TaskResponse;
-import com.example.todowithcouchbase.task.model.mapper.task.TaskToTaskResponseMapper;
-import com.example.todowithcouchbase.task.model.mapper.task.ToPagingResponse;
+import com.example.todowithcouchbase.task.model.mapper.CustomPageTaskToCustomPagingTaskResponseMapper;
+import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
+import com.example.todowithcouchbase.task.model.mapper.ToPagingResponse;
 import com.example.todowithcouchbase.task.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,9 @@ public class TaskController {
     private final TaskService taskService;
     private final TaskToTaskResponseMapper taskToTaskResponseMapper =  TaskToTaskResponseMapper.initialize();
 
+    private final CustomPageTaskToCustomPagingTaskResponseMapper customPageTaskToCustomPagingTaskResponseMapper =
+            CustomPageTaskToCustomPagingTaskResponseMapper.initialize();
+
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public CustomResponse<String> saveTask(final @Valid @RequestBody SaveTaskRequest saveTaskRequest){
@@ -34,14 +38,11 @@ public class TaskController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTask(
-           final @RequestBody TaskPagingRequest request
-            ){
-        final CustomPage<Task> tasks= taskService
-                .getAllTask(request);
+    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(final @RequestBody TaskPagingRequest request){
+        final CustomPage<Task> taskPage= taskService.getAllTasks(request);
 
-        final CustomPagingResponse<TaskResponse> response = ToPagingResponse
-                .taskCustomPagingResponse(tasks);
+        final CustomPagingResponse<TaskResponse> response = customPageTaskToCustomPagingTaskResponseMapper
+                .toPagingResponse(taskPage);
 
         return CustomResponse.successOf(response);
     }

@@ -45,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public CustomPage<Task> getAllTask(final CustomPagingRequest customPagingRequest) {
+    public CustomPage<Task> getAllTasks(final CustomPagingRequest customPagingRequest) {
 
         Page<TaskEntity> taskEntitiesListPage = taskRepository.findAll(customPagingRequest.toPageable());
 
