@@ -9,7 +9,6 @@ import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.dto.response.TaskResponse;
 import com.example.todowithcouchbase.task.model.mapper.CustomPageTaskToCustomPagingTaskResponseMapper;
 import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
-import com.example.todowithcouchbase.task.model.mapper.ToPagingResponse;
 import com.example.todowithcouchbase.task.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,4 +46,4 @@ public class TaskController {
         return CustomResponse.successOf(response);
     }
 
-   }
+}
