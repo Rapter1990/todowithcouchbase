@@ -169,19 +169,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BucketConfigException.class)
-    public ResponseEntity<CustomError> handleBucketConfigException(final BucketConfigException ex) {
-        CustomError error = CustomError.builder()
-                .httpStatus(HttpStatus.BAD_REQUEST)
-                .header(CustomError.Header.VALIDATION_ERROR.getName())
-                .message(ex.getMessage())
-                .isSuccess(false)
-                .build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(UnAuthorizeAttemptException.class)
-    protected ResponseEntity<Object> handleUnAuthorizeAttempt(final UnAuthorizeAttemptException ex){
+    protected ResponseEntity<Object> handleUnAuthorizeAttempt(final UnAuthorizeAttemptException ex) {
 
         CustomError customError = CustomError.builder()
                 .httpStatus(HttpStatus.UNAUTHORIZED)

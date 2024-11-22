@@ -287,27 +287,6 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenBucketConfigException_whenHandleBucketConfigException_thenRespondWithBadRequest() {
-        // Given
-        BucketConfigException ex = new BucketConfigException("Bucket configuration error");
-
-        CustomError expectedError = CustomError.builder()
-                .httpStatus(HttpStatus.BAD_REQUEST)
-                .header(CustomError.Header.VALIDATION_ERROR.getName())
-                .message("Bucket Config is not valid!\n Bucket configuration error")
-                .isSuccess(false)
-                .build();
-
-        // When
-        ResponseEntity<CustomError> responseEntity = globalExceptionHandler.handleBucketConfigException(ex);
-
-        // Then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        CustomError actualError = responseEntity.getBody();
-        checkCustomError(expectedError, actualError);
-    }
-
-    @Test
     void givenUnAuthorizeAttemptException_whenHandleUnAuthorizeAttempt_thenRespondWithUnauthorized() {
         // Given
         UnAuthorizeAttemptException ex = new UnAuthorizeAttemptException();

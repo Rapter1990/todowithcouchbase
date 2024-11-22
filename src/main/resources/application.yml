@@ -8,21 +8,20 @@ spring:
     username: ${COUCHBASE_USERNAME:Administrator}
     password: ${COUCHBASE_PASSWORD:123456}
     bucket: ${COUCHBASE_BUCKET:todo_list}
+    enable-tls: false
+    enable-dns-srv: false
+    auto-index-creation: true
     scopes:
       user-scope: user-scope
       task-scope: task-scope
-      invalid-token-scope : invalid-token-scope
+      invalid-token-scope: invalid-token-scope
       log-scope: log-scope
     collections:
       user-collection: user-collection
       task-collection: task-collection
       invalid-token-collection: invalid-token-collection
-      log-collection : log-collection
+      log-collection: log-collection
 
-
-  data:
-    couchbase:
-      auto-index: true
 
 server:
   shutdown: graceful

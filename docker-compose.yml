@@ -1,26 +1,47 @@
-version: '3.9'
 services:
   couchbase:
-    image: couchbase:latest
+    image: couchbase:community
     container_name: couchbase
     ports:
-      - 1091:8091
-      - 1092:8092
-      - 1093:8093
-      - 1094:8094
+      - 8091:8091
+      - 8092:8092
+      - 8093:8093
+      - 8094:8094
       - 11210:11210
-    env_file:
-      - .env  # Use the .env file for environment variables
-    environment:
-      COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
-      COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
-      COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
-      COUCHBASE_AUTO_INDEX: true
     volumes:
-      - ~/couchbase/node1:/opt/couchbase/var
+      - couchbase_data:/opt/couchbase/var
+      - ./scripts:/opt/couchbase/scripts
+    env_file:
+      - .env
+    environment:
+      COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
+      COUCHBASE_USER: ${COUCHBASE_USERNAME:-Administrator}
+      COUCHBASE_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
+      COUCHBASE_SCOPES: ${COUCHBASE_SCOPES:-user-scope,task-scope,invalid-token-scope,log-scope}
+      COUCHBASE_COLLECTIONS: ${COUCHBASE_COLLECTIONS:-user-scope.user-collection,task-scope.task-collection,invalid-token-scope.invalid-token-collection,log-scope.log-collection}
+      COUCHBASE_HOST: ${COUCHBASE_HOST:-couchbase}
+    command: >
+      /bin/bash -c "
+      /entrypoint.sh couchbase-server &
+      
+      chmod +x /opt/couchbase/scripts/setup-couchbase.sh &&
+      /opt/couchbase/scripts/setup-couchbase.sh;
+      
+      chmod +x /opt/couchbase/scripts/create-scopes.sh &&
+      /opt/couchbase/scripts/create-scopes.sh;
+      
+      chmod +x /opt/couchbase/scripts/create-indexes.sh &&
+      /opt/couchbase/scripts/create-indexes.sh;
+      
+      chmod +x /opt/couchbase/scripts/create-collections.sh &&
+      /opt/couchbase/scripts/create-collections.sh;
+      
+      echo 'Setup complete. Keeping container running...';
+      tail -f /dev/null
+      "
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:1091/ui/index.html"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:8091/ui/index.html"]
+      interval: 10s
       timeout: 10s
       retries: 5
     networks:
@@ -47,3 +68,6 @@ services:
 networks:
   todowithcouchbase_network:
     driver: bridge
+
+volumes:
+  couchbase_data:
