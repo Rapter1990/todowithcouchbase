@@ -1,8 +1,11 @@
 package com.example.todowithcouchbase.common.config;
 
+import com.couchbase.client.core.env.IoConfig;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
+import com.couchbase.client.java.ClusterOptions;
 import com.couchbase.client.java.Scope;
+import com.couchbase.client.java.env.ClusterEnvironment;
 import com.couchbase.client.java.manager.bucket.BucketManager;
 import com.couchbase.client.java.manager.bucket.BucketSettings;
 import com.couchbase.client.java.manager.bucket.BucketType;
@@ -74,8 +77,18 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     }
 
     @Bean
+    public ClusterEnvironment couchbaseClusterEnvironment() {
+        return ClusterEnvironment.builder()
+                .ioConfig(IoConfig.enableDnsSrv(false))
+                .build();
+    }
+
+    @Bean
     public Cluster couchbaseCluster() {
-        return Cluster.connect(connectionString, username, password);
+        ClusterEnvironment environment = couchbaseClusterEnvironment();
+        return Cluster.connect(connectionString, ClusterOptions
+                .clusterOptions(username, password)
+                .environment(environment));
     }
 
     @Bean
