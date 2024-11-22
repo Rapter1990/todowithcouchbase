@@ -4,11 +4,13 @@ services:
     image: couchbase:latest
     container_name: couchbase
     ports:
-      - 8091:8091
-      - 8092:8092
-      - 8093:8093
-      - 8094:8094
+      - 1091:8091
+      - 1092:8092
+      - 1093:8093
+      - 1094:8094
       - 11210:11210
+    env_file:
+      - .env  # Use the .env file for environment variables
     environment:
       COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
       COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
@@ -17,7 +19,7 @@ services:
     volumes:
       - ~/couchbase/node1:/opt/couchbase/var
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]
+      test: ["CMD", "curl", "-f", "http://localhost:1091/ui/index.html"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -32,6 +34,8 @@ services:
     depends_on:
       couchbase:
         condition: service_healthy
+    env_file:
+      - .env  # Use the .env file for environment variables
     environment:
       COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
       COUCHBASE_USER: ${COUCHBASE_USERNAME:-Administrator}
