@@ -27,3 +27,9 @@ spring:
 server:
   shutdown: graceful
   port: 2323
+
+# SWAGGER
+springdoc:
+  api-docs:
+    enabled: true
+  show-actuator: true
