@@ -1,26 +1,37 @@
 #!/bin/bash
+set -e
 
-# Create collections
-echo "Creating collections..."
+COUCHBASE_HOST=${COUCHBASE_HOST:-127.0.0.1}
+COUCHBASE_ADMINISTRATOR_USERNAME=${COUCHBASE_ADMINISTRATOR_USERNAME:-Administrator}
+COUCHBASE_ADMINISTRATOR_PASSWORD=${COUCHBASE_ADMINISTRATOR_PASSWORD:-123456}
+COUCHBASE_BUCKET=${COUCHBASE_BUCKET:-todo_list}
 
-# User Collection
-curl -v -u ${COUCHBASE_ADMINISTRATOR_USERNAME:-Administrator}:${COUCHBASE_ADMINISTRATOR_PASSWORD:-123456} \
-  -X POST http://127.0.0.1:8091/query/service \
-  -d "statement=CREATE COLLECTION ${COUCHBASE_BUCKET:-todo_list}.user-scope.user-collection"
+# Define collections to be created
+declare -A COLLECTIONS=(
+  ["user-scope"]="user-collection"
+  ["task-scope"]="task-collection"
+  ["invalid-token-scope"]="invalid-token-collection"
+  ["log-scope"]="log-collection"
+)
 
-# Task Collection
-curl -v -u ${COUCHBASE_ADMINISTRATOR_USERNAME:-Administrator}:${COUCHBASE_ADMINISTRATOR_PASSWORD:-123456} \
-  -X POST http://127.0.0.1:8091/query/service \
-  -d "statement=CREATE COLLECTION ${COUCHBASE_BUCKET:-todo_list}.task-scope.task-collection"
+echo "Starting Couchbase collections setup process..."
 
-# Invalid Token Collection
-curl -v -u ${COUCHBASE_ADMINISTRATOR_USERNAME:-Administrator}:${COUCHBASE_ADMINISTRATOR_PASSWORD:-123456} \
-  -X POST http://127.0.0.1:8091/query/service \
-  -d "statement=CREATE COLLECTION ${COUCHBASE_BUCKET:-todo_list}.invalid-token-scope.invalid-token-collection"
+# Wait for Couchbase Query Service to be ready
+echo "Waiting for Couchbase Query Service..."
+until curl -s http://$COUCHBASE_HOST:8093/admin/ping > /dev/null; do
+  echo "Query Service is not ready yet. Retrying in 5 seconds..."
+  sleep 5
+done
+echo "Query Service is ready."
 
-# Log Collection
-curl -v -u ${COUCHBASE_ADMINISTRATOR_USERNAME:-Administrator}:${COUCHBASE_ADMINISTRATOR_PASSWORD:-123456} \
-  -X POST http://127.0.0.1:8091/query/service \
-  -d "statement=CREATE COLLECTION ${COUCHBASE_BUCKET:-todo_list}.log-scope.log-collection"
+# Iterate over the scopes and collections
+for SCOPE in "${!COLLECTIONS[@]}"; do
+  COLLECTION=${COLLECTIONS[$SCOPE]}
+  echo "Creating collection '$COLLECTION' in scope '$SCOPE'..."
+  curl -s -u $COUCHBASE_ADMINISTRATOR_USERNAME:$COUCHBASE_ADMINISTRATOR_PASSWORD \
+    -X POST http://$COUCHBASE_HOST:8093/query/service \
+    -d "statement=CREATE COLLECTION \`${COUCHBASE_BUCKET}\`.\`${SCOPE}\`.\`${COLLECTION}\`" \
+    && echo "Collection '$COLLECTION' in scope '$SCOPE' created successfully."
+done
 
-echo "Couchbase cluster, scopes, and collections setup complete."
+echo "Couchbase collections setup process complete!"

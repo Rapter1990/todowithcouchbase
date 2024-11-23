@@ -23,16 +23,25 @@ services:
     command: >
       /bin/bash -c "
       /entrypoint.sh couchbase-server &
+      
       chmod +x /opt/couchbase/scripts/setup-couchbase.sh &&
       /opt/couchbase/scripts/setup-couchbase.sh &&
+      
       chmod +x /opt/couchbase/scripts/create-cluster.sh &&
       /opt/couchbase/scripts/create-cluster.sh &&
+      
       chmod +x /opt/couchbase/scripts/configure-service.sh &&
       /opt/couchbase/scripts/configure-service.sh &&
+      
       chmod +x /opt/couchbase/scripts/create-scopes.sh &&
       /opt/couchbase/scripts/create-scopes.sh &&
+      
+      chmod +x /opt/couchbase/scripts/create-indexes.sh &&
+      /opt/couchbase/scripts/create-indexes.sh &&
+      
       chmod +x /opt/couchbase/scripts/create-collections.sh &&
       /opt/couchbase/scripts/create-collections.sh &&
+      
       echo 'Setup complete. Keeping container running...' &&
       tail -f /dev/null
       "
