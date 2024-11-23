@@ -5,10 +5,13 @@ services:
     container_name: couchbase
     ports:
       - "8091:8091"
-      - "8092:8092"
-      - "8093:8093"
-      - "8094:8094"
+      - "8097:8097"
+      - "9123:9123"
+      - "11207:11207"
       - "11210:11210"
+      - "11280:11280"
+      - "18091:18091"
+      - "18097:18097"
     environment:
       COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
       COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
@@ -16,8 +19,25 @@ services:
       COUCHBASE_AUTO_INDEX: true
     volumes:
       - ~/couchbase/node1:/opt/couchbase/var
+      - ./scripts:/opt/couchbase/scripts
+    command: >
+      /bin/bash -c "
+      /entrypoint.sh couchbase-server &
+      chmod +x /opt/couchbase/scripts/setup-couchbase.sh &&
+      /opt/couchbase/scripts/setup-couchbase.sh &&
+      chmod +x /opt/couchbase/scripts/create-cluster.sh &&
+      /opt/couchbase/scripts/create-cluster.sh &&
+      chmod +x /opt/couchbase/scripts/configure-service.sh &&
+      /opt/couchbase/scripts/configure-service.sh &&
+      chmod +x /opt/couchbase/scripts/create-scopes.sh &&
+      /opt/couchbase/scripts/create-scopes.sh &&
+      chmod +x /opt/couchbase/scripts/create-collections.sh &&
+      /opt/couchbase/scripts/create-collections.sh &&
+      echo 'Setup complete. Keeping container running...' &&
+      tail -f /dev/null
+      "
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8091/ui/index.html"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]
       interval: 30s
       timeout: 10s
       retries: 5
