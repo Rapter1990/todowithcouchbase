@@ -4,22 +4,23 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
 
-public class TaskWithThisNameAlreadyExistException extends RuntimeException{
+public class TaskNotFoundException extends RuntimeException {
 
     @Serial
-    private static final long serialVersionUID = -3495060754159297663L;
+    private static final long serialVersionUID = 7222351960801029610L;
 
     public static final HttpStatus STATUS = HttpStatus.BAD_REQUEST;
 
     private static final String DEFAULT_MESSAGE = """
-            Task with this name already exist
+            Task not found!
             """;
 
-    public TaskWithThisNameAlreadyExistException() {
+    public TaskNotFoundException() {
         super(DEFAULT_MESSAGE);
     }
 
-    public TaskWithThisNameAlreadyExistException(final String message) {
+    public TaskNotFoundException(final String message) {
         super(DEFAULT_MESSAGE + " " + message);
     }
+
 }

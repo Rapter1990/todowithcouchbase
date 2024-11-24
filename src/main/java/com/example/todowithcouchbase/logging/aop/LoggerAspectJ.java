@@ -3,6 +3,8 @@ package com.example.todowithcouchbase.logging.aop;
 import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.logging.entity.LogEntity;
 import com.example.todowithcouchbase.logging.service.LogService;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
+import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -132,6 +134,8 @@ public class LoggerAspectJ {
             case "UserAlreadyExistException" -> UserAlreadyExistException.STATUS.name();
             case "UserNotFoundException" -> UserNotFoundException.STATUS.name();
             case "UserStatusNotValidException" -> UserStatusNotValidException.STATUS.name();
+            case "TaskNotFoundException" -> TaskNotFoundException.STATUS.name();
+            case "TaskWithThisNameAlreadyExistException" -> TaskWithThisNameAlreadyExistException.STATUS.name();
             default -> HttpStatus.INTERNAL_SERVER_ERROR.name();
         };
     }

@@ -2,10 +2,15 @@ package com.example.todowithcouchbase.task.service.impl;
 
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.builder.SaveTaskRequestBuilder;
+import com.example.todowithcouchbase.common.model.CustomPage;
+import com.example.todowithcouchbase.common.model.CustomPaging;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
+import com.example.todowithcouchbase.task.model.mapper.ListTaskEntityToListTaskMapper;
 import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
 import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskMapper;
 import com.example.todowithcouchbase.task.repository.TaskRepository;
@@ -14,6 +19,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
 
 class TaskServiceImplTest extends AbstractBaseServiceTest {
 
@@ -27,8 +40,11 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
     private final SaveTaskRequestToTaskEntityMapper saveTaskRequestToTaskEntityMapper =
             SaveTaskRequestToTaskEntityMapper.initialize();
 
-    private final TaskEntityToTaskMapper taskEntityToTaskResponseMapper=
+    private final TaskEntityToTaskMapper taskEntityToTaskMapper=
             TaskEntityToTaskMapper.initialize();
+
+    private final ListTaskEntityToListTaskMapper listTaskEntityToListTaskMapper =
+            ListTaskEntityToListTaskMapper.initialize();
 
     @Test
     void givenValidTaskCreateRequest_whenCreateTask_ThenReturnTaskResponse(){
@@ -39,13 +55,13 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
 
         final TaskEntity mockTaskEntity = saveTaskRequestToTaskEntityMapper.mapForSaving(request);
 
-        final Task mockTask = taskEntityToTaskResponseMapper.map(mockTaskEntity);
+        final Task mockTask = taskEntityToTaskMapper.map(mockTaskEntity);
 
         //When
         Mockito.when(taskRepository.existsByName(Mockito.anyString()))
                 .thenReturn(false);
 
-        Mockito.when(taskRepository.save(Mockito.any(TaskEntity.class)))
+        Mockito.when(taskRepository.save(any(TaskEntity.class)))
                 .thenReturn(mockTaskEntity);
 
         //Then
@@ -58,7 +74,10 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         Mockito.verify(
                 taskRepository,
                 Mockito.times(1)
-        ).save(Mockito.any(TaskEntity.class));
+        ).save(any(TaskEntity.class));
+
+
+        System.out.println();
 
         Mockito.verify(
                 taskRepository,
@@ -92,7 +111,68 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         Mockito.verify(
                 taskRepository,
                 Mockito.times(0)
-        ).save(Mockito.any(TaskEntity.class));
+        ).save(any(TaskEntity.class));
+
+    }
+
+    @Test
+    void givenTaskPagingRequest_WhenTaskPageList_ThenReturnCustomPageTaskList() {
+
+        // Given
+        final TaskPagingRequest pagingRequest = TaskPagingRequest.builder()
+                .pagination(
+                        CustomPaging.builder()
+                                .pageSize(1)
+                                .pageNumber(1)
+                                .build()
+                ).build();
+
+        Page<TaskEntity> taskEntityPage = new PageImpl<>(Collections.singletonList(new TaskEntity()));
+
+        List<Task> products = listTaskEntityToListTaskMapper.toTaskList(taskEntityPage.getContent());
+
+        CustomPage<Task> expected = CustomPage.of(products, taskEntityPage);
+
+        // When
+        Mockito.when(taskRepository.findAll(any(Pageable.class))).thenReturn(taskEntityPage);
+
+        // Then
+        CustomPage<Task> result = taskService.getAllTasks(pagingRequest);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.getContent().isEmpty());
+        Assertions.assertEquals(expected.getPageNumber(), result.getPageNumber());
+        Assertions.assertEquals(expected.getContent().get(0).getId(), result.getContent().get(0).getId());
+        Assertions.assertEquals(expected.getTotalPageCount(), result.getTotalPageCount());
+        Assertions.assertEquals(expected.getTotalElementCount(), result.getTotalElementCount());
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findAll(any(Pageable.class));
+
+    }
+
+    @Test
+    void givenProductPagingRequest_WhenNoProductPageList_ThenThrowProductNotFoundException() {
+
+        // Given
+        final TaskPagingRequest pagingRequest = TaskPagingRequest.builder()
+                .pagination(
+                        CustomPaging.builder()
+                                .pageSize(1)
+                                .pageNumber(1)
+                                .build()
+                ).build();
+
+        Page<TaskEntity> productEntityPage = new PageImpl<>(Collections.emptyList());
+
+        // When
+        Mockito.when(taskRepository.findAll(any(Pageable.class))).thenReturn(productEntityPage);
+
+        // Then
+        Assertions.assertThrows(TaskNotFoundException.class, () -> taskService.getAllTasks(pagingRequest));
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findAll(any(Pageable.class));
 
     }
 

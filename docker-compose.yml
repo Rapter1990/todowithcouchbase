@@ -1,0 +1,80 @@
+version: '3.9'
+services:
+  couchbase:
+    image: couchbase:latest
+    container_name: couchbase
+    ports:
+      - "8091:8091"
+      - "8097:8097"
+      - "9123:9123"
+      - "11207:11207"
+      - "11210:11210"
+      - "11280:11280"
+      - "18091:18091"
+      - "18097:18097"
+    environment:
+      COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
+      COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
+      COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
+      COUCHBASE_AUTO_INDEX: true
+    volumes:
+      - ~/couchbase/node1:/opt/couchbase/var
+      - ./scripts:/opt/couchbase/scripts
+    command: >
+      /bin/bash -c "
+      /entrypoint.sh couchbase-server &
+      
+      chmod +x /opt/couchbase/scripts/setup-couchbase.sh &&
+      /opt/couchbase/scripts/setup-couchbase.sh &&
+      
+      chmod +x /opt/couchbase/scripts/create-cluster.sh &&
+      /opt/couchbase/scripts/create-cluster.sh &&
+      
+      chmod +x /opt/couchbase/scripts/configure-service.sh &&
+      /opt/couchbase/scripts/configure-service.sh &&
+      
+      chmod +x /opt/couchbase/scripts/create-scopes.sh &&
+      /opt/couchbase/scripts/create-scopes.sh &&
+      
+      chmod +x /opt/couchbase/scripts/create-indexes.sh &&
+      /opt/couchbase/scripts/create-indexes.sh &&
+      
+      chmod +x /opt/couchbase/scripts/create-collections.sh &&
+      /opt/couchbase/scripts/create-collections.sh &&
+      
+      echo 'Setup complete. Keeping container running...' &&
+      tail -f /dev/null
+      "
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - todowithcouchbase_network
+
+  todowithcouchbase:
+    image: 'todowithcouchbase:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todowithcouchbase
+    # restart: on-failure
+    ports:
+      - "2323:2323"
+    depends_on:
+      couchbase:
+        condition: service_healthy
+    env_file:
+      - .env  # Use the .env file for environment variables
+    environment:
+      COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
+      COUCHBASE_USER: ${COUCHBASE_USERNAME:-Administrator}
+      COUCHBASE_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
+      COUCHBASE_HOST: couchbase
+    networks:
+      - todowithcouchbase_network
+
+networks:
+  todowithcouchbase_network:
+    driver: bridge
