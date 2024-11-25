@@ -1,32 +1,41 @@
 package com.example.todowithcouchbase.logging.aop;
 
-import com.example.todowithcouchbase.auth.exception.UserNotFoundException;
+import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.logging.entity.LogEntity;
 import com.example.todowithcouchbase.logging.service.LogService;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
+import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -166,6 +175,79 @@ class LoggerAspectJTest extends AbstractBaseServiceTest {
 
         // Then
         verify(logService, never()).saveLogToDatabase(any(LogEntity.class));
+
+    }
+
+    @Test
+    public void testLogAfterThrowing_LogServiceException() {
+
+        // Given
+        Exception ex = new UserNotFoundException("User not found");
+
+        // When
+        when(httpServletRequest.getRequestURL()).thenReturn(new StringBuffer("http://localhost/api/test"));
+        when(httpServletRequest.getMethod()).thenReturn("GET");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getName()).thenReturn("testUser");
+        SecurityContextHolder.setContext(securityContext);
+        doThrow(new RuntimeException("Database connection error")).when(logService).saveLogToDatabase(any(LogEntity.class));
+
+        // Then
+        loggerAspectJ.logAfterThrowing(joinPoint, ex);
+
+        // Verify
+        verify(logService, times(1)).saveLogToDatabase(any(LogEntity.class));
+
+    }
+
+    @Test
+    public void testLogAfterReturning_SaveLogThrowsException() throws IOException {
+
+        // Given
+        when(httpServletRequest.getRequestURL()).thenReturn(new StringBuffer("http://localhost/api/test"));
+        when(httpServletRequest.getMethod()).thenReturn("POST");
+        when(httpServletResponse.getStatus()).thenReturn(HttpStatus.OK.value());
+        when(signature.getName()).thenReturn("testMethod");
+        when(joinPoint.getSignature()).thenReturn(signature);
+
+        // When
+        doThrow(new RuntimeException("Database error")).when(logService).saveLogToDatabase(any(LogEntity.class));
+
+        // Then
+        Assertions.assertDoesNotThrow(() -> loggerAspectJ.logAfterReturning(joinPoint, "test response"));
+
+        // Verify
+        verify(logService, times(1)).saveLogToDatabase(any(LogEntity.class));
+
+    }
+
+    @Test
+    public void testGetHttpStatusFromException_AllCases() {
+
+        // Given
+        Map<Exception, String> testCases = Map.of(
+                new PasswordNotValidException("Invalid password"), PasswordNotValidException.STATUS.name(),
+                new RoleNotFoundException("Role not found"), RoleNotFoundException.STATUS.name(),
+                new TokenAlreadyInvalidatedException("Token already invalidated"), TokenAlreadyInvalidatedException.STATUS.name(),
+                new UserAlreadyExistException("User already exists"), UserAlreadyExistException.STATUS.name(),
+                new UserNotFoundException("User not found"), UserNotFoundException.STATUS.name(),
+                new UserStatusNotValidException("User status not valid"), UserStatusNotValidException.STATUS.name(),
+                new TaskNotFoundException("Task not found"), TaskNotFoundException.STATUS.name(),
+                new TaskWithThisNameAlreadyExistException("Task with this name already exists"), TaskWithThisNameAlreadyExistException.STATUS.name(),
+                new Exception("Unknown exception"), HttpStatus.INTERNAL_SERVER_ERROR.name()
+        );
+
+        // When & Then
+        testCases.forEach((exception, expectedStatus) -> {
+            String actualStatus = (String) ReflectionTestUtils.invokeMethod(
+                    loggerAspectJ,
+                    "getHttpStatusFromException",
+                    exception
+            );
+            Assertions.assertEquals(expectedStatus, actualStatus,
+                    "Failed for exception: " + exception.getClass().getSimpleName());
+        });
 
     }
 
