@@ -2,6 +2,7 @@ package com.example.todowithcouchbase.task.service.impl;
 
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.builder.SaveTaskRequestBuilder;
+import com.example.todowithcouchbase.builder.TaskEntityBuilder;
 import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.CustomPaging;
 import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
@@ -127,7 +128,9 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
                                 .build()
                 ).build();
 
-        Page<TaskEntity> taskEntityPage = new PageImpl<>(Collections.singletonList(new TaskEntity()));
+        final TaskEntity taskEntity = new TaskEntityBuilder().withValidFields();
+
+        Page<TaskEntity> taskEntityPage = new PageImpl<>(Collections.singletonList(taskEntity));
 
         List<Task> products = listTaskEntityToListTaskMapper.toTaskList(taskEntityPage.getContent());
 

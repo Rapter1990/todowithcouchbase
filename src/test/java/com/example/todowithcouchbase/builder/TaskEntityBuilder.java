@@ -8,10 +8,11 @@ import java.util.UUID;
 public class TaskEntityBuilder extends BaseBuilder<TaskEntity>{
     public TaskEntityBuilder() { super(TaskEntity.class);}
 
-    public TaskEntityBuilder withValidFields(){
+    public TaskEntity withValidFields(){
         return this
                 .withId(UUID.randomUUID().toString())
-                .withName(randomNameGenerator());
+                .withName(randomNameGenerator())
+                .build();
     }
 
     public TaskEntityBuilder withId(String id){
@@ -26,11 +27,13 @@ public class TaskEntityBuilder extends BaseBuilder<TaskEntity>{
     private String randomNameGenerator(){
         Random rnd = new Random();
         StringBuilder value = new StringBuilder();
-        char[] dizi = new char[]{'a','b','c','d'};
+        char[] characterList = new char[]{'a','b','c','d'};
+
         for(int i=0 ;i<6;i++) {
-            value.append(dizi[rnd.nextInt(3)]);
+            value.append(characterList[rnd.nextInt(3)]);
         }
+
         return value.toString();
-        }
+    }
 
 }
