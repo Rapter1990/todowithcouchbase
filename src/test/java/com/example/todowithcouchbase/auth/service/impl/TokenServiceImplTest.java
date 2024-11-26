@@ -4,6 +4,8 @@ import com.example.todowithcouchbase.auth.config.TokenConfigurationParameter;
 import com.example.todowithcouchbase.auth.model.Token;
 import com.example.todowithcouchbase.auth.service.InvalidTokenService;
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -17,10 +19,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -107,6 +106,108 @@ class TokenServiceImplTest extends AbstractBaseServiceTest {
         // Verify
         Mockito.verify(tokenConfigurationParameter).getAccessTokenExpireMinute();
         Mockito.verify(invalidTokenService).checkForInvalidityOfToken(anyString());
+
+    }
+
+    @Test
+    void testGetClaims() {
+
+        // Given
+        KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+
+        String jwt = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .setIssuer("issuer")
+                .setSubject("subject")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
+                .signWith(privateKey)
+                .compact();
+
+        // When
+        Mockito.when(tokenConfigurationParameter.getPublicKey()).thenReturn(publicKey);
+
+        // Then
+        Jws<Claims> claims = tokenService.getClaims(jwt);
+
+        assertNotNull(claims, "Claims should not be null");
+        assertEquals("issuer", claims.getBody().getIssuer(), "Issuer should match");
+        assertEquals("subject", claims.getBody().getSubject(), "Subject should match");
+
+        // Verify
+        Mockito.verify(tokenConfigurationParameter).getPublicKey();
+
+    }
+
+    @Test
+    void testGetPayload() {
+
+        // Given
+        KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+
+        String jwt = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .setIssuer("issuer")
+                .setSubject("subject")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
+                .signWith(privateKey)
+                .compact();
+
+        // When
+        Mockito.when(tokenConfigurationParameter.getPublicKey()).thenReturn(publicKey);
+
+        // Then
+        Claims payload = tokenService.getPayload(jwt);
+
+
+        assertNotNull(payload, "Payload should not be null");
+        assertEquals("issuer", payload.getIssuer(), "Issuer should match");
+        assertEquals("subject", payload.getSubject(), "Subject should match");
+
+        // Verify
+        Mockito.verify(tokenConfigurationParameter).getPublicKey();
+
+    }
+
+    @Test
+    void testVerifyAndValidateSet() {
+
+        // Given
+        KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+
+        String jwt1 = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .setIssuer("issuer1")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
+                .signWith(privateKey)
+                .compact();
+
+        String jwt2 = Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .setIssuer("issuer2")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
+                .signWith(privateKey)
+                .compact();
+
+        Set<String> jwts = Set.of(jwt1, jwt2);
+
+        // When
+        Mockito.when(tokenConfigurationParameter.getPublicKey()).thenReturn(publicKey);
+
+        // Then
+        assertDoesNotThrow(() -> tokenService.verifyAndValidate(jwts), "All tokens should be valid");
+
+        // Verify
+        Mockito.verify(tokenConfigurationParameter, Mockito.times(2)).getPublicKey();
 
     }
 
