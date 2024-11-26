@@ -25,14 +25,14 @@ class RegisterRequestToUserEntityMapperTest {
 
     @Test
     void testMapRegisterRequestCollectionNull() {
-        // Test mapping a null collection of RegisterRequest
+
         List<UserEntity> result = mapper.map((Collection<RegisterRequest>) null);
         assertNull(result);
     }
 
     @Test
     void testMapRegisterRequestListEmpty() {
-        // Test mapping an empty list of RegisterRequest
+
         List<UserEntity> result = mapper.map(Collections.emptyList());
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -40,7 +40,7 @@ class RegisterRequestToUserEntityMapperTest {
 
     @Test
     void testMapRegisterRequestListWithNullElements() {
-        // Test mapping a list of RegisterRequest with a null element
+
         List<RegisterRequest> requests = Arrays.asList(
                 new RegisterRequest("test1@example.com",
                         "password1",
@@ -61,7 +61,7 @@ class RegisterRequestToUserEntityMapperTest {
 
     @Test
     void testMapSingleRegisterRequest() {
-        // Test mapping a single RegisterRequest
+
         RegisterRequest request = new RegisterRequest(
                 "test@example.com", "password", "John", "Doe", "1234567890", UserType.ADMIN
         );
