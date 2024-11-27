@@ -4,6 +4,7 @@ import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.dto.response.CustomPagingResponse;
 import com.example.todowithcouchbase.common.model.dto.response.CustomResponse;
 import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.dto.response.TaskResponse;
@@ -30,20 +31,37 @@ public class TaskController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CustomResponse<String> saveTask(final @RequestBody @Valid SaveTaskRequest saveTaskRequest){
+    public CustomResponse<String> saveTask(
+            final @RequestBody @Valid SaveTaskRequest saveTaskRequest
+    ){
         final Task createdTask = taskService.saveTaskToDatabase(saveTaskRequest);
+
         return CustomResponse.successOf(createdTask.getId());
     }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(final @RequestBody @Valid TaskPagingRequest request){
+    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(
+            final @RequestBody @Valid TaskPagingRequest request
+    ){
         final CustomPage<Task> taskPage= taskService.getAllTasks(request);
 
         final CustomPagingResponse<TaskResponse> response = customPageTaskToCustomPagingTaskResponseMapper
                 .toPagingResponse(taskPage);
 
         return CustomResponse.successOf(response);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public CustomResponse<TaskResponse> getTaskByName(
+            final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest
+    ){
+        Task task = taskService.getTaskByName(getTaskByNameRequest);
+
+        TaskResponse response = taskToTaskResponseMapper.map(task);
+
+         return CustomResponse.successOf(response);
     }
 
 }
