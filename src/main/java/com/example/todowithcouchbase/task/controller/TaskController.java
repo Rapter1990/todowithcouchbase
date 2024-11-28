@@ -13,6 +13,7 @@ import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
 import com.example.todowithcouchbase.task.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,15 @@ public class TaskController {
         TaskResponse response = taskToTaskResponseMapper.map(task);
 
          return CustomResponse.successOf(response);
+    }
+
+    @GetMapping("/{id}")
+    public CustomResponse<TaskResponse> getTaskById(final @PathVariable(name = "id") @UUID String id){
+        Task task = taskService.getTaskById(id);
+
+        TaskResponse response = taskToTaskResponseMapper.map(task);
+
+        return CustomResponse.successOf(response);
     }
 
 }

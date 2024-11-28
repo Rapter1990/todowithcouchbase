@@ -6,6 +6,7 @@ import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
+import org.hibernate.validator.constraints.UUID;
 
 
 public interface TaskService {
@@ -16,4 +17,5 @@ public interface TaskService {
 
     Task getTaskByName(final GetTaskByNameRequest getTaskByNameRequest);
 
+    Task getTaskById(final String id);
 }

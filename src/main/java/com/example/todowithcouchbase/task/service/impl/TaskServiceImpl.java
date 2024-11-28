@@ -73,6 +73,15 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    @Override
+    public Task getTaskById(String id) {
+
+        TaskEntity taskFromDb = taskRepository.findById(id)
+                .orElseThrow(()->new TaskNotFoundException("Task given id cant found"));
+
+        return taskEntityToTaskMapper.map(taskFromDb);
+    }
+
     private boolean isNameExist(final String name){
         return !Boolean.TRUE.equals(taskRepository.existsByName(name));
     }
