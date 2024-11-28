@@ -5,6 +5,7 @@ import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.CustomPaging;
 import com.example.todowithcouchbase.common.model.dto.response.CustomPagingResponse;
 import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.dto.response.TaskResponse;
@@ -246,6 +247,96 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(taskService, Mockito.never()).getAllTasks(any(TaskPagingRequest.class));
+
+    }
+
+    @Test
+    void givenValidTaskRequestWithAdmin_whenGetTaskByName_thenSuccess() throws Exception {
+
+        // Given
+        final String taskName = "Admin Task";
+        final GetTaskByNameRequest request = new GetTaskByNameRequest(taskName);
+
+        final Task mockTask = Task.builder()
+                .id(UUID.randomUUID().toString())
+                .name(taskName)
+                .build();
+
+        final TaskResponse expectedResponse = taskToTaskResponseMapper.map(mockTask);
+
+        // When
+        Mockito.when(taskService.getTaskByName(any(GetTaskByNameRequest.class)))
+                .thenReturn(mockTask);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/tasks/getByName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken())
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.name").value(expectedResponse.getName()));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).getTaskByName(any(GetTaskByNameRequest.class));
+
+    }
+
+    @Test
+    void givenValidTaskRequestWithUser_whenGetTaskByName_thenSuccess() throws Exception {
+
+        // Given
+        final String taskName = "User Task";
+        final GetTaskByNameRequest request = new GetTaskByNameRequest(taskName);
+
+        final Task mockTask = Task.builder()
+                .id(UUID.randomUUID().toString())
+                .name(taskName)
+                .build();
+
+        final TaskResponse expectedResponse = taskToTaskResponseMapper.map(mockTask);
+
+        // When
+        Mockito.when(taskService.getTaskByName(any(GetTaskByNameRequest.class)))
+                .thenReturn(mockTask);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/tasks/getByName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockUserToken.getAccessToken())
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response.name").value(expectedResponse.getName()));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).getTaskByName(any(GetTaskByNameRequest.class));
+
+    }
+
+    @Test
+    void givenUnauthorizedRequest_whenGetTaskByName_thenReturnUnauthorized() throws Exception {
+
+        // Given
+        final String taskName = "Unauthorized Task";
+        final GetTaskByNameRequest request = new GetTaskByNameRequest(taskName);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/tasks/getByName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(0)).getTaskByName(any(GetTaskByNameRequest.class));
 
     }
 
