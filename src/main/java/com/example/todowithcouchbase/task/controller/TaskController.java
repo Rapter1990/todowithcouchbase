@@ -48,7 +48,7 @@ public class TaskController {
         return CustomResponse.successOf(response);
     }
 
-    @GetMapping
+    @GetMapping("/getByName")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public CustomResponse<TaskResponse> getTaskByName(final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest){
         Task task = taskService.getTaskByName(getTaskByNameRequest);

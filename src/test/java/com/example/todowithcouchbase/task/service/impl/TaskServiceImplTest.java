@@ -50,7 +50,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
     @Test
     void givenValidTaskCreateRequest_whenCreateTask_ThenReturnTaskResponse(){
 
-        //Given
+        // Given
         final SaveTaskRequest request = new SaveTaskRequestBuilder()
                 .withValidFields().build();
 
@@ -58,61 +58,37 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
 
         final Task mockTask = taskEntityToTaskMapper.map(mockTaskEntity);
 
-        //When
-        Mockito.when(taskRepository.existsByName(Mockito.anyString()))
-                .thenReturn(false);
+        // When
+        Mockito.when(taskRepository.existsByName(Mockito.anyString())).thenReturn(false);
+        Mockito.when(taskRepository.save(any(TaskEntity.class))).thenReturn(mockTaskEntity);
 
-        Mockito.when(taskRepository.save(any(TaskEntity.class)))
-                .thenReturn(mockTaskEntity);
-
-        //Then
-        Task response = taskService
-                .saveTaskToDatabase(request);
+        // Then
+        Task response = taskService.saveTaskToDatabase(request);
 
         Assertions.assertEquals(mockTask.getName(),response.getName());
 
-        //Verify
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(1)
-        ).save(any(TaskEntity.class));
+        // Verify
+        Mockito.verify(taskRepository,Mockito.times(1)).save(any(TaskEntity.class));
+        Mockito.verify(taskRepository, Mockito.times(1)).existsByName(Mockito.anyString());
 
-
-        System.out.println();
-
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(1)
-        ).existsByName(Mockito.anyString());
     }
 
     @Test
     void givenValidTaskCreateRequest_whenCreateTask_ThenThrowTaskWithThisNameAlreadyExistException(){
 
-        //Given
+        // Given
         final SaveTaskRequest request = new SaveTaskRequestBuilder()
                 .withValidFields().build();
 
-        //When
-        Mockito.when(taskRepository.existsByName(request.getName()))
-                .thenReturn(true);
+        // When
+        Mockito.when(taskRepository.existsByName(request.getName())).thenReturn(true);
 
-        //Then
-        Assertions.assertThrowsExactly(
-                TaskWithThisNameAlreadyExistException.class,
-                ()->taskService.saveTaskToDatabase(request)
-        );
+        // Then
+        Assertions.assertThrowsExactly(TaskWithThisNameAlreadyExistException.class,()->taskService.saveTaskToDatabase(request));
 
-        //Verify
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(1)
-        ).existsByName(Mockito.anyString());
-
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(0)
-        ).save(any(TaskEntity.class));
+        // Verify
+        Mockito.verify(taskRepository,Mockito.times(1)).existsByName(Mockito.anyString());
+        Mockito.verify(taskRepository,Mockito.times(0)).save(any(TaskEntity.class));
 
     }
 
