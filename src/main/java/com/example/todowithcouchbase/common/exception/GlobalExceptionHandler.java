@@ -2,6 +2,7 @@ package com.example.todowithcouchbase.common.exception;
 
 import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.common.model.CustomError;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -100,7 +101,7 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(PasswordNotValidException.class)
-    public ResponseEntity<CustomError> handlePasswordNotValidException(final PasswordNotValidException ex) {
+    protected ResponseEntity<CustomError> handlePasswordNotValidException(final PasswordNotValidException ex) {
 
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
@@ -112,7 +113,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<CustomError> handleRoleNotFoundException(final RoleNotFoundException ex) {
+    protected ResponseEntity<CustomError> handleRoleNotFoundException(final RoleNotFoundException ex) {
 
         CustomError error = CustomError.builder()
                 .time(LocalDateTime.now())
@@ -125,7 +126,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TokenAlreadyInvalidatedException.class)
-    public ResponseEntity<CustomError> handleTokenAlreadyInvalidatedException(final TokenAlreadyInvalidatedException ex) {
+    protected ResponseEntity<CustomError> handleTokenAlreadyInvalidatedException(final TokenAlreadyInvalidatedException ex) {
         CustomError error = CustomError.builder()
                 .time(LocalDateTime.now())
                 .httpStatus(HttpStatus.BAD_REQUEST)
@@ -137,7 +138,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<CustomError> handleUserAlreadyExistException(final UserAlreadyExistException ex) {
+    protected ResponseEntity<CustomError> handleUserAlreadyExistException(final UserAlreadyExistException ex) {
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.CONFLICT)
                 .header(CustomError.Header.ALREADY_EXIST.getName())
@@ -148,7 +149,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<CustomError> handleUserNotFoundException(final UserNotFoundException ex) {
+    protected ResponseEntity<CustomError> handleUserNotFoundException(final UserNotFoundException ex) {
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.NOT_FOUND)
                 .header(CustomError.Header.NOT_FOUND.getName())
@@ -159,7 +160,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserStatusNotValidException.class)
-    public ResponseEntity<CustomError> handleUserStatusNotValidException(final UserStatusNotValidException ex) {
+    protected ResponseEntity<CustomError> handleUserStatusNotValidException(final UserStatusNotValidException ex) {
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(CustomError.Header.VALIDATION_ERROR.getName())
@@ -170,7 +171,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BucketConfigException.class)
-    public ResponseEntity<CustomError> handleBucketConfigException(final BucketConfigException ex) {
+    protected ResponseEntity<CustomError> handleBucketConfigException(final BucketConfigException ex) {
         CustomError error = CustomError.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .header(CustomError.Header.VALIDATION_ERROR.getName())
@@ -190,6 +191,21 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(customError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    protected ResponseEntity<CustomError> handleTaskNotFoundException(final TaskNotFoundException ex) {
+
+        CustomError error = CustomError.builder()
+                .time(LocalDateTime.now())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+
     }
 
 }

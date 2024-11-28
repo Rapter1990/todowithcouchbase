@@ -2,11 +2,13 @@ package com.example.todowithcouchbase.task.service.impl;
 
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.builder.SaveTaskRequestBuilder;
+import com.example.todowithcouchbase.builder.TaskEntityBuilder;
 import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.CustomPaging;
 import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -49,7 +52,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
     @Test
     void givenValidTaskCreateRequest_whenCreateTask_ThenReturnTaskResponse(){
 
-        //Given
+        // Given
         final SaveTaskRequest request = new SaveTaskRequestBuilder()
                 .withValidFields().build();
 
@@ -57,61 +60,37 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
 
         final Task mockTask = taskEntityToTaskMapper.map(mockTaskEntity);
 
-        //When
-        Mockito.when(taskRepository.existsByName(Mockito.anyString()))
-                .thenReturn(false);
+        // When
+        Mockito.when(taskRepository.existsByName(Mockito.anyString())).thenReturn(false);
+        Mockito.when(taskRepository.save(any(TaskEntity.class))).thenReturn(mockTaskEntity);
 
-        Mockito.when(taskRepository.save(any(TaskEntity.class)))
-                .thenReturn(mockTaskEntity);
-
-        //Then
-        Task response = taskService
-                .saveTaskToDatabase(request);
+        // Then
+        Task response = taskService.saveTaskToDatabase(request);
 
         Assertions.assertEquals(mockTask.getName(),response.getName());
 
-        //Verify
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(1)
-        ).save(any(TaskEntity.class));
+        // Verify
+        Mockito.verify(taskRepository,Mockito.times(1)).save(any(TaskEntity.class));
+        Mockito.verify(taskRepository, Mockito.times(1)).existsByName(Mockito.anyString());
 
-
-        System.out.println();
-
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(1)
-        ).existsByName(Mockito.anyString());
     }
 
     @Test
     void givenValidTaskCreateRequest_whenCreateTask_ThenThrowTaskWithThisNameAlreadyExistException(){
 
-        //Given
+        // Given
         final SaveTaskRequest request = new SaveTaskRequestBuilder()
                 .withValidFields().build();
 
-        //When
-        Mockito.when(taskRepository.existsByName(request.getName()))
-                .thenReturn(true);
+        // When
+        Mockito.when(taskRepository.existsByName(request.getName())).thenReturn(true);
 
-        //Then
-        Assertions.assertThrowsExactly(
-                TaskWithThisNameAlreadyExistException.class,
-                ()->taskService.saveTaskToDatabase(request)
-        );
+        // Then
+        Assertions.assertThrowsExactly(TaskWithThisNameAlreadyExistException.class,()->taskService.saveTaskToDatabase(request));
 
-        //Verify
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(1)
-        ).existsByName(Mockito.anyString());
-
-        Mockito.verify(
-                taskRepository,
-                Mockito.times(0)
-        ).save(any(TaskEntity.class));
+        // Verify
+        Mockito.verify(taskRepository,Mockito.times(1)).existsByName(Mockito.anyString());
+        Mockito.verify(taskRepository,Mockito.times(0)).save(any(TaskEntity.class));
 
     }
 
@@ -127,7 +106,9 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
                                 .build()
                 ).build();
 
-        Page<TaskEntity> taskEntityPage = new PageImpl<>(Collections.singletonList(new TaskEntity()));
+        final TaskEntity taskEntity = new TaskEntityBuilder().withValidFields();
+
+        Page<TaskEntity> taskEntityPage = new PageImpl<>(Collections.singletonList(taskEntity));
 
         List<Task> products = listTaskEntityToListTaskMapper.toTaskList(taskEntityPage.getContent());
 
@@ -173,6 +154,53 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
 
         // Verify
         Mockito.verify(taskRepository, Mockito.times(1)).findAll(any(Pageable.class));
+
+    }
+
+    @Test
+    void givenValidTaskName_whenGetTaskByName_thenReturnTaskResponse() {
+
+        // Given
+        final String taskName = "Test Task";
+        final GetTaskByNameRequest request = new GetTaskByNameRequest(taskName);
+
+        final TaskEntity mockTaskEntity = new TaskEntityBuilder()
+                .withName(taskName)
+                .build();
+
+        final Task expectedTask = taskEntityToTaskMapper.map(mockTaskEntity);
+
+        // When
+        Mockito.when(taskRepository.findTaskByName(taskName))
+                .thenReturn(Optional.of(mockTaskEntity));
+
+        // Then
+        Task response = taskService.getTaskByName(request);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(expectedTask.getName(), response.getName());
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findTaskByName(taskName);
+
+    }
+
+    @Test
+    void givenInvalidTaskName_whenGetTaskByName_thenThrowTaskNotFoundException() {
+
+        // Given
+        final String taskName = "Invalid Task";
+        final GetTaskByNameRequest request = new GetTaskByNameRequest(taskName);
+
+        // When
+        Mockito.when(taskRepository.findTaskByName(taskName)).thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(TaskNotFoundException.class,
+                () -> taskService.getTaskByName(request));
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findTaskByName(taskName);
 
     }
 

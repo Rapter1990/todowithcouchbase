@@ -398,6 +398,131 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "get by name",
+							"item": [
+								{
+									"name": "Get By Name User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzZGU3Mzg5Zi0wMTk1LTQ4YjktYThiNi03MDhlMzI3Njk0YTYiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzI3NzQ1ODIsImV4cCI6MTczMjc3NjM4MiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVVc2VyU3VyTmFtZSIsInVzZXJQaG9uZU51bWJlciI6IjAxMjM0NTY3ODkwIiwidXNlckVtYWlsIjoiZXhhbXBsZVVzZXJAZ21haWwuY29tIiwidXNlclR5cGUiOiJVU0VSIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVVc2VyRmlyc3ROYW1lIiwidXNlcklkIjoiZjIzMzA4MzEtNThjZC00Y2M5LTgwMGQtNTU2MTMyMjFjMTQxIn0.vnaiggtCoO7s9i3qeAGai9ZXlHewVRCgs2nFlVVj_YlkEx0V4tEp4G49HNwvoxUY_Ahg2xJGaCl3qRkEsxOq2Dp7SmIJRlit_yE0shXEDGk-XJO4RBKK1df9Mu1ng5cPD8PCyKq-7HblByP4sLnW7lE9R4xW_yD-Rma4x-52u5EwJehrZmmTSpVf0osppyk4RLxtJw1KFMNpZOziAef_famzl3MCc0zOKF6d5G-H0cG4l6IiqafSC4Ff_gmHaVHXDynsr-Bpj6tFtzouuRu65yVC4WCVI_Fp2n1G7enG2UEKlPpDymkfxV8NNEr0htYQ3NO42q1YP8y-wA7X8YaByA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\" : \"taskname\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/getByName",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"getByName"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get By Name User Not Found",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\" : \"tasknameNotFound\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/getByName",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"getByName"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get By Name User UnAuthorized",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/getByName",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"getByName"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
@@ -569,6 +694,131 @@
 												"api",
 												"v1",
 												"tasks"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "get by name",
+							"item": [
+								{
+									"name": "Get By Name Admin",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\" : \"taskname\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/getByName",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"getByName"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get By Name Admin Copy",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\" : \"tasknameNotFound\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/getByName",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"getByName"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get By Name Admin UnAuthorized",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/getByName",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												"getByName"
 											]
 										}
 									},

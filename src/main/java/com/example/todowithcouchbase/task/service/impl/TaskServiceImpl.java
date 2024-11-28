@@ -5,7 +5,9 @@ import com.example.todowithcouchbase.common.model.dto.request.CustomPagingReques
 import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import com.example.todowithcouchbase.task.model.Task;
+import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
+import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 import com.example.todowithcouchbase.task.model.mapper.ListTaskEntityToListTaskMapper;
 import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +60,16 @@ public class TaskServiceImpl implements TaskService {
                 .toTaskList(taskEntitiesListPage.getContent());
 
         return CustomPage.of(productDomainModels, taskEntitiesListPage);
+
+    }
+
+    @Override
+    public Task getTaskByName(final GetTaskByNameRequest getTaskByNameRequest) {
+
+        TaskEntity taskFromDb = taskRepository.findTaskByName(getTaskByNameRequest.getName())
+                .orElseThrow(()->new TaskNotFoundException("Task given name cant found"));
+        
+        return taskEntityToTaskMapper.map(taskFromDb);
 
     }
 
