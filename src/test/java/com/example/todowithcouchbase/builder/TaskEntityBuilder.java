@@ -4,6 +4,7 @@ import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class TaskEntityBuilder extends BaseBuilder<TaskEntity>{
     public TaskEntityBuilder() { super(TaskEntity.class);}
@@ -25,15 +26,17 @@ public class TaskEntityBuilder extends BaseBuilder<TaskEntity>{
         return this;
     }
     private String randomNameGenerator(){
-        Random rnd = new Random();
-        StringBuilder value = new StringBuilder();
-        char[] characterList = new char[]{'a','b','c','d'};
 
-        for(int i=0 ;i<6;i++) {
-            value.append(characterList[rnd.nextInt(3)]);
-        }
+        final int nameLength = 6; // Length of the generated name
+        final int startIndex = 0; // Starting index for random selection
+        String turkishAlphabet = "abcçdefgğhıijklmnoöprsştuüvyz"; // Turkish alphabet characters
+        Random random = new Random();
 
-        return value.toString();
+        return random.ints(nameLength, startIndex, turkishAlphabet.length())
+                .mapToObj(turkishAlphabet::charAt)
+                .map(String::valueOf)
+                .collect(Collectors.joining());
+
     }
 
 }
