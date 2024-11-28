@@ -2,6 +2,7 @@ package com.example.todowithcouchbase.common.exception;
 
 import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.common.model.CustomError;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -190,6 +191,21 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(customError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<CustomError> handleTaskNotFoundException(final TaskNotFoundException ex) {
+
+        CustomError error = CustomError.builder()
+                .time(LocalDateTime.now())
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.todowithcouchbase.common.exception;
 import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.base.AbstractRestControllerTest;
 import com.example.todowithcouchbase.common.model.CustomError;
+import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
@@ -305,6 +306,7 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         CustomError actualError = responseEntity.getBody();
         checkCustomError(expectedError, actualError);
+
     }
 
     @Test
@@ -326,6 +328,30 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         CustomError actualError = (CustomError) responseEntity.getBody(); // Cast response body
         checkCustomError(expectedError, actualError);
+
+    }
+
+    @Test
+    void givenTaskNotFoundException_whenHandleTaskNotFoundException_thenRespondWithNotFound() {
+
+        // Given
+        TaskNotFoundException ex = new TaskNotFoundException("Task not found message");
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
+                .header(CustomError.Header.NOT_FOUND.getName())
+                .message("Task not found!\n Task not found message")
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> responseEntity = globalExceptionHandler.handleTaskNotFoundException(ex);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        CustomError actualError = responseEntity.getBody();
+        checkCustomError(expectedError, actualError);
+
     }
 
     private void checkCustomError(CustomError expectedError, CustomError actualError) {
