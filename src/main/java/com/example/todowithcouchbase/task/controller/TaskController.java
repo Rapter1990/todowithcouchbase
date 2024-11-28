@@ -31,9 +31,7 @@ public class TaskController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CustomResponse<String> saveTask(
-            final @RequestBody @Valid SaveTaskRequest saveTaskRequest
-    ){
+    public CustomResponse<String> saveTask(final @RequestBody @Valid SaveTaskRequest saveTaskRequest){
         final Task createdTask = taskService.saveTaskToDatabase(saveTaskRequest);
 
         return CustomResponse.successOf(createdTask.getId());
@@ -41,9 +39,7 @@ public class TaskController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(
-            final @RequestBody @Valid TaskPagingRequest request
-    ){
+    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(final @RequestBody @Valid TaskPagingRequest request){
         final CustomPage<Task> taskPage= taskService.getAllTasks(request);
 
         final CustomPagingResponse<TaskResponse> response = customPageTaskToCustomPagingTaskResponseMapper
@@ -54,9 +50,7 @@ public class TaskController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<TaskResponse> getTaskByName(
-            final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest
-    ){
+    public CustomResponse<TaskResponse> getTaskByName(final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest){
         Task task = taskService.getTaskByName(getTaskByNameRequest);
 
         TaskResponse response = taskToTaskResponseMapper.map(task);
