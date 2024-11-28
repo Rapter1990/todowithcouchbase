@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 
+import java.time.Duration;
+
 @Slf4j
 @Configuration
 public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
@@ -55,9 +57,13 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     @Bean
     public Cluster couchbaseCluster() {
         ClusterEnvironment environment = couchbaseClusterEnvironment();
-        return Cluster.connect(getConnectionString(), ClusterOptions
+        Cluster cluster = Cluster.connect(getConnectionString(), ClusterOptions
                 .clusterOptions(getUserName(), getPassword())
                 .environment(environment));
+
+        // Wait until the cluster is ready
+        cluster.waitUntilReady(Duration.ofSeconds(10));
+        return cluster;
     }
 
     @Bean
@@ -75,6 +81,7 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
             bucketManager.createBucket(bucketSettings);
 
             Bucket bucket = cluster.bucket(getBucketName());
+            bucket.waitUntilReady(Duration.ofSeconds(10));
             createScopeAndCollection(bucket, couchbaseProperties.getScopes().getUserScope(), couchbaseProperties.getCollections().getUserCollection());
             createScopeAndCollection(bucket, couchbaseProperties.getScopes().getTaskScope(), couchbaseProperties.getCollections().getTaskCollection());
             createScopeAndCollection(bucket, couchbaseProperties.getScopes().getInvalidTokenScope(), couchbaseProperties.getCollections().getInvalidTokenCollection());
