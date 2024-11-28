@@ -60,6 +60,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public CustomResponse<TaskResponse> getTaskById(final @PathVariable(name = "id") @UUID String id){
         Task task = taskService.getTaskById(id);
 
