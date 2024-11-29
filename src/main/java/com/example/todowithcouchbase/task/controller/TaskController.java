@@ -52,19 +52,19 @@ public class TaskController {
     @PostMapping("/getByName")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public CustomResponse<TaskResponse> getTaskByName(final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest){
-        Task task = taskService.getTaskByName(getTaskByNameRequest);
+        final Task task = taskService.getTaskByName(getTaskByNameRequest);
 
-        TaskResponse response = taskToTaskResponseMapper.map(task);
+        final TaskResponse response = taskToTaskResponseMapper.map(task);
 
-         return CustomResponse.successOf(response);
+        return CustomResponse.successOf(response);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<TaskResponse> getTaskById(final @PathVariable(name = "id") @UUID String id){
-        Task task = taskService.getTaskById(id);
+    public CustomResponse<TaskResponse> getTaskById(@PathVariable @UUID final String id){
+        final Task task = taskService.getTaskById(id);
 
-        TaskResponse response = taskToTaskResponseMapper.map(task);
+        final TaskResponse response = taskToTaskResponseMapper.map(task);
 
         return CustomResponse.successOf(response);
     }
