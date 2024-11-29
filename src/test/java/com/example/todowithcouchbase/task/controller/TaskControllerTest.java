@@ -360,15 +360,14 @@ class TaskControllerTest extends AbstractRestControllerTest {
         final TaskResponse expectedResponse = taskToTaskResponseMapper.map(mockTask);
 
         //When
-        Mockito.when(taskService.getTaskById(mockTaskId))
-                .thenReturn(mockTask);
+        Mockito.when(taskService.getTaskById(mockTaskId)).thenReturn(mockTask);
 
         //Then
         mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/v1/tasks/{id}",mockTaskId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken())
-        )
+                         .get("/api/v1/tasks/{id}",mockTaskId)
+                         .contentType(MediaType.APPLICATION_JSON)
+                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken())
+                )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response.id").value(expectedResponse.getId()))
@@ -376,7 +375,11 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"));
 
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).getTaskById(mockTaskId);
+
     }
+
     @Test
     void givenUnExistId_whenGetTaskById_thenReturnCustomResponse() throws Exception{
 
@@ -392,11 +395,10 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         final TaskResponse expectedResponse = taskToTaskResponseMapper.map(mockTask);
 
-        //When
-        Mockito.when(taskService.getTaskById(mockTaskId))
-                .thenReturn(mockTask);
+        // When
+        Mockito.when(taskService.getTaskById(mockTaskId)).thenReturn(mockTask);
 
-        //Then
+        // Then
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/tasks/{id}",mockTaskId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -409,15 +411,72 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"));
 
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).getTaskById(mockTaskId);
+
     }
 
+    @Test
+    void givenNonExistentId_whenGetTaskByIdWithAdmin_thenThrowTaskNotFoundException() throws Exception {
+
+        // Given
+        final String nonExistentTaskId = UUID.randomUUID().toString();
+        final String expectedMessage = "Task not found!\n Task not found with ID: " + nonExistentTaskId;
+
+        // When
+        Mockito.when(taskService.getTaskById(nonExistentTaskId))
+                .thenThrow(new TaskNotFoundException("Task not found with ID: " + nonExistentTaskId));
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/tasks/{id}", nonExistentTaskId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.header").value("NOT EXIST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(expectedMessage))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(false));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).getTaskById(nonExistentTaskId);
+
+    }
+
+
+    @Test
+    void givenNonExistentId_whenGetTaskByIdWithUser_thenThrowTaskNotFoundException() throws Exception {
+
+        // Given
+        final String nonExistentTaskId = UUID.randomUUID().toString();
+        final String expectedMessage = "Task not found!\n Task not found with ID: " + nonExistentTaskId;
+
+        // When
+        Mockito.when(taskService.getTaskById(nonExistentTaskId))
+                .thenThrow(new TaskNotFoundException("Task not found with ID: " + nonExistentTaskId));
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/v1/tasks/{id}", nonExistentTaskId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockUserToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(expectedMessage))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(false));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).getTaskById(nonExistentTaskId);
+
+    }
 
     @Test
     void givenExistTaskId_whenUserUnauthorized_thenReturnUnauthorized() throws Exception {
 
         // Given
         final String mockTaskId = UUID.randomUUID().toString();
-
         final String mockTaskName = "Mock Task";
 
         final Task mockTask = Task.builder()
