@@ -28,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -202,6 +203,47 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         // Verify
         Mockito.verify(taskRepository, Mockito.times(1)).findTaskByName(taskName);
 
+    }
+
+    @Test
+    void givenExistId_whenGetById_thenReturnTaskResponse(){
+
+        //Given
+        final String mockId = UUID.randomUUID().toString();
+
+        final TaskEntity mockTaskEntity = new TaskEntityBuilder()
+                .withId(mockId)
+                .withValidFields();
+
+
+        //when
+        Mockito.when(taskRepository.findById(mockId))
+                .thenReturn(Optional.of(mockTaskEntity));
+
+        //then
+        final Task expected = taskService.getTaskById(mockId);
+
+        Assertions.assertNotNull(expected);
+        Assertions.assertEquals(mockTaskEntity.getId(),expected.getId());
+        Assertions.assertEquals(mockTaskEntity.getName(),expected.getName());
+    }
+
+    @Test
+    void givenNonExistId_whenGetById_thenThrowTaskNotFoundException(){
+
+        //Given
+        final String mockId = UUID.randomUUID().toString();
+
+        //When
+        Mockito.when(taskRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        //Then
+        Assertions.assertThrows(TaskNotFoundException.class,
+                ()->taskService.getTaskById(mockId));
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(mockId);
     }
 
 }
