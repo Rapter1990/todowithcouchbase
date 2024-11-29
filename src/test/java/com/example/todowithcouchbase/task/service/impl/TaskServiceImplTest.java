@@ -206,44 +206,48 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
     }
 
     @Test
-    void givenExistId_whenGetById_thenReturnTaskResponse(){
+    void givenExistId_whenGetById_thenReturnTaskResponse() {
 
-        //Given
+        // Given
         final String mockId = UUID.randomUUID().toString();
 
         final TaskEntity mockTaskEntity = new TaskEntityBuilder()
                 .withId(mockId)
                 .withValidFields();
 
-
-        //when
+        // When
         Mockito.when(taskRepository.findById(mockId))
                 .thenReturn(Optional.of(mockTaskEntity));
 
-        //then
+        // Then
         final Task expected = taskService.getTaskById(mockId);
 
         Assertions.assertNotNull(expected);
         Assertions.assertEquals(mockTaskEntity.getId(),expected.getId());
         Assertions.assertEquals(mockTaskEntity.getName(),expected.getName());
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(mockId);
+
     }
 
     @Test
-    void givenNonExistId_whenGetById_thenThrowTaskNotFoundException(){
+    void givenNonExistId_whenGetById_thenThrowTaskNotFoundException() {
 
-        //Given
+        // Given
         final String mockId = UUID.randomUUID().toString();
 
-        //When
+        // When
         Mockito.when(taskRepository.findById(mockId))
                 .thenReturn(Optional.empty());
 
-        //Then
+        // Then
         Assertions.assertThrows(TaskNotFoundException.class,
                 ()->taskService.getTaskById(mockId));
 
         // Verify
         Mockito.verify(taskRepository, Mockito.times(1)).findById(mockId);
+
     }
 
 }
