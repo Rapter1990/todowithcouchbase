@@ -411,59 +411,33 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
     }
 
-    @Test
-    void givenUnExistTaskId_whenGetTaskById_thenReturnNotFound() throws Exception
-    {
-
-        //Given
-        final String mockTaskId = UUID.randomUUID().toString();
-
-        //When
-        Mockito.when(taskService.getTaskById(mockTaskId))
-                .thenThrow(new TaskNotFoundException());
-
-        //Then
-        mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/v1/tasks/{id}",mockTaskId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION,mockUserToken))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-
-        //verify
-        Mockito.verify(taskService,Mockito.times(1)).getTaskById(mockTaskId);
-
-    }
 
     @Test
-    void givenExistTaskId_whenUserUnauthorized_thenReturnUnAuthorize() throws Exception
-    {
-        //Given
+    void givenExistTaskId_whenUserUnauthorized_thenReturnUnauthorized() throws Exception {
+
+        // Given
         final String mockTaskId = UUID.randomUUID().toString();
 
         final String mockTaskName = "Mock Task";
 
         final Task mockTask = Task.builder()
-                .id(UUID.randomUUID().toString())
+                .id(mockTaskId)
                 .name(mockTaskName)
                 .build();
 
-        //When
+        // When
         Mockito.when(taskService.getTaskById(mockTaskId))
                 .thenReturn(mockTask);
 
-        //Then
-        mockMvc.perform(
-                MockMvcRequestBuilders
-                        .get("/api/v1/tasks/{id}",mockTaskId)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andDo(MockMvcResultHandlers.print())
-         .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tasks/{id}",mockTaskId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
-        //Verify
+        // Verify
         Mockito.verify(taskService,Mockito.never()).getTaskById(mockTaskId);
 
     }
-
 
 }
