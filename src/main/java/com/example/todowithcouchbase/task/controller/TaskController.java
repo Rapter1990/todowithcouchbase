@@ -13,6 +13,7 @@ import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
 import com.example.todowithcouchbase.task.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,11 +52,21 @@ public class TaskController {
     @PostMapping("/getByName")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public CustomResponse<TaskResponse> getTaskByName(final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest){
-        Task task = taskService.getTaskByName(getTaskByNameRequest);
+        final Task task = taskService.getTaskByName(getTaskByNameRequest);
 
-        TaskResponse response = taskToTaskResponseMapper.map(task);
+        final TaskResponse response = taskToTaskResponseMapper.map(task);
 
-         return CustomResponse.successOf(response);
+        return CustomResponse.successOf(response);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public CustomResponse<TaskResponse> getTaskById(@PathVariable @UUID final String id){
+        final Task task = taskService.getTaskById(id);
+
+        final TaskResponse response = taskToTaskResponseMapper.map(task);
+
+        return CustomResponse.successOf(response);
     }
 
 }
