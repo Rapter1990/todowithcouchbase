@@ -8,10 +8,12 @@ import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
+import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 import com.example.todowithcouchbase.task.model.mapper.ListTaskEntityToListTaskMapper;
 import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
 import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskMapper;
+import com.example.todowithcouchbase.task.model.mapper.UpdateTaskMapper;
 import com.example.todowithcouchbase.task.repository.TaskRepository;
 import com.example.todowithcouchbase.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,9 @@ public class TaskServiceImpl implements TaskService {
 
     private final ListTaskEntityToListTaskMapper listTaskEntityToListTaskMapper =
             ListTaskEntityToListTaskMapper.initialize();
+
+    private final UpdateTaskMapper updateTaskMapper =
+            UpdateTaskMapper.initialize();
 
 
     @Override
@@ -81,6 +86,21 @@ public class TaskServiceImpl implements TaskService {
 
         return taskEntityToTaskMapper.map(taskFromDb);
     }
+
+    @Override
+    public Task updateTaskById(final String id, final UpdateTaskRequest updateTaskRequest) {
+
+        TaskEntity taskEntity = taskRepository.findById(id)
+                .orElseThrow(()->new TaskNotFoundException());
+
+        updateTaskMapper.updateTaskMapper(taskEntity,updateTaskRequest);
+
+        taskRepository.save(taskEntity);
+
+        return taskEntityToTaskMapper.map(taskEntity);
+    }
+
+
 
     private boolean isNameExist(final String name){
         return !Boolean.TRUE.equals(taskRepository.existsByName(name));

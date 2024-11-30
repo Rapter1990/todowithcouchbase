@@ -7,6 +7,7 @@ import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
+import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.response.TaskResponse;
 import com.example.todowithcouchbase.task.model.mapper.CustomPageTaskToCustomPagingTaskResponseMapper;
 import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
@@ -69,4 +70,19 @@ public class TaskController {
         return CustomResponse.successOf(response);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public CustomResponse<TaskResponse> updateTaskById(
+            @PathVariable @UUID final String id,
+            @RequestBody @Valid UpdateTaskRequest updateTaskRequest){
+
+        final Task task =taskService.updateTaskById(id, updateTaskRequest);
+
+        final TaskResponse response = taskToTaskResponseMapper.map(task);
+
+        return CustomResponse.successOf(response);
+    }
+
 }
+
+
