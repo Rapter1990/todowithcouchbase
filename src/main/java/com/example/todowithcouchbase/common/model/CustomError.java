@@ -61,7 +61,9 @@ public class CustomError {
 
         PROCESS_ERROR("PROCESS ERROR"),
 
-        AUTH_ERROR("AUTH ERROR");
+        AUTH_ERROR("AUTH ERROR"),
+
+        BAD_REQUEST("BAD_REQUEST");
 
 
         private final String name;
