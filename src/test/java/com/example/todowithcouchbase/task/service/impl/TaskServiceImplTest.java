@@ -3,6 +3,7 @@ package com.example.todowithcouchbase.task.service.impl;
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import com.example.todowithcouchbase.builder.SaveTaskRequestBuilder;
 import com.example.todowithcouchbase.builder.TaskEntityBuilder;
+import com.example.todowithcouchbase.builder.UpdateTaskRequestBuilder;
 import com.example.todowithcouchbase.common.model.CustomPage;
 import com.example.todowithcouchbase.common.model.CustomPaging;
 import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
@@ -11,6 +12,7 @@ import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
+import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 import com.example.todowithcouchbase.task.model.mapper.ListTaskEntityToListTaskMapper;
 import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
@@ -247,6 +249,65 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
 
         // Verify
         Mockito.verify(taskRepository, Mockito.times(1)).findById(mockId);
+
+    }
+
+    @Test
+    void givenValidUpdateTaskRequest_whenUpdateTaskRequest_thenReturnTaskResponse(){
+
+        //Given
+        final String mockId = UUID.randomUUID().toString();
+
+        final UpdateTaskRequest mockUpdateTaskRequest = new UpdateTaskRequestBuilder()
+                .withValidFields()
+                .build();
+
+        final TaskEntity mockTaskEntity = new TaskEntityBuilder()
+                .withValidFields();
+
+        final Task mockBeforeUpdateTask = taskEntityToTaskMapper.map(mockTaskEntity);
+
+        //When
+        Mockito.when(taskRepository.findById(mockId))
+                .thenReturn(Optional.of(mockTaskEntity));
+
+        //Then
+        final Task taskResponse =
+                taskService.updateTaskById(mockId,mockUpdateTaskRequest);
+
+        Assertions.assertNotNull(taskResponse);
+
+        Assertions.assertEquals(mockUpdateTaskRequest.getName(),taskResponse.getName());
+
+        //Verify
+        Mockito.verify(taskRepository,Mockito.times(1)).findById(mockId);
+        Mockito.verify(taskRepository,Mockito.times(1)).save(mockTaskEntity);
+
+    }
+
+    @Test
+    void givenEmptyUpdateTaskRequest_whenUpdateTaskRequest_thenThrowNotFoundException(){
+
+        //Given
+        final String mockId = UUID.randomUUID().toString();
+
+        final UpdateTaskRequest mockUpdateTaskRequest = new UpdateTaskRequestBuilder()
+                .withValidFields()
+                .build();
+
+
+
+        //When
+        Mockito.when(taskRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        //Then
+        Assertions.assertThrows(TaskNotFoundException.class,
+                ()->taskService.updateTaskById(mockId,mockUpdateTaskRequest));
+
+        //Verify
+        Mockito.verify(taskRepository,Mockito.times(1)).findById(mockId);
+        Mockito.verify(taskRepository,Mockito.never()).save(Mockito.any(TaskEntity.class));
 
     }
 
