@@ -91,7 +91,7 @@ public class TaskServiceImpl implements TaskService {
     public Task updateTaskById(final String id, final UpdateTaskRequest updateTaskRequest) {
 
         TaskEntity taskEntity = taskRepository.findById(id)
-                .orElseThrow(()->new TaskNotFoundException("TASK NOT FOUND GIVEN ID"));
+                .orElseThrow(()->new TaskNotFoundException("Task given id cant found"));
 
         updateTaskMapper.updateTaskMapper(taskEntity,updateTaskRequest);
 

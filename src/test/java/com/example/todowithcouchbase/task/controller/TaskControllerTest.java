@@ -541,22 +541,22 @@ class TaskControllerTest extends AbstractRestControllerTest {
     void givenInvalidTaskId_whenUpdateTask_thenThrowNotFoundException() throws Exception{
 
         //Given
-        final String mockId = UUID.randomUUID().toString();
+        final String nonExistentTaskId = UUID.randomUUID().toString();
 
         final UpdateTaskRequest request = UpdateTaskRequest.builder()
                 .name("task-name")
                 .build();
 
-        final String expectedMessage = "TASK NOT FOUND GIVEN ID";
+        final String expectedMessage = "Task not found!\n Task not found with ID: " + nonExistentTaskId;
 
         //When
         Mockito.when(taskService.updateTaskById(Mockito.anyString(),Mockito.any(UpdateTaskRequest.class)))
-                .thenThrow(new TaskNotFoundException("TASK NOT FOUND GIVEN ID"));
+                .thenThrow(new TaskNotFoundException("Task not found with ID: " + nonExistentTaskId));
 
         //Then
         mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/api/v1/tasks/{id}",mockId)
+                                .put("/api/v1/tasks/{id}",nonExistentTaskId)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request))
                                 .header(HttpHeaders.AUTHORIZATION,"Bearer " + mockAdminToken.getAccessToken())
@@ -569,7 +569,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(expectedMessage));
 
         //Verify
-        Mockito.verify(taskService,Mockito.times(1)).updateTaskById(mockId,request);
+        Mockito.verify(taskService,Mockito.times(1)).updateTaskById(nonExistentTaskId,request);
 
     }
 
@@ -611,6 +611,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
         final UpdateTaskRequest request = UpdateTaskRequest.builder()
                 .name("task-name")
                 .build();
+
 
         //Then
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/tasks/{id}",mockId)
