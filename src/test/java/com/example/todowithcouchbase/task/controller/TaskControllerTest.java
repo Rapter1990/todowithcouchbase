@@ -550,7 +550,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
         final String expectedMessage = "Task not found!\n Task not found with ID: " + nonExistentTaskId;
 
         //When
-        Mockito.when(taskService.updateTaskById(Mockito.anyString(),Mockito.any(UpdateTaskRequest.class)))
+        Mockito.when(taskService.updateTaskById(Mockito.anyString(),request))
                 .thenThrow(new TaskNotFoundException("Task not found with ID: " + nonExistentTaskId));
 
         //Then
