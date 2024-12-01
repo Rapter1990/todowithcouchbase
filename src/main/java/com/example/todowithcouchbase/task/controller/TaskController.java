@@ -7,6 +7,7 @@ import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
+import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
 import com.example.todowithcouchbase.task.model.dto.response.TaskResponse;
 import com.example.todowithcouchbase.task.model.mapper.CustomPageTaskToCustomPagingTaskResponseMapper;
 import com.example.todowithcouchbase.task.model.mapper.TaskToTaskResponseMapper;
@@ -32,7 +33,7 @@ public class TaskController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CustomResponse<String> saveTask(final @RequestBody @Valid SaveTaskRequest saveTaskRequest){
+    public CustomResponse<String> saveTask(@RequestBody @Valid final SaveTaskRequest saveTaskRequest){
         final Task createdTask = taskService.saveTaskToDatabase(saveTaskRequest);
 
         return CustomResponse.successOf(createdTask.getId());
@@ -40,7 +41,7 @@ public class TaskController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(final @RequestBody @Valid TaskPagingRequest request){
+    public CustomResponse<CustomPagingResponse<TaskResponse>> getAllTasks(@RequestBody @Valid final TaskPagingRequest request){
         final CustomPage<Task> taskPage= taskService.getAllTasks(request);
 
         final CustomPagingResponse<TaskResponse> response = customPageTaskToCustomPagingTaskResponseMapper
@@ -51,7 +52,7 @@ public class TaskController {
 
     @PostMapping("/getByName")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<TaskResponse> getTaskByName(final @RequestBody @Valid GetTaskByNameRequest getTaskByNameRequest){
+    public CustomResponse<TaskResponse> getTaskByName(@RequestBody @Valid final GetTaskByNameRequest getTaskByNameRequest){
         final Task task = taskService.getTaskByName(getTaskByNameRequest);
 
         final TaskResponse response = taskToTaskResponseMapper.map(task);
@@ -69,4 +70,20 @@ public class TaskController {
         return CustomResponse.successOf(response);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public CustomResponse<TaskResponse> updateTaskById(
+            @PathVariable @UUID final String id,
+            @RequestBody @Valid final UpdateTaskRequest updateTaskRequest){
+
+        final Task task = taskService.updateTaskById(id, updateTaskRequest);
+
+        final TaskResponse response = taskToTaskResponseMapper.map(task);
+
+        return CustomResponse.successOf(response);
+
+    }
+
 }
+
+

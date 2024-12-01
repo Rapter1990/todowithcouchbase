@@ -525,10 +525,13 @@
 							]
 						},
 						{
-							"name": "get by id",
+							"name": "get task by id",
 							"item": [
 								{
-									"name": "Get By Id User",
+									"name": "Get Task By Id User",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -540,11 +543,11 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "GET",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n  \"name\" : \"taskname\"\r\n}",
+											"raw": "",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -574,7 +577,10 @@
 									"response": []
 								},
 								{
-									"name": "Get By Id Not Found",
+									"name": "Get Task By Id Not Found",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -586,11 +592,11 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "GET",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n  \"name\" : \"tasknameNotFound\"\r\n}",
+											"raw": "",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -620,7 +626,10 @@
 									"response": []
 								},
 								{
-									"name": "Get By Id User UnAuthorized",
+									"name": "Get Task By Id User UnAuthorized",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -632,7 +641,7 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "GET",
 										"header": [],
 										"body": {
 											"mode": "raw",
@@ -845,10 +854,10 @@
 							]
 						},
 						{
-							"name": "get by name",
+							"name": "get task by name",
 							"item": [
 								{
-									"name": "Get By Name Admin",
+									"name": "Get Task By Name Admin",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -888,7 +897,7 @@
 									"response": []
 								},
 								{
-									"name": "Get By Name Admin Not Found",
+									"name": "Get Task By Name Admin Not Found",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -928,7 +937,7 @@
 									"response": []
 								},
 								{
-									"name": "Get By Name Admin UnAuthorized",
+									"name": "Get Task By Name Admin UnAuthorized",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -970,10 +979,13 @@
 							]
 						},
 						{
-							"name": "get by id",
+							"name": "get task by id",
 							"item": [
 								{
-									"name": "Get By Id Admin",
+									"name": "Get Task By Id Admin",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -985,7 +997,156 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Task By Id Admin Not Found",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Task By Id Admin UnAuthorized",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update task by id",
+							"item": [
+								{
+									"name": "Update By Id Admin",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
 										"header": [],
 										"body": {
 											"mode": "raw",
@@ -1019,7 +1180,7 @@
 									"response": []
 								},
 								{
-									"name": "Get By Id Admin Not Found",
+									"name": "Update By Id Admin Not Found",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -1031,7 +1192,7 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "PUT",
 										"header": [],
 										"body": {
 											"mode": "raw",
@@ -1065,7 +1226,53 @@
 									"response": []
 								},
 								{
-									"name": "Get By Id Admin UnAuthorized",
+									"name": "Update By Id Admin TaskAlreadyDefined",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\" : \"tasknameAlreadyDefined\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update By Id Admin UnAuthorized",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -1077,11 +1284,11 @@
 												}
 											]
 										},
-										"method": "POST",
+										"method": "PUT",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "",
+											"raw": "{\r\n  \"name\" : \"taskname\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"

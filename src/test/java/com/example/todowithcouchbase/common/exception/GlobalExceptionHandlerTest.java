@@ -4,6 +4,7 @@ import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.base.AbstractRestControllerTest;
 import com.example.todowithcouchbase.common.model.CustomError;
 import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
+import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
@@ -349,6 +350,29 @@ class GlobalExceptionHandlerTest extends AbstractRestControllerTest {
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        CustomError actualError = responseEntity.getBody();
+        checkCustomError(expectedError, actualError);
+
+    }
+
+    @Test
+    void givenTaskWithThisNameAlreadyExistException_whenHandleTaskWithThisNameAlreadyExistException_thenRespondWithBadRequest() {
+
+        // Given
+        TaskWithThisNameAlreadyExistException ex = new TaskWithThisNameAlreadyExistException("Duplicate task name: test-task-name");
+
+        CustomError expectedError = CustomError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .header(CustomError.Header.BAD_REQUEST.getName())
+                .message("Task with this name already exist\n Duplicate task name: test-task-name")
+                .isSuccess(false)
+                .build();
+
+        // When
+        ResponseEntity<CustomError> responseEntity = globalExceptionHandler.handleTaskWithThisNameAlreadyExistException(ex);
+
+        // Then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         CustomError actualError = responseEntity.getBody();
         checkCustomError(expectedError, actualError);
 

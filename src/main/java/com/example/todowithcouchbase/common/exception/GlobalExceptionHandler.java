@@ -3,6 +3,7 @@ package com.example.todowithcouchbase.common.exception;
 import com.example.todowithcouchbase.auth.exception.*;
 import com.example.todowithcouchbase.common.model.CustomError;
 import com.example.todowithcouchbase.task.exception.TaskNotFoundException;
+import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -205,6 +206,21 @@ class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(TaskWithThisNameAlreadyExistException.class)
+    protected ResponseEntity<CustomError> handleTaskWithThisNameAlreadyExistException(final TaskWithThisNameAlreadyExistException ex) {
+
+        CustomError error = CustomError.builder()
+                .time(LocalDateTime.now())
+                .httpStatus(TaskWithThisNameAlreadyExistException.STATUS)
+                .header(CustomError.Header.BAD_REQUEST.getName())
+                .message(ex.getMessage())
+                .isSuccess(false)
+                .build();
+
+        return new ResponseEntity<>(error, TaskWithThisNameAlreadyExistException.STATUS);
 
     }
 
