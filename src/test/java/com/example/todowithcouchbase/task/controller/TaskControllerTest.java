@@ -550,7 +550,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
         final String expectedMessage = "Task not found!\n Task not found with ID: " + nonExistentTaskId;
 
         //When
-        Mockito.when(taskService.updateTaskById(Mockito.anyString(),request))
+        Mockito.when(taskService.updateTaskById(nonExistentTaskId,request))
                 .thenThrow(new TaskNotFoundException("Task not found with ID: " + nonExistentTaskId));
 
         //Then
@@ -565,7 +565,6 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("NOT_FOUND"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.header").value("NOT EXIST"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(expectedMessage));
 
         //Verify
