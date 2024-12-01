@@ -5,9 +5,7 @@ import com.example.todowithcouchbase.common.model.dto.request.CustomPagingReques
 import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
-import org.hibernate.validator.constraints.UUID;
 
 
 public interface TaskService {

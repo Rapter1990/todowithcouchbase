@@ -7,13 +7,12 @@ import com.example.todowithcouchbase.task.exception.TaskWithThisNameAlreadyExist
 import com.example.todowithcouchbase.task.model.Task;
 import com.example.todowithcouchbase.task.model.dto.request.GetTaskByNameRequest;
 import com.example.todowithcouchbase.task.model.dto.request.SaveTaskRequest;
-import com.example.todowithcouchbase.task.model.dto.request.TaskPagingRequest;
 import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
 import com.example.todowithcouchbase.task.model.entity.TaskEntity;
 import com.example.todowithcouchbase.task.model.mapper.ListTaskEntityToListTaskMapper;
 import com.example.todowithcouchbase.task.model.mapper.SaveTaskRequestToTaskEntityMapper;
 import com.example.todowithcouchbase.task.model.mapper.TaskEntityToTaskMapper;
-import com.example.todowithcouchbase.task.model.mapper.UpdateTaskMapper;
+import com.example.todowithcouchbase.task.model.mapper.UpdateTaskRequestToTaskEntityMapper;
 import com.example.todowithcouchbase.task.repository.TaskRepository;
 import com.example.todowithcouchbase.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,15 +35,15 @@ public class TaskServiceImpl implements TaskService {
     private final ListTaskEntityToListTaskMapper listTaskEntityToListTaskMapper =
             ListTaskEntityToListTaskMapper.initialize();
 
-    private final UpdateTaskMapper updateTaskMapper =
-            UpdateTaskMapper.initialize();
+    private final UpdateTaskRequestToTaskEntityMapper updateTaskRequestToTaskEntityMapper =
+            UpdateTaskRequestToTaskEntityMapper.initialize();
 
 
     @Override
     public Task saveTaskToDatabase(final SaveTaskRequest taskRequest) {
-        if (!isNameExist(taskRequest.getName())){
-            throw new TaskWithThisNameAlreadyExistException("Task with this name already exist");
-        }
+
+        checkTaskNameUniqueness(taskRequest.getName());
+
         TaskEntity taskEntityToBeSaved=saveTaskRequestToTaskEntityMapper.mapForSaving(taskRequest);
         taskRepository.save(taskEntityToBeSaved);
         return taskEntityToTaskMapper.map(taskEntityToBeSaved);
@@ -90,21 +88,23 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTaskById(final String id, final UpdateTaskRequest updateTaskRequest) {
 
+        checkTaskNameUniqueness(updateTaskRequest.getName());
+
         TaskEntity taskEntity = taskRepository.findById(id)
                 .orElseThrow(()->new TaskNotFoundException("Task given id cant found"));
 
-        updateTaskMapper.updateTaskMapper(taskEntity,updateTaskRequest);
+        updateTaskRequestToTaskEntityMapper.updateTaskMapper(taskEntity,updateTaskRequest);
 
-        taskRepository.save(taskEntity);
+        TaskEntity updatedTask = taskRepository.save(taskEntity);
 
-        return taskEntityToTaskMapper.map(taskEntity);
+        return taskEntityToTaskMapper.map(updatedTask);
     }
 
 
-
-    private boolean isNameExist(final String name){
-        return !Boolean.TRUE.equals(taskRepository.existsByName(name));
+    private void checkTaskNameUniqueness(final String taskName) {
+        if (taskRepository.existsByName(taskName)) {
+            throw new TaskWithThisNameAlreadyExistException("With given task name = " + taskName);
+        }
     }
-
 
 }

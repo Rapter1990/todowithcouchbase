@@ -3,7 +3,6 @@ package com.example.todowithcouchbase.common.util;
 import com.example.todowithcouchbase.base.AbstractBaseServiceTest;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

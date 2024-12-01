@@ -8,7 +8,7 @@ import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface UpdateTaskMapper extends BaseMapper<UpdateTaskRequest, TaskEntity> {
+public interface UpdateTaskRequestToTaskEntityMapper extends BaseMapper<UpdateTaskRequest, TaskEntity> {
 
     @Named("mapForUpdate")
     default void updateTaskMapper(final TaskEntity taskEntity, final UpdateTaskRequest updateTaskRequest){
@@ -16,8 +16,8 @@ public interface UpdateTaskMapper extends BaseMapper<UpdateTaskRequest, TaskEnti
         taskEntity.setName(updateTaskRequest.getName());
 
     }
-    static UpdateTaskMapper initialize(){
-        return Mappers.getMapper(UpdateTaskMapper.class);
+    static UpdateTaskRequestToTaskEntityMapper initialize(){
+        return Mappers.getMapper(UpdateTaskRequestToTaskEntityMapper.class);
     }
 
 }

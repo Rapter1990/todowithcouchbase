@@ -34,7 +34,6 @@
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 		<openapi.version>2.1.0</openapi.version>
 		<springdoc-openapi.version>2.1.0</springdoc-openapi.version>
-		<java-faker.version>1.0.2</java-faker.version>
 	</properties>
 	<dependencies>
 
@@ -177,11 +176,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.javafaker</groupId>
-			<artifactId>javafaker</artifactId>
-			<version>${java-faker.version}</version>
 		</dependency>
 
 	</dependencies>

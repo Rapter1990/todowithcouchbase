@@ -1,7 +1,6 @@
 package com.example.todowithcouchbase.builder;
 
 import com.example.todowithcouchbase.task.model.dto.request.UpdateTaskRequest;
-import com.github.javafaker.Faker;
 
 public class UpdateTaskRequestBuilder extends BaseBuilder<UpdateTaskRequest>{
     public UpdateTaskRequestBuilder() {
@@ -9,18 +8,12 @@ public class UpdateTaskRequestBuilder extends BaseBuilder<UpdateTaskRequest>{
     }
 
     public UpdateTaskRequestBuilder withValidFields(){
-        final Faker faker = new Faker();
-        return this.withName(faker.name().name());
+        return this.withName("updateTaskRequest");
     }
 
     public UpdateTaskRequestBuilder withName(final String name){
         data.setName(name);
         return this;
-    }
-
-    @Override
-    public UpdateTaskRequest build() {
-        return super.build();
     }
 
 }
