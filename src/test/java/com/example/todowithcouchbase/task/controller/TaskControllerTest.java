@@ -548,9 +548,8 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.doThrow(new TaskWithThisNameAlreadyExistException("With given task name = " + request.getName()))
-                .when(taskService)
-                .updateTaskById(Mockito.anyString(), Mockito.any(UpdateTaskRequest.class));
+        Mockito.when(taskService.updateTaskById(Mockito.anyString(), Mockito.any(UpdateTaskRequest.class)))
+                .thenThrow(new TaskWithThisNameAlreadyExistException("With given task name = " + request.getName()));
 
         // Then
         mockMvc.perform(
@@ -585,15 +584,17 @@ class TaskControllerTest extends AbstractRestControllerTest {
         final String expectedMessage = "Task not found!\n Task not found with ID: " + nonExistentTaskId;
 
         // When
-        Mockito.when(taskService.updateTaskById(nonExistentTaskId, request))
+        Mockito.when(taskService.updateTaskById(Mockito.anyString(), Mockito.any(UpdateTaskRequest.class)))
                 .thenThrow(new TaskNotFoundException("Task not found with ID: " + nonExistentTaskId));
 
         // Then
-        mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/tasks/{id}", nonExistentTaskId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .put("/api/v1/tasks/{id}", nonExistentTaskId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request))
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken())
+                )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("NOT_FOUND"))
@@ -601,7 +602,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(false));
 
         // Verify
-        Mockito.verify(taskService, Mockito.times(1)).updateTaskById(nonExistentTaskId, request);
+        Mockito.verify(taskService, Mockito.times(1)).updateTaskById(Mockito.anyString(), Mockito.any(UpdateTaskRequest.class));
 
     }
 
