@@ -500,7 +500,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    void givenValidTaskUpdateWithAdminUpdate_whenUpdateTask_thenSuccess() throws Exception{
+    void givenValidTaskUpdate_WithAdminUpdate_whenUpdateTask_thenSuccess() throws Exception{
         //Given
         final String mockId = UUID.randomUUID().toString();
 
@@ -551,7 +551,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         //When
         Mockito.when(taskService.updateTaskById(Mockito.anyString(),Mockito.any(UpdateTaskRequest.class)))
-                .thenThrow(new TaskNotFoundException());
+                .thenThrow(new TaskNotFoundException("TASK NOT FOUND GIVEN ID"));
 
         //Then
         mockMvc.perform(
