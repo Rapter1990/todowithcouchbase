@@ -10,16 +10,10 @@ public class UpdateTaskRequestBuilder extends BaseBuilder<UpdateTaskRequest>{
 
     public UpdateTaskRequestBuilder withValidFields(){
         final Faker faker = new Faker();
-        return this
-                .withName(faker.name().name());
-
+        return this.withName(faker.name().name());
     }
 
-
-
-    public UpdateTaskRequestBuilder withName(
-            final String name
-    ){
+    public UpdateTaskRequestBuilder withName(final String name){
         data.setName(name);
         return this;
     }
@@ -28,4 +22,5 @@ public class UpdateTaskRequestBuilder extends BaseBuilder<UpdateTaskRequest>{
     public UpdateTaskRequest build() {
         return super.build();
     }
+
 }
