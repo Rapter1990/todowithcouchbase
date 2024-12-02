@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class UpdateTaskRequestToTaskEntityMapperTest {
 
@@ -20,52 +19,70 @@ class UpdateTaskRequestToTaskEntityMapperTest {
 
     @Test
     void testMapWithNullRequest() {
+
         TaskEntity result = mapper.map((UpdateTaskRequest) null);
+
         assertNull(result);
+
     }
 
     @Test
     void testMapWithValidRequest() {
-        UpdateTaskRequest updateRequest = new UpdateTaskRequest();
-        updateRequest.setName("Updated Task");
+
+        UpdateTaskRequest updateRequest = UpdateTaskRequest.builder()
+                .name("Updated Task")
+                .build();
 
         TaskEntity result = mapper.map(updateRequest);
 
         assertNotNull(result);
         assertEquals("Updated Task", result.getName());
+
     }
 
     @Test
     void testMapWithEmptyValues() {
-        UpdateTaskRequest updateRequest = new UpdateTaskRequest();
-        updateRequest.setName("");
+
+        UpdateTaskRequest updateRequest = UpdateTaskRequest.builder()
+                .name("")
+                .build();
 
         TaskEntity result = mapper.map(updateRequest);
 
         assertNotNull(result);
         assertEquals("", result.getName());
+
     }
 
     @Test
     void testMapCollectionWithNull() {
+
         List<TaskEntity> result = mapper.map((Collection<UpdateTaskRequest>) null);
+
         assertNull(result);
+
     }
 
     @Test
     void testMapCollectionWithEmptyList() {
+
         List<TaskEntity> result = mapper.map(Collections.emptyList());
+
         assertNotNull(result);
         assertTrue(result.isEmpty());
+
     }
 
     @Test
     void testMapCollectionWithValidRequests() {
-        UpdateTaskRequest request1 = new UpdateTaskRequest();
-        request1.setName("Task 1");
 
-        UpdateTaskRequest request2 = new UpdateTaskRequest();
-        request2.setName("Task 2");
+        UpdateTaskRequest request1 = UpdateTaskRequest.builder()
+                .name("Task 1")
+                .build();
+
+        UpdateTaskRequest request2 = UpdateTaskRequest.builder()
+                .name("Task 2")
+                .build();
 
         List<TaskEntity> result = mapper.map(Arrays.asList(request1, request2));
 
@@ -73,12 +90,15 @@ class UpdateTaskRequestToTaskEntityMapperTest {
         assertEquals(2, result.size());
         assertEquals("Task 1", result.get(0).getName());
         assertEquals("Task 2", result.get(1).getName());
+
     }
 
     @Test
     void testMapCollectionWithNullElements() {
-        UpdateTaskRequest request = new UpdateTaskRequest();
-        request.setName("Task 1");
+
+        UpdateTaskRequest request = UpdateTaskRequest.builder()
+                .name("Task 1")
+                .build();
 
         List<TaskEntity> result = mapper.map(Arrays.asList(request, null));
 
@@ -90,13 +110,16 @@ class UpdateTaskRequestToTaskEntityMapperTest {
 
     @Test
     void testMapWithEdgeCaseValues() {
-        UpdateTaskRequest updateRequest = new UpdateTaskRequest();
-        updateRequest.setName(null);
+
+        UpdateTaskRequest updateRequest = UpdateTaskRequest.builder()
+                .name(null)
+                .build();
 
         TaskEntity result = mapper.map(updateRequest);
 
         assertNotNull(result);
         assertNull(result.getName());
+
     }
 
 }
