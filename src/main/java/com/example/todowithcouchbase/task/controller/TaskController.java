@@ -86,8 +86,11 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public CustomResponse<String> deleteTaskById(@PathVariable(name = "id") @UUID final String id){
+
         taskService.deleteTaskById(id);
+
         return CustomResponse.successOf("Task with id "+ id + "is deleted");
+
     }
 
 }
