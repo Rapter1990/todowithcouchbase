@@ -653,4 +653,89 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
     }
 
+    @Test
+    void givenValidTaskId_whenAdminDeletesTask_thenSuccess() throws Exception {
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+
+        // When
+        Mockito.doNothing().when(taskService).deleteTaskById(taskId);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").value("Task with id " + taskId + "is deleted"));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).deleteTaskById(taskId);
+
+    }
+
+    @Test
+    void givenValidTaskId_whenUserDeletesTask_thenForbidden() throws Exception {
+
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockUserToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.never()).deleteTaskById(taskId);
+
+    }
+
+    @Test
+    void givenValidTaskId_whenNotAuthenticated_thenUnauthorized() throws Exception {
+
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.never()).deleteTaskById(taskId);
+
+    }
+
+    @Test
+    void givenInvalidTaskId_whenAdminDeletesTask_thenTaskNotFoundException() throws Exception {
+
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+        final String expectedMessage = "Task not found!\n";
+
+        // When
+        Mockito.doThrow(new TaskNotFoundException())
+                .when(taskService).deleteTaskById(taskId);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(expectedMessage));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).deleteTaskById(taskId);
+
+    }
+
+
 }
