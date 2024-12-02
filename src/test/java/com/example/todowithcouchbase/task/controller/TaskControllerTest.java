@@ -47,7 +47,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidTaskRequestWithAdminCreate_whenCreateTask_thenSuccess() throws Exception{
 
-        //Given
+        // Given
         final SaveTaskRequest request = SaveTaskRequest.builder()
                 .name("task-name")
                 .build();
@@ -57,11 +57,11 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .name(request.getName())
                 .build();
 
-        //When
+        // When
         Mockito.when(taskService.saveTaskToDatabase(any(SaveTaskRequest.class)))
                 .thenReturn(expectedTask);
 
-        //Then
+        // Then
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/v1/tasks")
@@ -75,7 +75,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response").value(expectedTask.getId()));
 
-        //Verify
+        // Verify
         Mockito.verify(taskService,Mockito.times(1))
                 .saveTaskToDatabase(any(SaveTaskRequest.class));
 
@@ -84,11 +84,12 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidTaskRequest_WhenWithUserCreate_ThenThrowUnAuthorizeException() throws Exception{
 
-        //Given
+        // Given
         final SaveTaskRequest request = SaveTaskRequest.builder()
                 .name("task-name")
                 .build();
 
+        // Then
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/v1/tasks")
@@ -357,10 +358,10 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         final TaskResponse expectedResponse = taskToTaskResponseMapper.map(mockTask);
 
-        //When
+        // When
         Mockito.when(taskService.getTaskById(mockTaskId)).thenReturn(mockTask);
 
-        //Then
+        // Then
         mockMvc.perform(MockMvcRequestBuilders
                          .get("/api/v1/tasks/{id}",mockTaskId)
                          .contentType(MediaType.APPLICATION_JSON)
@@ -381,7 +382,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenUnExistId_whenGetTaskById_thenReturnCustomResponse() throws Exception{
 
-        //Given
+        // Given
         final String mockTaskId = UUID.randomUUID().toString();
 
         final String mockTaskName = "Mock Task";
@@ -500,7 +501,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidTaskUpdate_WithAdminUpdate_whenUpdateTask_thenSuccess() throws Exception{
 
-        //Given
+        // Given
         final String mockId = UUID.randomUUID().toString();
 
         final UpdateTaskRequest request = UpdateTaskRequest.builder()
