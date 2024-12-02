@@ -100,6 +100,14 @@ public class TaskServiceImpl implements TaskService {
         return taskEntityToTaskMapper.map(updatedTask);
     }
 
+    @Override
+    public void deleteTaskById(final String id) {
+
+        TaskEntity taskToBeDeleted = taskRepository.findById(id)
+                .orElseThrow(()->new TaskNotFoundException("Task given id cant found"));
+
+        taskRepository.delete(taskToBeDeleted);
+    }
 
     private void checkTaskNameUniqueness(final String taskName) {
         if (taskRepository.existsByName(taskName)) {
