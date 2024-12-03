@@ -4,22 +4,22 @@ services:
     image: couchbase:latest
     container_name: couchbase
     ports:
-      - "8091:8091"
-      - "8097:8097"
-      - "9123:9123"
-      - "11207:11207"
-      - "11210:11210"
-      - "11280:11280"
-      - "18091:18091"
-      - "18097:18097"
+      - "8091:8091"     # Couchbase Web UI and REST API for cluster management
+      - "8097:8097"     # Node-to-node communication port for cluster management
+      - "9123:9123"     # Analytics service port
+      - "11207:11207"   # Smart client library communication port
+      - "11210:11210"   # Data service port for key-value operations
+      - "11280:11280"   # Internal port for Full Text Search (FTS) communication
+      - "18091:18091"   # Secure Couchbase Web UI and REST API (HTTPS)
+      - "18097:18097"   # Secure node-to-node communication port (TLS)
     environment:
       COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
       COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
       COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
       COUCHBASE_AUTO_INDEX: true
     volumes:
-      - ~/couchbase/node1:/opt/couchbase/var
-      - ./scripts:/opt/couchbase/scripts
+      - ~/couchbase/node1:/opt/couchbase/var # Persistent storage for Couchbase data and logs
+      - ./scripts:/opt/couchbase/scripts # Directory for custom initialization scripts
     command: >
       /bin/bash -c "
       /entrypoint.sh couchbase-server &
@@ -46,10 +46,10 @@ services:
       tail -f /dev/null
       "
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]  # Uses curl to check the availability of the Couchbase Web UI
+      interval: 30s    # Interval between health checks (30 seconds)
+      timeout: 10s     # Maximum time allowed for the health check command to run (10 seconds)
+      retries: 5       # Number of retries before marking the service as unhealthy (5 retries)
     networks:
       - todowithcouchbase_network
 
@@ -59,7 +59,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: todowithcouchbase
-    # restart: on-failure
+    restart: on-failure
     ports:
       - "2323:2323"
     depends_on:
