@@ -46,10 +46,10 @@ services:
       tail -f /dev/null
       "
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]  # Uses curl to check the availability of the Couchbase Web UI
+      interval: 30s    # Interval between health checks (30 seconds)
+      timeout: 10s     # Maximum time allowed for the health check command to run (10 seconds)
+      retries: 5       # Number of retries before marking the service as unhealthy (5 retries)
     networks:
       - todowithcouchbase_network
 
