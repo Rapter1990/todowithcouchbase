@@ -47,7 +47,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidTaskRequestWithAdminCreate_whenCreateTask_thenSuccess() throws Exception{
 
-        //Given
+        // Given
         final SaveTaskRequest request = SaveTaskRequest.builder()
                 .name("task-name")
                 .build();
@@ -57,11 +57,11 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .name(request.getName())
                 .build();
 
-        //When
+        // When
         Mockito.when(taskService.saveTaskToDatabase(any(SaveTaskRequest.class)))
                 .thenReturn(expectedTask);
 
-        //Then
+        // Then
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/v1/tasks")
@@ -75,7 +75,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.response").value(expectedTask.getId()));
 
-        //Verify
+        // Verify
         Mockito.verify(taskService,Mockito.times(1))
                 .saveTaskToDatabase(any(SaveTaskRequest.class));
 
@@ -84,11 +84,12 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidTaskRequest_WhenWithUserCreate_ThenThrowUnAuthorizeException() throws Exception{
 
-        //Given
+        // Given
         final SaveTaskRequest request = SaveTaskRequest.builder()
                 .name("task-name")
                 .build();
 
+        // Then
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/v1/tasks")
@@ -357,10 +358,10 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         final TaskResponse expectedResponse = taskToTaskResponseMapper.map(mockTask);
 
-        //When
+        // When
         Mockito.when(taskService.getTaskById(mockTaskId)).thenReturn(mockTask);
 
-        //Then
+        // Then
         mockMvc.perform(MockMvcRequestBuilders
                          .get("/api/v1/tasks/{id}",mockTaskId)
                          .contentType(MediaType.APPLICATION_JSON)
@@ -381,7 +382,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenUnExistId_whenGetTaskById_thenReturnCustomResponse() throws Exception{
 
-        //Given
+        // Given
         final String mockTaskId = UUID.randomUUID().toString();
 
         final String mockTaskName = "Mock Task";
@@ -500,7 +501,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
     @Test
     void givenValidTaskUpdate_WithAdminUpdate_whenUpdateTask_thenSuccess() throws Exception{
 
-        //Given
+        // Given
         final String mockId = UUID.randomUUID().toString();
 
         final UpdateTaskRequest request = UpdateTaskRequest.builder()
@@ -651,5 +652,90 @@ class TaskControllerTest extends AbstractRestControllerTest {
         Mockito.verify(taskService,Mockito.never()).updateTaskById(Mockito.anyString(),Mockito.any());
 
     }
+
+    @Test
+    void givenValidTaskId_whenAdminDeletesTask_thenSuccess() throws Exception {
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+
+        // When
+        Mockito.doNothing().when(taskService).deleteTaskById(taskId);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("OK"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").value("Task with id " + taskId + "is deleted"));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).deleteTaskById(taskId);
+
+    }
+
+    @Test
+    void givenValidTaskId_whenUserDeletesTask_thenForbidden() throws Exception {
+
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockUserToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.never()).deleteTaskById(taskId);
+
+    }
+
+    @Test
+    void givenValidTaskId_whenNotAuthenticated_thenUnauthorized() throws Exception {
+
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+
+        // Verify
+        Mockito.verify(taskService, Mockito.never()).deleteTaskById(taskId);
+
+    }
+
+    @Test
+    void givenInvalidTaskId_whenAdminDeletesTask_thenTaskNotFoundException() throws Exception {
+
+        // Given
+        final String taskId = UUID.randomUUID().toString();
+        final String expectedMessage = "Task not found!\n";
+
+        // When
+        Mockito.doThrow(new TaskNotFoundException())
+                .when(taskService).deleteTaskById(taskId);
+
+        // Then
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/v1/tasks/{id}", taskId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAdminToken.getAccessToken()))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.httpStatus").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isSuccess").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(expectedMessage));
+
+        // Verify
+        Mockito.verify(taskService, Mockito.times(1)).deleteTaskById(taskId);
+
+    }
+
 
 }

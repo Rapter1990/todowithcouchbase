@@ -46,6 +46,7 @@ public class TaskServiceImpl implements TaskService {
 
         TaskEntity taskEntityToBeSaved=saveTaskRequestToTaskEntityMapper.mapForSaving(taskRequest);
         taskRepository.save(taskEntityToBeSaved);
+
         return taskEntityToTaskMapper.map(taskEntityToBeSaved);
 
     }
@@ -83,6 +84,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(()->new TaskNotFoundException("Task given id cant found"));
 
         return taskEntityToTaskMapper.map(taskFromDb);
+
     }
 
     @Override
@@ -98,8 +100,17 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity updatedTask = taskRepository.save(taskEntity);
 
         return taskEntityToTaskMapper.map(updatedTask);
+
     }
 
+    @Override
+    public void deleteTaskById(final String id) {
+
+        TaskEntity taskToBeDeleted = taskRepository.findById(id)
+                .orElseThrow(()->new TaskNotFoundException("With given id = " + id));
+
+        taskRepository.delete(taskToBeDeleted);
+    }
 
     private void checkTaskNameUniqueness(final String taskName) {
         if (taskRepository.existsByName(taskName)) {

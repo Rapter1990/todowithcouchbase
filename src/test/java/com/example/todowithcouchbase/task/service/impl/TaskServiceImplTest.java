@@ -315,4 +315,49 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
 
     }
 
+    @Test
+    void givenValidTaskId_whenDeleteTaskById_thenDeleteTaskSuccessfully() {
+
+        // Given
+        final String taskId = "valid-task-id";
+
+        final TaskEntity mockTaskEntity = TaskEntity.builder()
+                .id(taskId)
+                .build();
+
+        // When
+        Mockito.when(taskRepository.findById(taskId)).thenReturn(Optional.of(mockTaskEntity));
+
+        // Then
+        taskService.deleteTaskById(taskId);
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(taskId);
+        Mockito.verify(taskRepository, Mockito.times(1)).delete(mockTaskEntity);
+
+    }
+
+    @Test
+    void givenInvalidTaskId_whenDeleteTaskById_thenThrowTaskNotFoundException() {
+
+        // Given
+        final String taskId = "invalid-task-id";
+
+        Mockito.when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+
+        // When
+        TaskNotFoundException exception = Assertions.assertThrows(TaskNotFoundException.class, () -> {
+            taskService.deleteTaskById(taskId);
+        });
+
+        // Then
+        Assertions.assertEquals("Task not found!\n With given id = " + taskId, exception.getMessage());
+        Mockito.verify(taskRepository, Mockito.times(1)).findById(taskId);
+
+        // Verify
+        Mockito.verify(taskRepository, Mockito.never()).delete(any(TaskEntity.class));
+
+    }
+
+
 }

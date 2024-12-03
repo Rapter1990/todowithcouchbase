@@ -1318,6 +1318,149 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "delete task by id",
+							"item": [
+								{
+									"name": "Delete Task By Id Admin",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Task By Id Admin Not Found",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJ0eXAiOiJCZWFyZXIiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJlMzJkYWYxYS0xZmVjLTQ3MmMtYTM2Zi0wNDA2MWFjOGE1NzMiLCJpc3MiOiJJU1NVRVIiLCJpYXQiOjE3MzIxOTEyMjIsImV4cCI6MTczMjE5MzAyMiwidXNlclN0YXR1cyI6IkFDVElWRSIsInVzZXJMYXN0TmFtZSI6ImV4YW1wbGVBZG1pblN1ck5hbWUiLCJ1c2VyUGhvbmVOdW1iZXIiOiIwMTIzNDU2Nzg5MCIsInVzZXJFbWFpbCI6ImV4YW1wbGVBZG1pbkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6IkFETUlOIiwidXNlckZpcnN0TmFtZSI6ImV4YW1wbGVBZG1pbkZpcnN0TmFtZSIsInVzZXJJZCI6IjVmNjk4N2RjLTU5NWYtNDM0MS04NmMzLWUzZWFmZTJhMzY5ZiJ9.kasxtVQ3NtPdEsbp5WSFKVzdtcm-NQHaSVvTChtCG_JSwPCFtWFKGjy1ulurRAjKAyv39I2c7B6bwZf945IU_0P-qUiFvXH_8WJ3hfw6YotkC6jDheK1bP1ILJVz-n0BfcGpW_ojl4jhOwaEdtg47pzbhk1XcnLDeWDyRx8CSIxnpmEGpYNNzQl74Kk11B4i2XqgLMtzT9um8WLitn1OFEVP1_rbt5d13gumnFxGfkwvEIWjDza0dLirKQHHcH3xPBXCXI5_p9NuMhzkB5Lo6fdeufHCE_feR3w5wv4v5P5pig5mNNRFb1SfTDLEEHrjbK6ZMLcN2ze_Y8qlo0aPAA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Task By Id Admin UnAuthorized",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:2323/api/v1/tasks/:id",
+											"host": [
+												"localhost"
+											],
+											"port": "2323",
+											"path": [
+												"api",
+												"v1",
+												"tasks",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}

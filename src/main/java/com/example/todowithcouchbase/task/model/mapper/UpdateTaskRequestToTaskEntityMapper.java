@@ -16,6 +16,7 @@ public interface UpdateTaskRequestToTaskEntityMapper extends BaseMapper<UpdateTa
         taskEntity.setName(updateTaskRequest.getName());
 
     }
+
     static UpdateTaskRequestToTaskEntityMapper initialize(){
         return Mappers.getMapper(UpdateTaskRequestToTaskEntityMapper.class);
     }

@@ -62,7 +62,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public CustomResponse<TaskResponse> getTaskById(@PathVariable @UUID final String id){
+    public CustomResponse<TaskResponse> getTaskById(@PathVariable @Valid @UUID final String id){
         final Task task = taskService.getTaskById(id);
 
         final TaskResponse response = taskToTaskResponseMapper.map(task);
@@ -73,7 +73,7 @@ public class TaskController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public CustomResponse<TaskResponse> updateTaskById(
-            @PathVariable @UUID final String id,
+            @PathVariable @Valid @UUID final String id,
             @RequestBody @Valid final UpdateTaskRequest updateTaskRequest){
 
         final Task task = taskService.updateTaskById(id, updateTaskRequest);
@@ -81,6 +81,16 @@ public class TaskController {
         final TaskResponse response = taskToTaskResponseMapper.map(task);
 
         return CustomResponse.successOf(response);
+
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public CustomResponse<String> deleteTaskById(@PathVariable @Valid final String id){
+
+        taskService.deleteTaskById(id);
+
+        return CustomResponse.successOf("Task with id "+ id + "is deleted");
 
     }
 
