@@ -11,6 +11,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link SaveTaskRequestToTaskEntityMapper}.
+ * This class verifies the correctness of the mapping logic from {@link SaveTaskRequest}
+ * to {@link TaskEntity}.
+ */
 class SaveTaskRequestToTaskEntityMapperTest {
 
     private final SaveTaskRequestToTaskEntityMapper mapper = SaveTaskRequestToTaskEntityMapper.initialize();

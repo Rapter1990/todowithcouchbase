@@ -8,6 +8,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link TaskToTaskResponseMapper}.
+ * This class verifies the correctness of the mapping logic from Task objects to {@link TaskResponse}.
+ */
 class TaskToTaskResponseMapperTest {
 
     private final TaskToTaskResponseMapper mapper = TaskToTaskResponseMapper.initialize();

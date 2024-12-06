@@ -34,6 +34,10 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * Unit test class for {@link TaskServiceImpl}.
+ * This class verifies the correctness of the business logic in {@link TaskServiceImpl}.
+ */
 class TaskServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

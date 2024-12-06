@@ -12,7 +12,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * Unit test class for {@link UpdateTaskRequestToTaskEntityMapperImpl}.
+ * This class validates the mapping logic from {@link UpdateTaskRequest} to {@link TaskEntity}.
+ */
 class UpdateTaskRequestToTaskEntityMapperTest {
 
     private final UpdateTaskRequestToTaskEntityMapperImpl mapper = new UpdateTaskRequestToTaskEntityMapperImpl();
