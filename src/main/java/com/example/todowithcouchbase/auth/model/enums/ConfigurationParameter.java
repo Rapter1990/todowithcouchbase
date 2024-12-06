@@ -3,6 +3,11 @@ package com.example.todowithcouchbase.auth.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enum representing the configuration parameters used in the application.
+ * Each parameter corresponds to a specific configuration value, such as issuer, token expiration times,
+ * and keys used for authentication and encryption.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum ConfigurationParameter {

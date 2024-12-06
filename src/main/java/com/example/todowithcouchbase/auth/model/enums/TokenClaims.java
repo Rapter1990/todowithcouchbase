@@ -3,6 +3,11 @@ package com.example.todowithcouchbase.auth.model.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enum representing various claims used in a JWT token.
+ * Each enum constant represents a claim, along with its associated key (string value) used in the token.
+ * These claims are typically used to store information about the user, token metadata, or other context-specific data.
+ */
 @Getter
 @RequiredArgsConstructor
 public enum TokenClaims {

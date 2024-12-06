@@ -6,6 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+/**
+ * Represents a request for user registration containing the necessary details
+ * to create a new user in the system.
+ * This class is used to capture the data required for registering a user, including
+ * their email, password, first and last name, phone number, and user type. It also
+ * enforces validation rules on the fields to ensure data integrity.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

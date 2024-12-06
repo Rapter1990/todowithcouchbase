@@ -11,6 +11,13 @@ import org.springframework.data.couchbase.core.mapping.id.GenerationStrategy;
 import org.springframework.data.couchbase.repository.Collection;
 import org.springframework.data.couchbase.repository.Scope;
 
+/**
+ * Represents an entity that stores information about invalidated tokens.
+ * This class is used to store a record of tokens that have been invalidated
+ * in a MongoDB collection. Each invalid token is identified by a unique token ID.
+ * This entity extends from {@link BaseEntity}, inheriting common fields such as
+ * created and updated timestamps.
+ */
 @Getter
 @Setter
 @SuperBuilder
