@@ -13,6 +13,12 @@ import org.springframework.data.couchbase.repository.Scope;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a log entity that stores information about requests and responses, including any errors that occur.
+ * This class is used for logging operations such as method calls, status codes, messages, user information,
+ * error details, and other relevant data. The logs are stored in a MongoDB collection for persistence and auditing purposes.
+ * It extends {@link BaseEntity} to inherit common entity properties.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
