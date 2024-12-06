@@ -6,7 +6,11 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * A builder class for creating instances of {@link TaskEntity} with specific properties set.
+ */
 public class TaskEntityBuilder extends BaseBuilder<TaskEntity>{
+
     public TaskEntityBuilder() { super(TaskEntity.class);}
 
     public TaskEntity withValidFields(){
@@ -25,6 +29,12 @@ public class TaskEntityBuilder extends BaseBuilder<TaskEntity>{
         data.setName(name);
         return this;
     }
+
+    /**
+     * Generates a random name using characters from the Turkish alphabet.
+     *
+     * @return a randomly generated name
+     */
     private String randomNameGenerator(){
 
         final int nameLength = 6; // Length of the generated name

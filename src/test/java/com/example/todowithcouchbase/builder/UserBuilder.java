@@ -6,6 +6,9 @@ import com.example.todowithcouchbase.auth.model.enums.UserType;
 
 import java.util.UUID;
 
+/**
+ * A builder class for creating instances of {@link UserEntity} with specific properties set.
+ */
 public class UserBuilder extends BaseBuilder<UserEntity> {
 
     public UserBuilder() {
