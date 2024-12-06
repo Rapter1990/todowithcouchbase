@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for verifying the configuration of OpenAPI documentation.
+ */
 class OpenApiConfigTest {
 
     @Test
