@@ -21,6 +21,12 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Abstract base test class for REST controller tests. This class is extended by all controller test classes
+ * and provides a mock MVC setup, a Jackson ObjectMapper, and mock tokens for authentication.
+ * This class sets up the necessary configurations for testing REST endpoints and includes mock authorization tokens
+ * for admin and user roles.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AbstractRestControllerTest extends AbstractTestContainerConfiguration {
@@ -38,7 +44,10 @@ public class AbstractRestControllerTest extends AbstractTestContainerConfigurati
     @Mock
     private TokenConfigurationParameter tokenConfiguration;
 
-
+    /**
+     * Initializes the mock tokens for admin and user roles before each test.
+     * This method creates new tokens with the required claims for testing.
+     */
     @BeforeEach
     public void initializeAuth() {
 
@@ -47,6 +56,12 @@ public class AbstractRestControllerTest extends AbstractTestContainerConfigurati
         this.mockUserToken = this.generate(new UserBuilder().withValidFields().build().getClaims());
     }
 
+    /**
+     * Generates a {@link Token} using the given claims for both access and refresh tokens.
+     *
+     * @param claims the claims to be included in the token.
+     * @return a {@link Token} containing access and refresh tokens.
+     */
     private Token generate(Map<String, Object> claims) {
 
         final long currentTimeMillis = System.currentTimeMillis();
