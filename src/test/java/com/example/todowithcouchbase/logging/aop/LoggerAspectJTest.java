@@ -36,6 +36,10 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test class for the {@link LoggerAspectJ}, verifying that logging aspects
+ * are correctly applied to target methods and provide the expected output.
+ */
 class LoggerAspectJTest extends AbstractBaseServiceTest {
 
     @InjectMocks
