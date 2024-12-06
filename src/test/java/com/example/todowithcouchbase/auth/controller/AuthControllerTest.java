@@ -27,6 +27,12 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Integration test class for {@link AuthController}.
+ * This test class mocks the dependencies of the controller and provides integration
+ * tests for authentication-related operations such as registration, login, refresh token,
+ * and logout.
+ */
 class AuthControllerTest extends AbstractRestControllerTest {
 
     @MockBean

@@ -11,6 +11,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link TokenToTokenResponseMapper}.
+ * This class tests the mapping functionality between a {@link Token} and a {@link TokenResponse}
+ * to ensure correct transformation of token data.
+ */
 class TokenToTokenResponseMapperTest {
 
     private final TokenToTokenResponseMapper mapper = TokenToTokenResponseMapper.initialize();

@@ -16,6 +16,13 @@ import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for {@link LogoutServiceImpl}.
+ * This test class validates the functionality of the logout service, which is responsible
+ * for handling the user logout process, including token invalidation.
+ * It mocks the {@link TokenService} and {@link InvalidTokenService} to verify the logout logic
+ * without actually interacting with the token management system.
+ */
 class LogoutServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

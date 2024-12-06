@@ -19,6 +19,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for {@link LoginServiceImpl}.
+ * This test class ensures the correct behavior of the login service, which handles the user login
+ * process, including verifying credentials and generating authentication tokens.
+ * It mocks the {@link UserRepository}, {@link PasswordEncoder}, and {@link TokenService}
+ * to isolate the login logic from external dependencies.
+ */
 class LoginServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

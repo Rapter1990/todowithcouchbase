@@ -16,6 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for {@link InvalidTokenServiceImpl}.
+ * This test class verifies the functionality of the service responsible for managing invalid tokens.
+ * It mocks the {@link InvalidTokenRepository} to simulate interactions with the data layer.
+ */
 class InvalidTokenServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

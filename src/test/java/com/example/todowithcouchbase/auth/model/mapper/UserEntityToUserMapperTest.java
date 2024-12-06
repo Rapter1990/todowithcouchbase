@@ -10,6 +10,11 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link UserEntityToUserMapper}.
+ * This class tests the mapping functionality between a {@link UserEntity} and a {@link User}
+ * to ensure proper data transformation from entity to domain model.
+ */
 class UserEntityToUserMapperTest {
 
     private final UserEntityToUserMapper mapper = UserEntityToUserMapper.initialize();
