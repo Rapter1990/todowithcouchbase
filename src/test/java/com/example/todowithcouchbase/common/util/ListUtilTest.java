@@ -7,6 +7,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for utility methods in {@link ListUtil}.
+ * Ensures that list-related utility methods work as intended.
+ */
 class ListUtilTest extends AbstractBaseServiceTest {
 
 

@@ -9,6 +9,12 @@ import org.springframework.data.couchbase.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
+/**
+ * A base class for domain models that include common auditing fields such as
+ * creation and update timestamps, as well as the user responsible for those changes.
+ * This class serves as a foundation for other domain models, providing essential fields
+ * to track the creation and modification metadata, which is crucial for auditing purposes.
+ */
 @Getter
 @Setter
 @SuperBuilder

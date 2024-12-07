@@ -34,6 +34,11 @@ import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * Integration test class for the {@link TaskController}.
+ * This class tests the REST endpoints of the {@link TaskController} to ensure that task-related
+ * operations are performed correctly.
+ */
 class TaskControllerTest extends AbstractRestControllerTest {
 
     @MockBean

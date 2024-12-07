@@ -12,6 +12,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link RegisterRequestToUserEntityMapper}.
+ * This class tests the mapping functionality between a {@link RegisterRequest} and a
+ * {@link UserEntity} to ensure the correct transformation of data during user registration.
+ */
 class RegisterRequestToUserEntityMapperTest {
 
     private final RegisterRequestToUserEntityMapper mapper = RegisterRequestToUserEntityMapper.initialize();

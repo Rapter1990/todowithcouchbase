@@ -8,6 +8,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for verifying the functionality of {@link CustomPagingResponse}.
+ * Ensures proper pagination-related behavior.
+ */
 class CustomPagingResponseTest {
 
     @Test

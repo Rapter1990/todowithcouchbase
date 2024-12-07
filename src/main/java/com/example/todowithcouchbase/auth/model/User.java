@@ -8,6 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Represents an access and refresh token used for authentication and authorization.
+ * This class contains information about the access token, its expiration time, and the refresh token.
+ * It also provides utility methods for handling tokens in the form of "Bearer" tokens, which are commonly used
+ * in HTTP Authorization headers.
+ */
 @Getter
 @Setter
 @SuperBuilder

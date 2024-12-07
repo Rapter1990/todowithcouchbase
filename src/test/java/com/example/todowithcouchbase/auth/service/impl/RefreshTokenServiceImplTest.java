@@ -22,6 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for {@link RefreshTokenServiceImpl}.
+ * This test class ensures the correct functionality of the refresh token service,
+ * which manages the generation of new tokens when a valid refresh token is provided.
+ * It mocks the {@link UserRepository} and {@link TokenService} to isolate the refresh token logic.
+ */
 class RefreshTokenServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

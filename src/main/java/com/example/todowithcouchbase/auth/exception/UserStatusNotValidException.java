@@ -4,6 +4,11 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
 
+/**
+ * Custom exception thrown when a user's status is deemed invalid for a specific operation.
+ * This exception extends {@link RuntimeException} and is typically used in scenarios
+ * where user-related validations fail due to an invalid status.
+ */
 public class UserStatusNotValidException extends RuntimeException {
 
     @Serial
@@ -15,10 +20,19 @@ public class UserStatusNotValidException extends RuntimeException {
             User status is not valid!
             """;
 
+    /**
+     * Constructs a new {@code UserStatusNotValidException} with the default message.
+     */
     public UserStatusNotValidException() {
         super(DEFAULT_MESSAGE);
     }
 
+    /**
+     * Constructs a new {@code UserStatusNotValidException} with the default message
+     * and appends a custom message.
+     *
+     * @param message the custom message to append to the default message.
+     */
     public UserStatusNotValidException(final String message) {
         super(DEFAULT_MESSAGE + " " + message);
     }

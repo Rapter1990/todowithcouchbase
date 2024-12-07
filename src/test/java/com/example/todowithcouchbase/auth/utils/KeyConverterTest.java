@@ -7,6 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link KeyConverter}.
+ * This test class ensures that the utility class {@link KeyConverter}, which is designed to be
+ * used statically and not instantiated, cannot be instantiated using reflection.
+ */
 class KeyConverterTest {
 
     @Test

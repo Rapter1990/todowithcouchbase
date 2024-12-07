@@ -14,6 +14,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.text.DateFormat;
 
+/**
+ * Custom implementation of the {@link AuthenticationEntryPoint} interface to handle unauthorized access (HTTP 401).
+ * This class provides a custom entry point for authentication exceptions. When an authentication exception occurs,
+ * it generates a custom error response with a 401 Unauthorized status code and a specific error message format.
+ */
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -23,6 +28,16 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }
 
+    /**
+     * Handles authentication errors by sending a custom error response to the client.
+     * This method is invoked when an authentication exception occurs. It sets the response content type to
+     * JSON, status code to 401 (Unauthorized), and writes a custom error response with error details.
+     *
+     * @param httpServletRequest The {@link HttpServletRequest} containing the client request data.
+     * @param httpServletResponse The {@link HttpServletResponse} used to send the error response.
+     * @param authenticationException The {@link AuthenticationException} that caused the entry point to be triggered.
+     * @throws IOException If an I/O error occurs while writing the response.
+     */
     @Override
     public void commence(final HttpServletRequest httpServletRequest,
                          final HttpServletResponse httpServletResponse,

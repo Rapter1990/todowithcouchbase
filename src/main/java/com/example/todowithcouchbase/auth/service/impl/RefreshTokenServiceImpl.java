@@ -13,6 +13,11 @@ import com.example.todowithcouchbase.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service implementation for handling the refreshing of authentication tokens.
+ * This interface defines the method responsible for refreshing the user's authentication token.
+ * It generates a new access token and possibly a new refresh token, typically used when the old access token has expired.
+ */
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
@@ -20,6 +25,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
 
+    /**
+     * Refreshes the user's authentication token.
+     * This method accepts a request containing the refresh token and generates new access and refresh tokens.
+     * The new tokens can be used for subsequent requests that require authentication.
+     *
+     * @param tokenRefreshRequest The request containing the refresh token information to generate new tokens.
+     * @return A {@link Token} containing the new access and refresh tokens.
+     */
     @Override
     public Token refreshToken(TokenRefreshRequest tokenRefreshRequest) {
         tokenService.verifyAndValidate(tokenRefreshRequest.getRefreshToken());
@@ -41,6 +54,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         );
     }
 
+    /**
+     * Validates the user's status to ensure they are active.
+     * This method checks if the user's status is set to active.
+     * If the user is not active, it throws a {@link UserStatusNotValidException}.
+     *
+     * @param userEntity The {@link UserEntity} to validate.
+     * @throws UserStatusNotValidException If the user is not in an active status.
+     */
     private void validateAdminStatus(final UserEntity userEntity) {
         if (!(UserStatus.ACTIVE.equals(userEntity.getUserStatus()))) {
             throw new UserStatusNotValidException("UserStatus = " + userEntity.getUserStatus());

@@ -23,6 +23,13 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 
+/**
+ * Unit test class for {@link TokenServiceImpl}.
+ * This test class validates the functionality of the token service,
+ * which is responsible for generating, validating, and managing tokens.
+ * It mocks the {@link TokenConfigurationParameter} and {@link InvalidTokenService}
+ * to test the token-related logic without dependencies on the actual configuration or token invalidation logic.
+ */
 class TokenServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

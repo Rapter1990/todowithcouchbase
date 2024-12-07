@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for verifying the configuration of OpenAPI documentation.
+ */
 class OpenApiConfigTest {
 
     @Test
@@ -51,7 +54,7 @@ class OpenApiConfigTest {
         Contact contact = info.contact();
 
         // Then
-        assertEquals("Sercan Noyan Germiyanoğlu | Süha Can Uluer | Mehmet Şeymus Yüzen | Harun Yusuf Ekşioğlu | Muhammet Oğuzhan Aydoğan", contact.name());
+        assertEquals("Sercan Noyan Germiyanoğlu", contact.name());
         assertEquals("https://github.com/Rapter1990/todowithcouchbase", contact.url());
 
     }

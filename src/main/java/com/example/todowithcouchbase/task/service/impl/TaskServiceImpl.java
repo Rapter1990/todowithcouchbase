@@ -21,6 +21,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service implementation for managing tasks in the system.
+ * This interface defines the methods for CRUD operations on tasks,
+ * including saving, retrieving, updating, and deleting tasks.
+ */
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -38,7 +43,12 @@ public class TaskServiceImpl implements TaskService {
     private final UpdateTaskRequestToTaskEntityMapper updateTaskRequestToTaskEntityMapper =
             UpdateTaskRequestToTaskEntityMapper.initialize();
 
-
+    /**
+     * Saves a new task to the database.
+     *
+     * @param taskRequest the request object containing the details of the task to be saved.
+     * @return the saved {@link Task} entity.
+     */
     @Override
     public Task saveTaskToDatabase(final SaveTaskRequest taskRequest) {
 
@@ -51,6 +61,12 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    /**
+     * Retrieves all tasks with pagination support.
+     *
+     * @param customPagingRequest the request object containing paging parameters (e.g., page size, page number).
+     * @return a {@link CustomPage} of tasks, containing a list of tasks and pagination details.
+     */
     @Override
     public CustomPage<Task> getAllTasks(final CustomPagingRequest customPagingRequest) {
 
@@ -67,6 +83,12 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    /**
+     * Retrieves a task by its name.
+     *
+     * @param getTaskByNameRequest the request object containing the name of the task to be retrieved.
+     * @return the {@link Task} entity with the specified name.
+     */
     @Override
     public Task getTaskByName(final GetTaskByNameRequest getTaskByNameRequest) {
 
@@ -77,6 +99,12 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    /**
+     * Retrieves a task by its ID.
+     *
+     * @param id the ID of the task to be retrieved.
+     * @return the {@link Task} entity with the specified ID.
+     */
     @Override
     public Task getTaskById(String id) {
 
@@ -87,6 +115,13 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    /**
+     * Updates an existing task by its ID.
+     *
+     * @param id the ID of the task to be updated.
+     * @param updateTaskRequest the request object containing the updated details of the task.
+     * @return the updated {@link Task} entity.
+     */
     @Override
     public Task updateTaskById(final String id, final UpdateTaskRequest updateTaskRequest) {
 
@@ -103,6 +138,11 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
+    /**
+     * Deletes a task by its ID.
+     *
+     * @param id the ID of the task to be deleted.
+     */
     @Override
     public void deleteTaskById(final String id) {
 
@@ -112,6 +152,13 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.delete(taskToBeDeleted);
     }
 
+    /**
+     * Checks the uniqueness of a task name in the repository.
+     * If a task with the given name already exists, a {@link TaskWithThisNameAlreadyExistException} is thrown.
+     *
+     * @param taskName the name of the task to be checked for uniqueness.
+     * @throws TaskWithThisNameAlreadyExistException if a task with the given name already exists in the repository.
+     */
     private void checkTaskNameUniqueness(final String taskName) {
         if (taskRepository.existsByName(taskName)) {
             throw new TaskWithThisNameAlreadyExistException("With given task name = " + taskName);

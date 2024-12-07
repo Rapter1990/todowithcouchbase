@@ -27,6 +27,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Aspect for logging method execution and exceptions in REST controllers.
+ * This class intercepts all method calls and exception throws in any class annotated with {@link org.springframework.web.bind.annotation.RestController}.
+ * It logs information about the HTTP request, response, and any exceptions that are thrown.
+ * The logs are saved to the database using the {@link LogService}.
+ */
 @Aspect
 @Slf4j
 @Component
@@ -35,11 +41,22 @@ public class LoggerAspectJ {
 
     private final LogService logService;
 
+    /**
+     * Pointcut that matches methods within classes annotated with {@link org.springframework.web.bind.annotation.RestController}.
+     */
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
     public void restControllerPointcut() {
 
     }
 
+    /**
+     * After throwing advice that logs exception details when an exception is thrown from a REST controller method.
+     * This method logs details such as the HTTP request URL, HTTP method, exception message, and the operation that threw the exception.
+     * It also retrieves the username from the {@link SecurityContextHolder} if available and logs it.
+     *
+     * @param joinPoint The join point representing the method execution.
+     * @param ex       The exception thrown by the method.
+     */
     @AfterThrowing(pointcut = "restControllerPointcut()", throwing = "ex")
     public void logAfterThrowing(JoinPoint joinPoint, Exception ex) {
 
@@ -79,7 +96,15 @@ public class LoggerAspectJ {
 
     }
 
-
+    /**
+     * After returning advice that logs response details when a REST controller method successfully returns a result.
+     * This method logs information such as the HTTP request URL, HTTP method, operation, and response message.
+     * It also includes the HTTP status code in the log.
+     *
+     * @param joinPoint The join point representing the method execution.
+     * @param result    The result returned by the method.
+     * @throws IOException If there is an issue serializing the response object.
+     */
     @AfterReturning(value = "restControllerPointcut()", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) throws IOException {
 
@@ -126,6 +151,13 @@ public class LoggerAspectJ {
         }
     }
 
+    /**
+     * Retrieves the HTTP status from the exception type.
+     * This method maps specific exception classes to their corresponding HTTP status values.
+     *
+     * @param ex The exception thrown.
+     * @return The HTTP status as a string corresponding to the exception type.
+     */
     private String getHttpStatusFromException(Exception ex) {
         return switch (ex.getClass().getSimpleName()) {
             case "PasswordNotValidException" -> PasswordNotValidException.STATUS.name();

@@ -9,7 +9,12 @@ import org.springframework.data.couchbase.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * A base entity class that provides common fields for tracking the creation
+ * and update metadata of an entity. This class is intended to be extended by other
+ * entity classes to include audit information such as creation and update timestamps
+ * and user details.
+ */
 @Getter
 @Setter
 @SuperBuilder

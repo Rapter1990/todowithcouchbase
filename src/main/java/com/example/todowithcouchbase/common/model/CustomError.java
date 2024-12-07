@@ -9,6 +9,12 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * A class representing a custom error response. This class is used to structure error responses
+ * in a standardized format, including HTTP status, error messages, time of occurrence, and optional
+ * sub-errors to provide more detailed information about what went wrong.
+ * This class can be used in API responses to provide error details when an operation fails.
+ */
 @Getter
 @Builder
 public class CustomError {
@@ -29,6 +35,10 @@ public class CustomError {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<CustomSubError> subErrors;
 
+    /**
+     * A static class representing a sub-error, which contains additional information about specific
+     * aspects of the error, such as a specific field and its associated value.
+     */
     @Getter
     @Builder
     public static class CustomSubError {
@@ -45,6 +55,10 @@ public class CustomError {
 
     }
 
+    /**
+     * An enum representing predefined headers for different types of errors.
+     * These headers help categorize the error and provide a quick understanding of its context.
+     */
     @Getter
     @RequiredArgsConstructor
     public enum Header {

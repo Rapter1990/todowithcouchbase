@@ -4,7 +4,12 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serial;
 
-
+/**
+ * Custom exception thrown when an unauthorized attempt is made to perform an action,
+ * such as creating a to-do item without proper permissions.
+ * This exception extends {@link RuntimeException} and is typically used in scenarios
+ * where access control or authorization checks fail.
+ */
 public class UnAuthorizeAttemptException extends RuntimeException{
 
     @Serial
@@ -16,6 +21,9 @@ public class UnAuthorizeAttemptException extends RuntimeException{
             You do not have permission to create a to-do item.
             """;
 
+    /**
+     * Constructs a new {@code UnAuthorizeAttemptException} with the default message.
+     */
     public UnAuthorizeAttemptException() {
         super(DEFAULT_MESSAGE);
     }

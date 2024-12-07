@@ -9,6 +9,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for {@link TaskEntityToTaskMapper}.
+ * This class ensures that {@link TaskEntity} objects are correctly mapped to their domain-level representation.
+ */
 class TaskEntityToTaskMapperTest {
 
     private final TaskEntityToTaskMapper mapper = TaskEntityToTaskMapper.initialize();

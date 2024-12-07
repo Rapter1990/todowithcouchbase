@@ -7,10 +7,14 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
+/**
+ * Configuration class for setting up OpenAPI documentation for the application.
+ * This class configures the metadata and security settings for the API documentation using OpenAPI 3.0 annotations.
+ */
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(
-                        name = "Sercan Noyan Germiyanoğlu | Süha Can Uluer | Mehmet Şeymus Yüzen | Harun Yusuf Ekşioğlu | Muhammet Oğuzhan Aydoğan",
+                        name = "Sercan Noyan Germiyanoğlu",
                         url = "https://github.com/Rapter1990/todowithcouchbase"
                 ),
                 description = "Case Study - To Do List with Spring Boot and Couchbase" +

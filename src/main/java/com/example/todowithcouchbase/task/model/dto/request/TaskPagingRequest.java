@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Request class used for paginated task retrieval.
+ * Inherits from the base class {@link CustomPagingRequest}, which provides pagination details such as page number and size.
+ * This class is used to request a paginated list of tasks.
+ */
 @Getter
 @Setter
 @SuperBuilder

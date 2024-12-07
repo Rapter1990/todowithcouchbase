@@ -19,6 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test class for {@link RegisterServiceImpl}.
+ * This test class verifies the functionality of the registration service,
+ * which handles user registration, including password encoding and saving user data.
+ * It mocks the {@link UserRepository} and {@link PasswordEncoder} to test the registration logic
+ * independently of external systems.
+ */
 class RegisterServiceImplTest extends AbstractBaseServiceTest {
 
     @InjectMocks

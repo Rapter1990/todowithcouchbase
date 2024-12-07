@@ -17,6 +17,15 @@ import org.springframework.data.couchbase.repository.Scope;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a user entity in the system.
+ * This entity class stores user information, including personal details (e.g.,
+ * first name, last name, email, etc.) and their status and type. It is
+ * mapped to a MongoDB collection for storing user records. Each user has
+ * an ID that is automatically generated.
+ * This entity extends from {@link BaseEntity}, inheriting common fields
+ * like created and updated timestamps.
+ */
 @Getter
 @Setter
 @SuperBuilder
@@ -55,6 +64,14 @@ public class UserEntity extends BaseEntity {
     @Field(name = "USER_STATUS")
     private UserStatus userStatus = UserStatus.ACTIVE;
 
+    /**
+     * Generates a map of claims associated with the user.
+     * This method creates a map of key-value pairs representing the user's claims,
+     * which can be used for JWT token generation or other purposes where user-related
+     * data needs to be included.
+     *
+     * @return a map containing the user's claims.
+     */
     public Map<String, Object> getClaims() {
         final Map<String, Object> claims = new HashMap<>();
 

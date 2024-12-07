@@ -24,17 +24,39 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Configuration class for security settings of the application.
+ * This class sets up the authentication and authorization mechanisms using Spring Security.
+ * It defines the session management strategy, security filter chain, CORS configurations,
+ * and password encoding strategy.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    /**
+     * Configures the session authentication strategy for the application.
+     * Registers a session authentication strategy that tracks authenticated sessions
+     * using a {@link SessionRegistryImpl}.
+     *
+     * @return the session authentication strategy to be used.
+     */
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
+    /**
+     * Configures the security filter chain for handling HTTP security.
+     *
+     * @param httpSecurity the {@link HttpSecurity} to configure.
+     * @param customBearerTokenAuthenticationFilter a custom filter for handling bearer token authentication.
+     * @param customAuthenticationEntryPoint   a custom entry point for authentication failures.
+     * @return the configured {@link SecurityFilterChain}.
+     * @throws Exception if an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain filterChain(
             final HttpSecurity httpSecurity,
@@ -63,6 +85,12 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    /**
+     * Provides the CORS configuration for the application.
+     * Allows all origins, methods, and headers for cross-origin requests.
+     *
+     * @return the {@link CorsConfigurationSource} with the specified configurations.
+     */
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
@@ -73,6 +101,12 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Provides the password encoder for the application.
+     * Configures a {@link BCryptPasswordEncoder} for securely hashing passwords.
+     *
+     * @return the {@link PasswordEncoder} to be used.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
