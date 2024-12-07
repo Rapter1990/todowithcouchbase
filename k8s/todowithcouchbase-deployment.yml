@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todowithcouchbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todowithcouchbase
+  template:
+    metadata:
+      labels:
+        app: todowithcouchbase
+    spec:
+      containers:
+        - name: todowithcouchbase
+          image: noyandocker/todowithcouchbase:latest
+          ports:
+            - containerPort: 2323
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: couchbase-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todowithcouchbase-service
+spec:
+  selector:
+    app: todowithcouchbase
+  ports:
+    - protocol: TCP
+      port: 2323
+      targetPort: 2323
+  type: NodePort
