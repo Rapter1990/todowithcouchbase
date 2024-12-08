@@ -15,17 +15,18 @@ spec:
       containers:
         - name: prometheus
           image: prom/prometheus:latest
+          args:
+            - '--config.file=/etc/prometheus/prometheus.yml'
           ports:
             - containerPort: 9090
           volumeMounts:
             - name: prometheus-config
-              mountPath: /etc/prometheus/prometheus.yml
-              subPath: prometheus.yml
+              mountPath: /etc/prometheus
       volumes:
         - name: prometheus-config
           hostPath:
-            path: /data/prometheus/prometheus.yml
-            type: File
+            path: /data/prometheus/config
+            type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
