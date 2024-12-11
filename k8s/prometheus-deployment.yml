@@ -22,11 +22,11 @@ spec:
           volumeMounts:
             - name: prometheus-config
               mountPath: /etc/prometheus
+              subPath: prometheus.yml
       volumes:
         - name: prometheus-config
-          hostPath:
-            path: ./data/prometheus/config/prometheus.yml
-            type: DirectoryOrCreate
+          configMap:
+            name: prometheus-config
 ---
 apiVersion: v1
 kind: Service
