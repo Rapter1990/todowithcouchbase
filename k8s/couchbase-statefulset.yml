@@ -17,8 +17,14 @@ spec:
         - name: couchbase
           image: couchbase:latest
           ports:
-            - containerPort: 8091
-            - containerPort: 11210
+            - containerPort: 8091    # Couchbase Web UI
+            - containerPort: 8097    # Cluster management
+            - containerPort: 9123    # Analytics service
+            - containerPort: 11207   # Smart client library communication
+            - containerPort: 11210   # Data service
+            - containerPort: 11280   # Full Text Search (FTS)
+            - containerPort: 18091   # Secure Web UI (HTTPS)
+            - containerPort: 18097   # Secure node-to-node communication (TLS)
           env:
             - name: COUCHBASE_ADMINISTRATOR_USERNAME
               valueFrom:
@@ -55,8 +61,32 @@ spec:
       protocol: TCP
       port: 8091
       targetPort: 8091
+    - name: cluster-management
+      protocol: TCP
+      port: 8097
+      targetPort: 8097
+    - name: analytics
+      protocol: TCP
+      port: 9123
+      targetPort: 9123
+    - name: smart-client
+      protocol: TCP
+      port: 11207
+      targetPort: 11207
     - name: data-port
       protocol: TCP
       port: 11210
       targetPort: 11210
+    - name: fts
+      protocol: TCP
+      port: 11280
+      targetPort: 11280
+    - name: secure-admin
+      protocol: TCP
+      port: 18091
+      targetPort: 18091
+    - name: secure-cluster
+      protocol: TCP
+      port: 18097
+      targetPort: 18097
   type: NodePort
