@@ -36,11 +36,11 @@ services:
       chmod +x /opt/couchbase/scripts/create-bucket.sh &&
       /opt/couchbase/scripts/create-bucket.sh &&
       
-      chmod +x /opt/couchbase/scripts/create-scopes.sh &&
-      /opt/couchbase/scripts/create-scopes.sh &&
-      
       chmod +x /opt/couchbase/scripts/create-indexes.sh &&
       /opt/couchbase/scripts/create-indexes.sh &&
+      
+      chmod +x /opt/couchbase/scripts/create-scopes.sh &&
+      /opt/couchbase/scripts/create-scopes.sh &&
       
       chmod +x /opt/couchbase/scripts/create-collections.sh &&
       /opt/couchbase/scripts/create-collections.sh &&
