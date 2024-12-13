@@ -27,11 +27,14 @@ services:
       chmod +x /opt/couchbase/scripts/setup-couchbase.sh &&
       /opt/couchbase/scripts/setup-couchbase.sh &&
       
+      chmod +x /opt/couchbase/scripts/configure-service.sh &&
+      /opt/couchbase/scripts/configure-service.sh &&
+      
       chmod +x /opt/couchbase/scripts/create-cluster.sh &&
       /opt/couchbase/scripts/create-cluster.sh &&
       
-      chmod +x /opt/couchbase/scripts/configure-service.sh &&
-      /opt/couchbase/scripts/configure-service.sh &&
+      chmod +x /opt/couchbase/scripts/create-bucket.sh &&
+      /opt/couchbase/scripts/create-bucket.sh &&
       
       chmod +x /opt/couchbase/scripts/create-scopes.sh &&
       /opt/couchbase/scripts/create-scopes.sh &&
