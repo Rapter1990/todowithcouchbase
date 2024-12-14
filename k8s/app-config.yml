@@ -5,5 +5,3 @@ metadata:
 data:
   COUCHBASE_BUCKET: "todo_list"
   COUCHBASE_HOST: "couchbase-service.default.svc.cluster.local"
-  COUCHBASE_ADMIN_PORT: "8091"
-  COUCHBASE_N1QL_QUERY_PORT: "8093"

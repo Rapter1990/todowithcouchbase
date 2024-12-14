@@ -16,11 +16,9 @@ class CouchbaseSetup:
 
         # Ports for base URL and query URL
         self.base_port = os.getenv('COUCHBASE_ADMIN_PORT', '8091')
-        self.query_port = os.getenv('COUCHBASE_N1QL_QUERY_PORT', '8093')
 
         # URLs
         self.base_url = f"http://{self.host}:{self.base_port}"
-        self.query_url = f"http://{self.host}:{self.query_port}/query/service"
 
         # HTTP Headers
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}

@@ -14,7 +14,7 @@ spec:
       containers:
         - name: setup-couchbase
           image: noyandocker/setup-couchbase:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: COUCHBASE_ADMINISTRATOR_USERNAME
               valueFrom:
@@ -36,14 +36,4 @@ spec:
                 configMapKeyRef:
                   name: app-config
                   key: COUCHBASE_HOST
-            - name: COUCHBASE_ADMIN_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: COUCHBASE_ADMIN_PORT
-            - name: COUCHBASE_N1QL_QUERY_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: COUCHBASE_N1QL_QUERY_PORT
       restartPolicy: Never
