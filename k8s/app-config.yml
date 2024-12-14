@@ -4,4 +4,4 @@ metadata:
   name: app-config
 data:
   COUCHBASE_BUCKET: "todo_list"
-  COUCHBASE_HOST: "couchbase"
+  COUCHBASE_HOST: "couchbase-service.default.svc.cluster.local"
