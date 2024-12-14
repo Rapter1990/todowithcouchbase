@@ -17,14 +17,29 @@ spec:
         - name: couchbase
           image: couchbase:latest
           ports:
-            - containerPort: 8091    # Couchbase Web UI
-            - containerPort: 8097    # Cluster management
-            - containerPort: 9123    # Analytics service
-            - containerPort: 11207   # Smart client library communication
-            - containerPort: 11210   # Data service
-            - containerPort: 11280   # Full Text Search (FTS)
-            - containerPort: 18091   # Secure Web UI (HTTPS)
-            - containerPort: 18097   # Secure node-to-node communication (TLS)
+            - containerPort: 8091    # Couchbase Web UI (HTTP) and REST API for cluster management
+            - containerPort: 8092    # View API (for MapReduce views)
+            - containerPort: 8093    # N1QL Query Service (SQL-like queries)
+            - containerPort: 8094    # Eventing Service
+            - containerPort: 8095    # Full Text Search (FTS) Service
+            - containerPort: 8096    # Analytics Service
+            - containerPort: 8097    # Cluster Management (Node-to-Node communication)
+            - containerPort: 9123    # Analytics Service queries
+            - containerPort: 11207   # Smart client library communication (SSL)
+            - containerPort: 11209   # Binary protocol (non-SSL)
+            - containerPort: 11210   # Data service for key-value operations
+            - containerPort: 11211   # Legacy Memcached connections
+            - containerPort: 11280   # Full Text Search (FTS) internal port
+            - containerPort: 18091   # Secure Couchbase Web UI (HTTPS)
+            - containerPort: 18092   # Secure View API (SSL)
+            - containerPort: 18093   # Secure N1QL Query Service (SSL)
+            - containerPort: 18094   # Secure Eventing Service (SSL)
+            - containerPort: 18095   # Secure Full Text Search (FTS) (SSL)
+            - containerPort: 18096   # Secure Analytics Service (SSL)
+            - containerPort: 18097   # Secure Cluster Management (Node-to-Node TLS)
+            - containerPort: 4369    # Erlang Port Mapper (epmd) for cluster node discovery
+            - containerPort: 21100   # DCP, XDCR, and replication (lower range)
+            - containerPort: 21299   # DCP, XDCR, and replication (upper range)
           env:
             - name: COUCHBASE_ADMINISTRATOR_USERNAME
               valueFrom:
@@ -61,11 +76,31 @@ spec:
       protocol: TCP
       port: 8091
       targetPort: 8091
-    - name: cluster-management
+    - name: view-api
+      protocol: TCP
+      port: 8092
+      targetPort: 8092
+    - name: n1ql-query
+      protocol: TCP
+      port: 8093
+      targetPort: 8093
+    - name: eventing
+      protocol: TCP
+      port: 8094
+      targetPort: 8094
+    - name: fts
+      protocol: TCP
+      port: 8095
+      targetPort: 8095
+    - name: analytics
+      protocol: TCP
+      port: 8096
+      targetPort: 8096
+    - name: node-communication
       protocol: TCP
       port: 8097
       targetPort: 8097
-    - name: analytics
+    - name: analytics-queries
       protocol: TCP
       port: 9123
       targetPort: 9123
@@ -73,20 +108,60 @@ spec:
       protocol: TCP
       port: 11207
       targetPort: 11207
-    - name: data-port
+    - name: binary-protocol
+      protocol: TCP
+      port: 11209
+      targetPort: 11209
+    - name: data-service
       protocol: TCP
       port: 11210
       targetPort: 11210
-    - name: fts
+    - name: memcached
+      protocol: TCP
+      port: 11211
+      targetPort: 11211
+    - name: fts-internal
       protocol: TCP
       port: 11280
       targetPort: 11280
-    - name: secure-admin
+    - name: admin-https
       protocol: TCP
       port: 18091
       targetPort: 18091
+    - name: view-api-https
+      protocol: TCP
+      port: 18092
+      targetPort: 18092
+    - name: query-https
+      protocol: TCP
+      port: 18093
+      targetPort: 18093
+    - name: eventing-https
+      protocol: TCP
+      port: 18094
+      targetPort: 18094
+    - name: fts-https
+      protocol: TCP
+      port: 18095
+      targetPort: 18095
+    - name: analytics-https
+      protocol: TCP
+      port: 18096
+      targetPort: 18096
     - name: secure-cluster
       protocol: TCP
       port: 18097
       targetPort: 18097
+    - name: epmd
+      protocol: TCP
+      port: 4369
+      targetPort: 4369
+    - name: dcp-xdcr
+      protocol: TCP
+      port: 21100
+      targetPort: 21100
+    - name: dcp-xdcr
+      protocol: TCP
+      port: 21299
+      targetPort: 21299
   type: NodePort
