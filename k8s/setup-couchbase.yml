@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setup-couchbase
+  namespace: default
+spec:
+  backoffLimit: 3 # Number of times to retry if it fails
+  template:
+    metadata:
+      name: setup-couchbase
+      labels:
+        app: setup-couchbase
+    spec:
+      containers:
+        - name: setup-couchbase
+          image: noyandocker/setup-couchbase:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: COUCHBASE_ADMINISTRATOR_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: couchbase-secret
+                  key: username
+            - name: COUCHBASE_ADMINISTRATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchbase-secret
+                  key: password
+            - name: COUCHBASE_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: COUCHBASE_BUCKET
+            - name: COUCHBASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: COUCHBASE_HOST
+      restartPolicy: Never

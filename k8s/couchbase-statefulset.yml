@@ -156,11 +156,11 @@ spec:
       protocol: TCP
       port: 4369
       targetPort: 4369
-    - name: dcp-xdcr
+    - name: dcp-xdcr-lower
       protocol: TCP
       port: 21100
       targetPort: 21100
-    - name: dcp-xdcr
+    - name: dcp-xdcr-upper
       protocol: TCP
       port: 21299
       targetPort: 21299
