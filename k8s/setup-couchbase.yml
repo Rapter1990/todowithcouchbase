@@ -36,4 +36,14 @@ spec:
                 configMapKeyRef:
                   name: app-config
                   key: COUCHBASE_HOST
+            - name: COUCHBASE_ADMIN_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: COUCHBASE_ADMIN_PORT
+            - name: COUCHBASE_N1QL_QUERY_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: COUCHBASE_N1QL_QUERY_PORT
       restartPolicy: Never

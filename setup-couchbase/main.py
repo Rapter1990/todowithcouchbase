@@ -4,12 +4,25 @@ import requests
 
 class CouchbaseSetup:
     def __init__(self):
+        # Hostname or IP address for Couchbase service
         self.host = os.getenv('COUCHBASE_HOST', 'localhost')
+
+        # Couchbase administrator credentials
         self.admin_username = os.getenv('COUCHBASE_ADMINISTRATOR_USERNAME', 'Administrator')
         self.admin_password = os.getenv('COUCHBASE_ADMINISTRATOR_PASSWORD', '123456')
+
+        # Couchbase bucket
         self.bucket_name = os.getenv('COUCHBASE_BUCKET', 'todo_list')
-        self.base_url = f"http://{self.host}:8091"
-        self.query_url = f"http://{self.host}:8093/query/service"
+
+        # Ports for base URL and query URL
+        self.base_port = os.getenv('COUCHBASE_ADMIN_PORT', '8091')
+        self.query_port = os.getenv('COUCHBASE_N1QL_QUERY_PORT', '8093')
+
+        # URLs
+        self.base_url = f"http://{self.host}:{self.base_port}"
+        self.query_url = f"http://{self.host}:{self.query_port}/query/service"
+
+        # HTTP Headers
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
     def wait_for_couchbase(self):
