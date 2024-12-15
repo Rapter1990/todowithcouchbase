@@ -21,7 +21,6 @@ spec:
             - containerPort: 8092    # View API (for MapReduce views)
             - containerPort: 8093    # N1QL Query Service (SQL-like queries)
             - containerPort: 8094    # Eventing Service
-            - containerPort: 8095    # Full Text Search (FTS) Service
             - containerPort: 8096    # Analytics Service
             - containerPort: 8097    # Cluster Management (Node-to-Node communication)
             - containerPort: 9123    # Analytics Service queries
@@ -34,7 +33,6 @@ spec:
             - containerPort: 18092   # Secure View API (SSL)
             - containerPort: 18093   # Secure N1QL Query Service (SSL)
             - containerPort: 18094   # Secure Eventing Service (SSL)
-            - containerPort: 18095   # Secure Full Text Search (FTS) (SSL)
             - containerPort: 18096   # Secure Analytics Service (SSL)
             - containerPort: 18097   # Secure Cluster Management (Node-to-Node TLS)
             - containerPort: 4369    # Erlang Port Mapper (epmd) for cluster node discovery
@@ -88,10 +86,6 @@ spec:
       protocol: TCP
       port: 8094
       targetPort: 8094
-    - name: fts
-      protocol: TCP
-      port: 8095
-      targetPort: 8095
     - name: analytics
       protocol: TCP
       port: 8096
@@ -140,10 +134,6 @@ spec:
       protocol: TCP
       port: 18094
       targetPort: 18094
-    - name: fts-https
-      protocol: TCP
-      port: 18095
-      targetPort: 18095
     - name: analytics-https
       protocol: TCP
       port: 18096
