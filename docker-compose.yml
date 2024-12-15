@@ -4,52 +4,56 @@ services:
     image: couchbase:latest
     container_name: couchbase
     ports:
-      - "8091:8091"     # Couchbase Web UI and REST API for cluster management
-      - "8097:8097"     # Node-to-node communication port for cluster management
-      - "9123:9123"     # Analytics service port
-      - "11207:11207"   # Smart client library communication port
-      - "11210:11210"   # Data service port for key-value operations
-      - "11280:11280"   # Internal port for Full Text Search (FTS) communication
-      - "18091:18091"   # Secure Couchbase Web UI and REST API (HTTPS)
-      - "18097:18097"   # Secure node-to-node communication port (TLS)
+        - "8091:8091"     # Couchbase Web UI and REST API
+        - "8092:8092"     # View API (MapReduce)
+        - "8093:8093"     # N1QL Query Service
+        - "8094:8094"     # Eventing Service
+        - "8096:8096"     # Analytics Service
+        - "8097:8097"     # Cluster Manager (Node-to-Node Communication)
+        - "9123:9123"     # Analytics Service queries
+        - "11207:11207"   # Smart client library communication
+        - "11209:11209"   # Binary protocol (non-SSL)
+        - "11210:11210"   # Data service for key-value operations
+        - "11211:11211"   # Legacy Memcached connections
+        - "11280:11280"   # Internal port for Full-Text Search (FTS)
+        - "18091:18091"   # Secure Couchbase Web UI (HTTPS)
+        - "18092:18092"   # Secure View API
+        - "18093:18093"   # Secure N1QL Queries (SSL)
+        - "18094:18094"   # Secure Eventing Service (SSL)
+        - "18096:18096"   # Secure Analytics Service (SSL)
+        - "18097:18097"   # Secure Node-to-Node Communication (TLS)
+        - "4369:4369"     # Erlang Port Mapper (epmd)
+        - "21100-21299:21100-21299" # DCP, XDCR, Replication
     environment:
       COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
       COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
       COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
-      COUCHBASE_AUTO_INDEX: true
     volumes:
       - ~/couchbase/node1:/opt/couchbase/var # Persistent storage for Couchbase data and logs
-      - ./scripts:/opt/couchbase/scripts # Directory for custom initialization scripts
-    command: >
-      /bin/bash -c "
-      /entrypoint.sh couchbase-server &
-      
-      chmod +x /opt/couchbase/scripts/setup-couchbase.sh &&
-      /opt/couchbase/scripts/setup-couchbase.sh &&
-      
-      chmod +x /opt/couchbase/scripts/create-cluster.sh &&
-      /opt/couchbase/scripts/create-cluster.sh &&
-      
-      chmod +x /opt/couchbase/scripts/configure-service.sh &&
-      /opt/couchbase/scripts/configure-service.sh &&
-      
-      chmod +x /opt/couchbase/scripts/create-scopes.sh &&
-      /opt/couchbase/scripts/create-scopes.sh &&
-      
-      chmod +x /opt/couchbase/scripts/create-indexes.sh &&
-      /opt/couchbase/scripts/create-indexes.sh &&
-      
-      chmod +x /opt/couchbase/scripts/create-collections.sh &&
-      /opt/couchbase/scripts/create-collections.sh &&
-      
-      echo 'Setup complete. Keeping container running...' &&
-      tail -f /dev/null
-      "
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]  # Uses curl to check the availability of the Couchbase Web UI
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/ui/index.html" ]  # Check if Couchbase UI is available
       interval: 30s    # Interval between health checks (30 seconds)
       timeout: 10s     # Maximum time allowed for the health check command to run (10 seconds)
       retries: 5       # Number of retries before marking the service as unhealthy (5 retries)
+    networks:
+      - todowithcouchbase_network
+
+  setup-couchbase:
+    image: setup-couchbase:latest
+    container_name: setup-couchbase
+    build:
+      context: ./setup-couchbase
+      dockerfile: Dockerfile
+    depends_on:
+      couchbase:
+        condition: service_healthy
+    environment:
+      COUCHBASE_ADMINISTRATOR_USERNAME: ${COUCHBASE_USERNAME:-Administrator}
+      COUCHBASE_ADMINISTRATOR_PASSWORD: ${COUCHBASE_PASSWORD:-123456}
+      COUCHBASE_ADMIN_PORT: ${COUCHBASE_ADMIN_PORT:-8091}
+      COUCHBASE_N1QL_QUERY_PORT: ${COUCHBASE_N1QL_QUERY_PORT:-8093}
+      COUCHBASE_BUCKET: ${COUCHBASE_BUCKET:-todo_list}
+      COUCHBASE_HOST: couchbase
     networks:
       - todowithcouchbase_network
 
@@ -65,6 +69,8 @@ services:
     depends_on:
       couchbase:
         condition: service_healthy
+      setup-couchbase:
+        condition: service_completed_successfully
     env_file:
       - .env  # Use the .env file for environment variables
     environment:
