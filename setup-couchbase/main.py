@@ -1,6 +1,8 @@
 import os
 import time
+
 import requests
+
 
 class CouchbaseSetup:
     def __init__(self):
@@ -16,9 +18,11 @@ class CouchbaseSetup:
 
         # Ports for base URL and query URL
         self.base_port = os.getenv('COUCHBASE_ADMIN_PORT', '8091')
+        self.query_port = os.getenv('COUCHBASE_N1QL_QUERY_PORT', '8093')
 
         # URLs
         self.base_url = f"http://{self.host}:{self.base_port}"
+        self.query_url = f"http://{self.host}:{self.query_port}/query/service"
 
         # HTTP Headers
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -37,16 +41,23 @@ class CouchbaseSetup:
 
     def create_cluster(self):
         print("Initializing Couchbase Cluster...")
-        url = f"{self.base_url}/pools/default"
+        url = f"{self.base_url}/clusterInit"
         data = {
-            'memoryQuota': 256,
-            'indexMemoryQuota': 256
+            'username': self.admin_username,
+            'password': self.admin_password,
+            'services': 'kv,n1ql,index,fts',
+            'port': 'SAME',
+            'indexerStorageMode': 'plasma',
         }
-        response = requests.post(url, auth=(self.admin_username, self.admin_password), data=data)
-        if response.status_code == 200:
-            print("Cluster setup completed successfully.")
-        else:
-            print(f"Failed to create cluster: {response.json()}")
+
+        try:
+            response = requests.post(url, data=data, timeout=10)
+            if response.status_code == 200:
+                print(f"Cluster Init Response: {response.json()}")
+            else:
+                print(f"Failed to create cluster: {response.json()}")
+        except Exception as ex:
+            print(f"Exception occurred when creating cluster: {ex}")
 
     def create_bucket(self):
         print("Creating Couchbase Bucket...")
@@ -67,7 +78,8 @@ class CouchbaseSetup:
         scopes = ['user-scope', 'task-scope', 'invalid-token-scope', 'log-scope']
         for scope in scopes:
             query = f"CREATE SCOPE `{self.bucket_name}`.`{scope}`"
-            response = requests.post(self.query_url, auth=(self.admin_username, self.admin_password), data={'statement': query})
+            response = requests.post(self.query_url, auth=(self.admin_username, self.admin_password),
+                                     data={'statement': query})
             if response.status_code == 200:
                 print(f"Scope '{scope}' created successfully.")
             else:
@@ -83,7 +95,8 @@ class CouchbaseSetup:
         }
         for scope, collection in collections.items():
             query = f"CREATE COLLECTION `{self.bucket_name}`.`{scope}`.`{collection}`"
-            response = requests.post(self.query_url, auth=(self.admin_username, self.admin_password), data={'statement': query})
+            response = requests.post(self.query_url, auth=(self.admin_username, self.admin_password),
+                                     data={'statement': query})
             if response.status_code == 200:
                 print(f"Collection '{collection}' in scope '{scope}' created successfully.")
             else:
@@ -95,11 +108,12 @@ class CouchbaseSetup:
             f"CREATE PRIMARY INDEX `primary_index` ON `{self.bucket_name}`"
         ]
         for index_query in indexes:
-            response = requests.post(self.query_url, auth=(self.admin_username, self.admin_password), data={'statement': index_query})
+            response = requests.post(self.query_url, auth=(self.admin_username, self.admin_password),
+                                     data={'statement': index_query})
             if response.status_code == 200:
                 print(f"Index created successfully: {index_query}")
             else:
-                print(f"Failed to create index: {response.json()}")
+                print(f"Failed to create index {index_query} , response: {response.json()}")
 
     def run(self):
         self.wait_for_couchbase()
