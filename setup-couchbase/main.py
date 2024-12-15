@@ -59,6 +59,17 @@ class CouchbaseSetup:
         except Exception as ex:
             print(f"Exception occurred when creating cluster: {ex}")
 
+        print(f"Waiting for N1QL service to start on {self.host}:{self.query_port}...")
+        while True:
+            try:
+                response = requests.get(f"http://{self.host}:{self.query_port}/admin/ping", timeout=5)
+                if response.status_code == 200:
+                    print("N1QL service is ready!")
+                    break
+            except requests.exceptions.RequestException:
+                print("N1QL service is not ready yet. Retrying in 5 seconds...")
+                time.sleep(5)
+
     def create_bucket(self):
         print("Creating Couchbase Bucket...")
         url = f"{self.base_url}/pools/default/buckets"
