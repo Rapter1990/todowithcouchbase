@@ -25,6 +25,6 @@ data:
         metrics_path: '/actuator/prometheus'
         scrape_interval: 2s
         static_configs:
-          - targets: ['todowithcouchbase:2323']
+          - targets: ['todowithcouchbase-service.default.svc.cluster.local:2323']
             labels:
               application: 'To Do List with Couchbase'
