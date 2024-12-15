@@ -8,7 +8,6 @@ services:
         - "8092:8092"     # View API (MapReduce)
         - "8093:8093"     # N1QL Query Service
         - "8094:8094"     # Eventing Service
-#        - "8095:8095"     # Full Text Search (FTS)
         - "8096:8096"     # Analytics Service
         - "8097:8097"     # Cluster Manager (Node-to-Node Communication)
         - "9123:9123"     # Analytics Service queries
@@ -21,7 +20,6 @@ services:
         - "18092:18092"   # Secure View API
         - "18093:18093"   # Secure N1QL Queries (SSL)
         - "18094:18094"   # Secure Eventing Service (SSL)
-#        - "18095:18095"   # Secure Full-Text Search (FTS)
         - "18096:18096"   # Secure Analytics Service (SSL)
         - "18097:18097"   # Secure Node-to-Node Communication (TLS)
         - "4369:4369"     # Erlang Port Mapper (epmd)
