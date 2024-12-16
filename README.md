@@ -175,7 +175,7 @@ Import postman collection under postman_collection folder
 
 ### Prerequisites
 
-#### Define Variable in .env file for product service and user service
+#### Define Variable in .env file
 
 ```
 COUCHBASE_USERNAME={COUCHBASE_USERNAME}
