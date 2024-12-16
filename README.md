@@ -160,7 +160,6 @@ Endpoints Summary
 - Grafana
 - Kubernetes
 - Python
-- Bash Scripts
 
 ### Postman
 
