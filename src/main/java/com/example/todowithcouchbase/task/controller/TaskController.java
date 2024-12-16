@@ -58,7 +58,7 @@ public class TaskController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public CustomResponse<String> saveTask(@RequestBody @Valid final SaveTaskRequest saveTaskRequest){
-        final Task createdTask = taskService.saveTaskToDatabase(saveTaskRequest);
+        final Task createdTask = taskService.saveTask(saveTaskRequest);
 
         return CustomResponse.successOf(createdTask.getId());
     }
@@ -196,7 +196,7 @@ public class TaskController {
     )
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public CustomResponse<String> deleteTaskById(@PathVariable @Valid final String id){
+    public CustomResponse<String> deleteTaskById(@PathVariable @Valid @UUID final String id){
 
         taskService.deleteTaskById(id);
 

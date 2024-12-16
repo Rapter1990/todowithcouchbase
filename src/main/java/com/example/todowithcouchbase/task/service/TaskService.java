@@ -20,7 +20,7 @@ public interface TaskService {
      * @param taskRequest the request object containing the details of the task to be saved.
      * @return the saved {@link Task} entity.
      */
-    Task saveTaskToDatabase(SaveTaskRequest taskRequest);
+    Task saveTask(SaveTaskRequest taskRequest);
 
     /**
      * Retrieves all tasks with pagination support.

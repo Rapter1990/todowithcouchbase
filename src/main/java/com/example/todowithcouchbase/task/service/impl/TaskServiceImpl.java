@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
      * @return the saved {@link Task} entity.
      */
     @Override
-    public Task saveTaskToDatabase(final SaveTaskRequest taskRequest) {
+    public Task saveTask(final SaveTaskRequest taskRequest) {
 
         checkTaskNameUniqueness(taskRequest.getName());
 
