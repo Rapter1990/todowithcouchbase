@@ -230,7 +230,14 @@ To monitor the application, you can use the following tools:
     - Username: `admin`
     - Password: `admin`
 
+- Define prometheus data source url, use this link shown below
+
+```
+http://prometheus:9090
+```
+
 ---
+
 
 ### Kubernetes Run
 To build and run the application with `Maven`, please follow the directions shown below;
