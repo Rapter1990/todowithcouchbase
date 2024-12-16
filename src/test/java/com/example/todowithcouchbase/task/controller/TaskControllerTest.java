@@ -63,7 +63,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.when(taskService.saveTaskToDatabase(any(SaveTaskRequest.class)))
+        Mockito.when(taskService.saveTask(any(SaveTaskRequest.class)))
                 .thenReturn(expectedTask);
 
         // Then
@@ -82,7 +82,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(taskService,Mockito.times(1))
-                .saveTaskToDatabase(any(SaveTaskRequest.class));
+                .saveTask(any(SaveTaskRequest.class));
 
     }
 
@@ -105,7 +105,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
         // Verify
-        Mockito.verify(taskService, Mockito.never()).saveTaskToDatabase(any(SaveTaskRequest.class));
+        Mockito.verify(taskService, Mockito.never()).saveTask(any(SaveTaskRequest.class));
 
     }
 
@@ -129,7 +129,7 @@ class TaskControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(taskService, Mockito.never())
-                .saveTaskToDatabase(any(SaveTaskRequest.class));
+                .saveTask(any(SaveTaskRequest.class));
 
     }
 

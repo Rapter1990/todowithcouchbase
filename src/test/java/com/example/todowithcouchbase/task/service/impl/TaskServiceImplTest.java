@@ -72,7 +72,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         Mockito.when(taskRepository.save(any(TaskEntity.class))).thenReturn(mockTaskEntity);
 
         // Then
-        Task response = taskService.saveTaskToDatabase(request);
+        Task response = taskService.saveTask(request);
 
         Assertions.assertEquals(mockTask.getName(),response.getName());
 
@@ -93,7 +93,7 @@ class TaskServiceImplTest extends AbstractBaseServiceTest {
         Mockito.when(taskRepository.existsByName(request.getName())).thenReturn(true);
 
         // Then
-        Assertions.assertThrowsExactly(TaskWithThisNameAlreadyExistException.class,()->taskService.saveTaskToDatabase(request));
+        Assertions.assertThrowsExactly(TaskWithThisNameAlreadyExistException.class,()->taskService.saveTask(request));
 
         // Verify
         Mockito.verify(taskRepository,Mockito.times(1)).existsByName(Mockito.anyString());
