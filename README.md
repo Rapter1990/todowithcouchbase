@@ -191,9 +191,10 @@ http://localhost:2323/swagger-ui/index.html
 ```
 
 ---
-- Maven, Docker and Kubernetes
 
----
+### Maven, Docker and Kubernetes Running Process
+
+
 ### Maven Run
 To build and run the application with `Maven`, please follow the directions shown below;
 
