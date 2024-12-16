@@ -40,6 +40,11 @@
         </ul>
     </ul>
   </li>
+  <li>Python :
+    <ul>
+      <li>setup-couchbase image used in Docker is handled with Kubernetes process to defnie cluster, scope, collection and indexes</li>
+    </ul>
+  </li>
 </ul>
 
 
