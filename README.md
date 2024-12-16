@@ -236,6 +236,36 @@ To monitor the application, you can use the following tools:
 ### Kubernetes Run
 To build and run the application with `Maven`, please follow the directions shown below;
 
+- Start Minikube
+
+```sh
+$ minikube start
+```
+
+- Open Minikube Dashboard
+
+```sh
+$ minikube dashboard
+```
+
+- To deploy the application on Kubernetes, apply the Kubernetes configuration file underneath k8s folder
+
+```sh
+$ kubectl apply -f k8s
+```
+
+- To open Prometheus, click tunnel url link provided by the command shown below to reach out Prometheus
+
+```sh
+minikube service prometheus-service
+```
+
+
+- To open Grafana, click tunnel url link provided by the command shown below to reach out Prometheus
+
+```sh
+minikube service grafana-service
+```
 
 
 ---
