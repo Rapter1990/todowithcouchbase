@@ -236,10 +236,6 @@ To monitor the application, you can use the following tools:
 ### Kubernetes Run
 To build and run the application with `Maven`, please follow the directions shown below;
 
-```sh
-$ cd todowithcouchbase
-$ docker-compose up -d
-```
 
 
 ---
