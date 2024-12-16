@@ -1,7 +1,7 @@
 # Case Study - To Do List with Spring Boot and Couchbase
 
 <p align="center">
-    <img src="screenshots/mainimage.png" alt="Main Information" width="800" height="450">
+    <img src="screenshots/mainimage.png" alt="Main Information" width="800" height="500">
 </p>
 
 ### 📖 Information
