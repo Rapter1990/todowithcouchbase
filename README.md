@@ -57,11 +57,83 @@ Endpoints Summary
   </tr>
   <tr>
       <td>POST</td>
+      <td>/api/v1/authentication/user/register</td>
+      <td>Register for Admin or User</td>
+      <td>RegisterRequest</td>
       <td></td>
+      <td>CustomResponse&lt;Void&gt;</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/authentication/user/login</td>
+      <td>Login for Admin or User</td>
+      <td>LoginRequest</td>
       <td></td>
+      <td>CustomResponse&lt;TokenResponse&gt;</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/authentication/user/refresh-token</td>
+      <td>Refresh Token for Admin or User</td>
+      <td>TokenRefreshRequest</td>
       <td></td>
+      <td>CustomResponse&lt;TokenResponse&gt;</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/authentication/user/logout</td>
+      <td>Logout for Admin or User</td>
+      <td>TokenInvalidateRequest</td>
       <td></td>
+      <td>CustomResponse&lt;Void&gt;</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>api/v1/tasks</td>
+      <td>Create a new Task</td>
+      <td>SaveTaskRequest</td>
       <td></td>
+      <td>CustomResponse&lt;String&gt;</td>
+  </tr>
+  <tr>
+      <td>GET</td>
+      <td>api/v1/tasks</td>
+      <td>Get all Tasks</td>
+      <td>TaskPagingRequest</td>
+      <td></td>
+      <td>CustomResponse&lt;CustomPagingResponse&lt;TaskResponse&gt;&gt;</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>api/v1/tasks/getByName</td>
+      <td>Get Task by name</td>
+      <td>GetTaskByNameRequest</td>
+      <td></td>
+      <td>CustomResponse&lt;TaskResponse&gt;</td>
+  </tr>
+  <tr>
+      <td>GET</td>
+      <td>api/v1/tasks/{id}</td>
+      <td>Get Task by ID</td>
+      <td></td>
+      <td>UUID</td>
+      <td>CustomResponse&lt;TaskResponse&gt;</td>
+  </tr>
+  <tr>
+      <td>PUT</td>
+      <td>api/v1/tasks/{id}</td>
+      <td>Update a Task </td>
+      <td>UpdateTaskRequest</td>
+      <td>UUID</td>
+      <td>CustomResponse&lt;TaskResponse&gt;</td>
+  </tr>
+  <tr>
+      <td>DELETE</td>
+      <td>api/v1/tasks/{id}</td>
+      <td>Delete a Task</td>
+      <td></td>
+      <td>UUID</td>
+      <td>CustomResponse&lt;String&gt;</td>
   </tr>
 </table>
 

@@ -196,7 +196,7 @@ public class TaskController {
     )
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public CustomResponse<String> deleteTaskById(@PathVariable @Valid final String id){
+    public CustomResponse<String> deleteTaskById(@PathVariable @Valid @UUID final String id){
 
         taskService.deleteTaskById(id);
 
