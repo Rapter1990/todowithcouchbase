@@ -188,7 +188,6 @@ http://localhost:2323/swagger-ui/index.html
 
 ---
 - Maven, Docker and Kubernetes
----
 
 ---
 ### Maven Run
@@ -199,6 +198,8 @@ $ cd todowithcouchbase
 $ mvn clean install
 $ mvn spring-boot:run
 ```
+
+---
 
 ### Docker Run
 The application can be built and run by the `Docker` engine. The `Dockerfile` has multistage build, so you do not need to build and run separately.
@@ -216,6 +217,21 @@ If you change anything in the project and run it on Docker, you can also use thi
 $ cd todowithcouchbase
 $ docker-compose up --build
 ```
+
+To monitor the application, you can use the following tools:
+
+- **Prometheus**:  
+  Open in your browser at [http://localhost:9090](http://localhost:9090)  
+  Prometheus collects and stores application metrics.
+
+- **Grafana**:  
+  Open in your browser at [http://localhost:3000](http://localhost:3000)  
+  Grafana provides a dashboard for visualizing the metrics.  
+  **Default credentials**:
+    - Username: `admin`
+    - Password: `admin`
+
+---
 
 ### Kubernetes Run
 To build and run the application with `Maven`, please follow the directions shown below;
