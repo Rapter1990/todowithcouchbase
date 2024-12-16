@@ -87,6 +87,8 @@ Endpoints Summary
 - Prometheus
 - Grafana
 - Kubernetes
+- Python
+- Bash Scripts
 
 ### Postman
 
