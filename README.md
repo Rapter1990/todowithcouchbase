@@ -267,6 +267,12 @@ minikube service prometheus-service
 minikube service grafana-service
 ```
 
+- Define prometheus data source url, use this link shown below
+
+```
+http://prometheus-service.default.svc.cluster.local:9090
+```
+
 
 ---
 ### Docker Image Location
