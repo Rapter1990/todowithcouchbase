@@ -293,7 +293,47 @@ https://hub.docker.com/repository/docker/noyandocker/setup-couchbase/general
 <details>
 <summary>Click here to show the screenshots of project</summary>
     <p> Figure 1 </p>
-    <img src ="screenshots/1.PNG">
+    <img src ="screenshots/test_coverage.PNG">
+    <p> Figure 2 </p>
+    <img src ="screenshots/openapi_swagger.PNG">
+    <p> Figure 3 </p>
+    <img src ="screenshots/docker_compose_image.PNG">
+    <p> Figure 4 </p>
+    <img src ="screenshots/prometheus_1.PNG">
+    <p> Figure 5 </p>
+    <img src ="screenshots/grafana_1.PNG">
+    <p> Figure 6 </p>
+    <img src ="screenshots/grafana_2.PNG">
+    <p> Figure 7 </p>
+    <img src ="screenshots/grafana_3_1.PNG">
+    <p> Figure 8 </p>
+    <img src ="screenshots/grafana_3_2.PNG">
+    <p> Figure 9 </p>
+    <img src ="screenshots/grafana_3_3.PNG">
+    <p> Figure 10 </p>
+    <img src ="screenshots/grafana_4.PNG">
+    <p> Figure 11 </p>
+    <img src ="screenshots/grafana_5.PNG">
+    <p> Figure 12 </p>
+    <img src ="screenshots/grafana_6.PNG">
+    <p> Figure 13 </p>
+    <img src ="screenshots/grafana_7.PNG">
+    <p> Figure 14 </p>
+    <img src ="screenshots/grafana_8.PNG">
+    <p> Figure 15 </p>
+    <img src ="screenshots/grafana_9.PNG">
+    <p> Figure 16 </p>
+    <img src ="screenshots/minikube_1.PNG">
+    <p> Figure 17 </p>
+    <img src ="screenshots/kubernetes_1.PNG">
+    <p> Figure 18 </p>
+    <img src ="screenshots/kubernetes_2.PNG">
+    <p> Figure 19 </p>
+    <img src ="screenshots/kubernetes_3.PNG">
+    <p> Figure 20 </p>
+    <img src ="screenshots/kubernetes_4.PNG">
+    <p> Figure 21 </p>
+    <img src ="screenshots/kubernetes_5.PNG">
     
 </details>
 
